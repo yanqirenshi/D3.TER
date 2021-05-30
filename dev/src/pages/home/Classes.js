@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import {Footer} from '../../components/Common.js';
+
 import TabsClasses from './TabsClasses.js';
 
 import Overview from './classes/Overview.js';
@@ -60,6 +62,8 @@ export default function Classes() {
           {isActive('relationship')        && <Relationship       data={data.relationship} />}
           {isActive('port')                && <Port               data={data.port} />}
           {isActive('pool')                && <Pool               data={data.pool} />}
-        </div>
+
+          <Footer />
+       </div>
     );
 }

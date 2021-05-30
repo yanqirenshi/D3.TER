@@ -3,11 +3,11 @@ class Builder {
         return {
             _id : null,
             _class: 'ENTITY',
+            padding: 11,
+            margin: 6,
             description: { contents: '' },
             position: { x:0, y:0, z:0 },
             size: { w:0, h:0 },
-            padding: 11,
-            margin: 6,
             bar: {
                 size: {
                     header: 11,
@@ -18,27 +18,27 @@ class Builder {
                 color: '',
             },
             name: {
+                padding: 11,
+                contents: '',
                 position: { x:0, y:0, z:0 },
                 size: { h: null, w: null },
-                padding: 11,
-                contents: ''
             },
             type: {
                 contents: '??',
+                padding: 11,
                 position: { x:0, y:0, z:0 },
                 size: { w:0, h:0 },
-                padding: 11,
             },
             identifiers: {
+                padding: 8,
                 position: { x:0, y:0, z:0 },
                 size: { w: null, h: null },
-                padding: 8,
                 items: { list: [], ht: {} },
             },
             attributes: {
+                padding: 8,
                 position: { x:0, y:0, z:0 },
                 size: { w: null, h: null },
-                padding: 8,
                 items: { list: [], ht: {} },
             },
             ports: {
