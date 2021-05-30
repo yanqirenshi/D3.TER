@@ -9,6 +9,7 @@ import attribute from './classes/attribute.js';
 import relationship from './classes/relationship.js';
 import port from './classes/port.js';
 import pool from './classes/pool.js';
+import d3ter from './classes/d3ter.js';
 
 export {
     entity,
@@ -22,4 +23,5 @@ export {
     relationship,
     port,
     pool,
+    d3ter,
 }

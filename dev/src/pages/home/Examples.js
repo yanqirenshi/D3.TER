@@ -1,32 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-// import Asshole from './examples/Asshole.js';
-import D3TER from '../../libs/components/D3TER.js';
+import Ass from '../../libs/js/Ass.js';
+import Ben9i from '../../libs/components/Ben9i.js';
 
 const style = {
     root: {
         width:'100%',
         height: '100%',
-        padding: 22
     }
 };
 
+const svgid = 'xyz1234';
+
 export default function Examples() {
-    const camera = {
-        look:  {
-            at: {
-                x:0,
-                y:0,
-            },
-        },
-        scale: null,
-    };
+    const [ass] = useState(new Ass({
+        selector: '#' + svgid,
+        camera: null,
+    }));
+
+    useEffect(() => console.log(ass), []);
 
     return (
         <div style={style.root}>
-          <div style={{height:'100%'}}>
-            <D3TER />
-          </div>
+          <Ben9i svgid={svgid} asshole={ass}/>
         </div>
     );
 }

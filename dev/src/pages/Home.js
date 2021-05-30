@@ -6,10 +6,12 @@ import TabContents from '../components/TabContents.js';
 import Examples from './home/Examples.js';
 import Data from './home/Data.js';
 import Classes from './home/Classes.js';
+import Asshole from './home/Asshole.js';
 
 export default function Home () {
     const [tabs] = useState([
         { code: 'examples', label: 'Examples'},
+        { code: 'asshole',  label: 'Asshole'},
         { code: 'data',     label: 'Data'},
         { code: 'classes',  label: 'Classes' },
     ]);
@@ -17,20 +19,28 @@ export default function Home () {
     return (
         <div style={{width: '100%', height: '100%'}}>
           <TabContents code="examples" tabs={tabs}>
-            <div style={{width: '100%', height: '100%'}}>
+            <div style={{width: '100%', height: '100%', display:'flex', flexDirection: 'column'}}>
               <Hero tabs={tabs} />
               <Examples />
             </div>
           </TabContents>
 
-          <TabContents code="data" tabs={tabs} style={{overflow:'auto'}}>
+          <TabContents code="asshole" tabs={tabs}>
+            <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
+              <Hero tabs={tabs} />
+              <Asshole />
+            </div>
+          </TabContents>
+
+
+          <TabContents code="data" tabs={tabs}>
             <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
               <Hero tabs={tabs} />
               <Data />
             </div>
           </TabContents>
 
-          <TabContents code="classes" tabs={tabs} style={{overflow:'auto'}}>
+          <TabContents code="classes" tabs={tabs}>
             <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
               <Hero tabs={tabs} />
               <Classes />
