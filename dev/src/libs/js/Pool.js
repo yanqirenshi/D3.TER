@@ -14,7 +14,7 @@ export default class Pool {
 
                 acc.list.push(new_val);
 
-                acc.ht[new_val._id] = new_val;
+                acc.ht[new_val.id] = new_val;
 
                 return acc;
             }, pool);
