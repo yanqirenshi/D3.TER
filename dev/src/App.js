@@ -1,11 +1,28 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import { connect } from 'react-redux';
 import {
-  BrowserRouter as Router, Switch, Route,
+    BrowserRouter as Router, Switch, Route,
 } from "react-router-dom";
 
 import Home from './pages/Home.js';
 
-function App() {
+import { connectGithub } from './actions/sogh.js';
+
+function makeSogh (sogh, connect) {
+    const token = process.env.REACT_APP_GITHUB_PARSONAL_TOKEN;
+
+    if (!token)
+        return;
+
+    if (sogh.updated_at!==null)
+        return;
+
+    connect(token);
+}
+
+function App(props) {
+    useEffect(() => makeSogh(props.sogh, props.connectGithub), [props.sogh, props.connectGithub]);
+
     return (
         <Router>
           <Switch>
@@ -17,4 +34,14 @@ function App() {
     );
 }
 
-export default App;
+export default connect(
+    (state) => {
+        return {
+            sogh: state.sogh,
+            repository: state.repository,
+        };
+    },
+    (dispatch) => ({
+        connectGithub: (token) => dispatch(connectGithub(token)),
+    }),
+)(App);
