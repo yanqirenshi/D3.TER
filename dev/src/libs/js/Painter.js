@@ -175,7 +175,7 @@ export default class Painter {
             .attr('fill', (d) => { return '#ffffff'; });
     }
     drawTypeText (selection) {
-        selection
+        return selection
             .attr("x", (d) => {
                 return d.padding
                     + d.name.size.w
@@ -202,7 +202,13 @@ export default class Painter {
             .append('text')
             .attr('class', 'entity-type');
 
-        this.drawTypeText(texts);
+        this.drawTypeText(texts)
+            .each(function (d) {
+                let w = this.getBBox().width;
+
+                if (w > (d.type._max_w||0))
+                    d.type._max_w = w;
+            });
     }
     /* ************************************ *
      *  Identifiers                         *
