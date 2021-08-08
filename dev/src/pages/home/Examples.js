@@ -55,8 +55,6 @@ export default function Examples() {
     useEffect(() => {
         ass.focus();
         ass.data(sample);
-
-        console.log(ass);
     }, [ass]);
 
     return (

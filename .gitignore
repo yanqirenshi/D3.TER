@@ -23,6 +23,7 @@ yarn-error.log*
 
 node_modules
 dev/node_modules
+dev/.eslintcache
 
 #####
 ##### emacs
