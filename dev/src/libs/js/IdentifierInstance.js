@@ -1,6 +1,8 @@
 import ColumnInstance from './ColumnInstance.js';
 
-import Name from './Name.js';
+import Name from './utils/Name.js';
+import Position from './utils/Position.js';
+import Size from './utils/Size.js';
 
 export default class IdentifierInstance extends ColumnInstance {
     constructor (master, data) {
@@ -8,22 +10,10 @@ export default class IdentifierInstance extends ColumnInstance {
 
         this.name = new Name(data.name ? data.name : master.name);
 
-        this.position = { x:0, y:0, z:0 };
+        this.position = new Position();
 
-        this.size = { w:0, h:0 };
+        this.size = new Size();
 
         this._ports = [];
-    }
-    template () {
-        return {
-            _id: null,
-            _class: 'IDENTIFIER-INSTANCE',
-            name: { physical: '??', logical: '' },
-            position: { x: 0, y:0 },
-            size: { w:0, h:0 },
-            _master: null,
-            _core: null,
-            _ports: [],
-        };
     }
 }

@@ -1,6 +1,7 @@
 import Atman from './Atman.js';
 
-import Name from './Name.js';
+import Name from './utils/Name.js';
+
 import IdentifierInstance from './IdentifierInstance.js';
 import AttributeInstance  from './AttributeInstance.js';
 
@@ -207,9 +208,6 @@ class Builder extends Atman {
 }
 
 export default class EntityTailor extends Builder {
-    constructor (_class, data) {
-        super(_class, data);
-    }
     /* **************************************************************** *
      *   Size
      * **************************************************************** */
@@ -518,7 +516,6 @@ export default class EntityTailor extends Builder {
         return port;
     }
     positioningPorts () {
-        const entity = this;
         const ports = this.ports.items.list;
 
         for (let port of ports)
@@ -532,9 +529,6 @@ export default class EntityTailor extends Builder {
         this.positioningPorts();
     }
     positioning () {
-        // for (let entity of this._data)
-        //     this.positioningEntity(entity);
-
         this.positioningEntity(this);
 
         return this;

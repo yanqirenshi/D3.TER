@@ -1,11 +1,14 @@
+import Position from './Position.js';
+import Size from './Size.js';
+
 export default class Name {
     constructor (v) {
         this.physical = null;
         this.logical = null;
 
         this.padding = 8;
-        this.position = { x:0, y:0, z:0 };
-        this.size = { h: null, w: null };
+        this.position = new Position();
+        this.size = new Size();
 
         this.set(v);
     }

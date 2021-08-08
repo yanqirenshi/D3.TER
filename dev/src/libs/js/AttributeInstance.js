@@ -1,6 +1,8 @@
 import ColumnInstance from './ColumnInstance.js';
 
-import Name from './Name.js';
+import Name from './utils/Name.js';
+import Position from './utils/Position.js';
+import Size from './utils/Size.js';
 
 export default class AttributeInstance extends ColumnInstance {
     constructor (master, data) {
@@ -8,9 +10,9 @@ export default class AttributeInstance extends ColumnInstance {
 
         this.name = new Name(data.name || master.name);
 
-        this.position = { x:0, y:0, z:0 };
+        this.position = new Position();
 
-        this.size = { w:0, h:0 };
+        this.size = new Size();
     }
     template () {
         return {

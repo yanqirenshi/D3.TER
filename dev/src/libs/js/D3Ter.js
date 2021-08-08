@@ -1,17 +1,13 @@
 import Asshole from '@yanqirenshi/assh0le';
 
-import Entity             from './Entity.js';
-import Identifier         from './Identifier.js';
-import IdentifierInstance from './IdentifierInstance.js';
-import Attribute          from './Attribute.js';
-import AttributeInstance  from './AttributeInstance.js';
-import Relationship       from './Relationship.js';
-import Port               from './Port.js';
+import Entity       from './Entity.js';
+import Identifier   from './Identifier.js';
+import Attribute    from './Attribute.js';
+import Relationship from './Relationship.js';
+import Port         from './Port.js';
+import Painter      from './Painter.js';
 
-import EntityTailor from './EntityTailor.js';
-import Pool               from './Pool.js';
-
-import Painter from './Painter.js';
+import Pool from './utils/Pool.js';
 
 const POOL = new Pool();
 
@@ -99,8 +95,8 @@ export default class D3Ter extends Asshole {
         this.draw();
     }
     draw () {
-        const fore = this.getLayerForeground();
-        const back = this.getLayerBackground();
+        const fore = this.layerForeground();
+        const back = this.layerBackground();
         new Painter().draw(fore, back, this.entities(), this._relationships);
     }
 }

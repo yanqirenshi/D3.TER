@@ -1,5 +1,3 @@
-import Pool from './Pool.js';
-
 export default class Atman {
     constructor (_class, data) {
         this._class = _class;

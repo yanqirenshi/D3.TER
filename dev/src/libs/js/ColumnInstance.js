@@ -1,7 +1,5 @@
 import Atman from './Atman.js';
 
-import Pool from './Pool.js';
-
 export default class ColumnInstance extends Atman {
     constructor (_class, master, data) {
         super(_class, data);
