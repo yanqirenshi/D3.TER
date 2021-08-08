@@ -1,8 +1,16 @@
+import Atman from './Atman.js';
+
 import Pool from './Pool.js';
 
-export default class Relationship {
-    constructor() {
-        this.i = 100000000;
+export default class Relationship extends Atman {
+    constructor(data, port_from, port_to) {
+        super('RELATIONSHIP', data);
+
+        this.from = port_from;
+        this.to = port_to;
+
+        port_from._relationship = this;
+        port_to._relationship   = this;
     }
     list2pool (list) {
         let pool = new Pool().list2pool (list, (d) => {

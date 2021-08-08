@@ -1,28 +1,11 @@
-import Pool from './Pool.js';
+import Atman from './Atman.js';
 
-export default class Identifier {
-    list2pool (list) {
-        return new Pool().list2pool (list, (d) => {
-            return d;
-        });
-    }
-    template () {
-        return {
-            _id: null,
-            _class: 'IDENTIFIER',
-            name: { physical: '??', logical: '' },
-            _core: null,
-        };
-    }
-    build (core) {
-        let element = this.template();
+import Name from './Name.js';
 
-        element._id = core.id;
-        element.name = core.name;
+export default class Identifier extends Atman {
+    constructor (data) {
+        super('IDENTIFIER', data);
 
-        element._core = core;
-        core._element = element;
-
-        return element;
+        this.name = new Name(data.name);
     }
 }

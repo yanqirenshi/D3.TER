@@ -14,24 +14,35 @@ const svgid = 'xyz1234';
 
 const sample = {
     identifiers: [
-        { id: 1, name: '???' },
+        { id: 1, name: 'id1' },
     ],
     attributes:  [
-        { id: 2, name: '???' },
+        { id: 2, name: 'att41' },
     ],
     entities:    [
         {
             id: 3,
             type: 'RESOURCE',
-            name: '???',
+            name: 'resource1',
             description: '??????',
-            position: { x:0, y:0, z:0 },
+            position: { x:-300, y:-100, z:0 },
             size: { w: 0, h: 0 },
-            identifiers: [{identifier: 1}],
-            attributes:  [{attribute:  2}],
+            identifiers: [{ id: 100, identifier: 1, position: 270 }],
+            attributes:  [{ id: 200, attribute:  2}],
+        },
+        {
+            id: 4,
+            type: 'EVENT',
+            name: 'event1',
+            description: '??????',
+            position: { x:100, y:-100, z:0 },
+            size: { w: 0, h: 0 },
+            identifiers: [{ id: 101, identifier: 1, position: 90 }],
+            attributes:  [{ id: 201, attribute:  2}],
         },
     ],
     relationships: [
+        { from: { id: 100 }, to: { id: 101 } },
     ],
 };
 

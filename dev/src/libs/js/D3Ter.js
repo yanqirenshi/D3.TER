@@ -8,25 +8,19 @@ import AttributeInstance  from './AttributeInstance.js';
 import Relationship       from './Relationship.js';
 import Port               from './Port.js';
 
+import EntityTailor from './EntityTailor.js';
+import Pool               from './Pool.js';
+
+import Painter from './Painter.js';
+
+const POOL = new Pool();
+
 export default class D3Ter extends Asshole {
     constructor (params) {
         super(params);
 
-        this.entity = new Entity();
-        this.relationship = new Relationship();
-
-        this.attribute = new Attribute();
-        this.attribute_instance = new AttributeInstance();
-
-        this.identifier = new Identifier();
-        this.identifier_instance = new IdentifierInstance ();
-
-        this.port = new Port();
-
-        this._entities      = this.entity.list2pool([]);
-        this._relationships = this.relationship.list2pool([]);
-        this._identifier    = this.identifier.list2pool([]);
-        this._attribute     = this.attribute.list2pool([]);
+        this._entities      = POOL.make();
+        this._relationships = POOL.make();
 
         this._default = {
             line: {
@@ -39,6 +33,9 @@ export default class D3Ter extends Asshole {
 
         return this;
     }
+    entities () {
+        return this._entities;
+    }
     bounds (v) {
         const d3svg = this.d3svg();
 
@@ -47,20 +44,29 @@ export default class D3Ter extends Asshole {
 
         return d3svg.bounds(v);
     }
-    buildRelationshipsWithPort (relationships, entities) {
+    getIdentifier (id, entities) {
+        for (const entity of entities.list)
+            if (entity.identifiers.contents.ht[id])
+                return entity.identifiers.contents.ht[id];
+
+        return null;
+    }
+    buildRelationshipsWithPort (relationships) {
+        const entities = this.entities();
+
         let out = { list: [], ht: {} };
 
         for (const core of relationships) {
-            const identifier_from = this.entity.getIdentifier(core.from.id, entities);
-            const identifier_to   = this.entity.getIdentifier(core.to.id, entities);
+            const id_from = this.getIdentifier(core.from.id, entities);
+            const id_to   = this.getIdentifier(core.to.id, entities);
 
-            const port_from = this.port.build('from', core.from.position, identifier_from);
-            const port_to   = this.port.build('to',   core.to.position,   identifier_to);
+            const port_from = new Port('from', id_from, core);
+            const port_to   = new Port('to',   id_to,   core);
 
-            let element = this.relationship.build(core, port_from, port_to);
+            let element = new Relationship(core, port_from, port_to);
 
-            const entity_from = identifier_from._entity;
-            const entity_to   = identifier_to._entity;
+            const entity_from = id_from._entity;
+            const entity_to   = id_to._entity;
 
             port_from._entity = entity_from;
             port_to._entity   = entity_to;
@@ -77,29 +83,24 @@ export default class D3Ter extends Asshole {
 
         return out;
     }
-    dataCore (data) {
-        this._identifiers = this.identifier.list2pool(data.identifiers, (d) => {
-            return this.identifier.build(d);
-        });
-
-        this._attributes = this.attribute.list2pool(data.attributes, (d) => {
-            return this.attribute.build(d);
-        });
+    data (data) {
+        this._identifiers = POOL.list2pool(data.identifiers, (d)=> new Identifier(d));
+        this._attributes = POOL.list2pool(data.attributes, (d)=> new Attribute(d));
 
         const elements = {
             identifiers:   this._identifiers,
             attributes:    this._attributes,
         };
-        this._entities = this.entity.list2pool(data.entities, (d) => {
-            return this.entity.build(d, elements);
-        });
-        this.entity.sizing(this._entities.list);
 
-        this._relationships = this.buildRelationshipsWithPort(
-            data.relationships, this._entities
-        );
+        this._entities = POOL.list2pool(data.entities, (d)=> new Entity(d).build(elements).sizing().positioning());
+
+        this._relationships = this.buildRelationshipsWithPort(data.relationships);
+
+        this.draw();
     }
-    data (data) {
-        this.dataCore(data);
+    draw () {
+        const fore = this.getLayerForeground();
+        const back = this.getLayerBackground();
+        new Painter().draw(fore, back, this.entities(), this._relationships);
     }
 }
