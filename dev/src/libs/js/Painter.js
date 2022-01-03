@@ -103,8 +103,7 @@ export default class Painter {
             })
             .attr('rx', (d) => 3)
             .attr('ry', (d) => 3)
-            .attr('fill', (d) => { return '#ffffff'; });
-
+            .attr('fill', (d) => d.background.color);
     }
     drawNameText (texts) {
         return texts
@@ -115,7 +114,10 @@ export default class Painter {
                     d.name.padding +
                     this._default.line.font.size;
             })
+            .attr("fill", (d) => '#fff')
+            .attr("font-size", (d) => 24)
             .text(d => d.name.val());
+
     }
     drawName (groups, callbacks) {
         let rects = groups
@@ -172,7 +174,7 @@ export default class Painter {
             })
             .attr('rx', (d) => 3)
             .attr('ry', (d) => 3)
-            .attr('fill', (d) => { return '#ffffff'; });
+            .attr('fill', (d) => d.background.color);
     }
     drawTypeText (selection) {
         return selection
@@ -187,6 +189,7 @@ export default class Painter {
                     + d.type.padding
                     + this._default.line.font.size;
             })
+            .attr("fill", (d) => '#fff')
             .text((d) => {
                 return d.type.contents;
             });

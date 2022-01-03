@@ -220,8 +220,8 @@ export default class EntityTailor extends Builder {
         data.size.h = this._default.line.height + data.padding * 2;
 
         data.size.w =
-            data.contents.length * this._default.line.font.size
-            + data.padding * 2;
+            data.contents.length * this._default.line.font.size;
+            // + data.padding * 2;
     }
     sizingName () {
         let data = this.name;
