@@ -524,9 +524,9 @@ var EntityTailor = /*#__PURE__*/function (_Builder) {
     key: "positioningColumnItems",
     value: function positioningColumnItems(d) {
       var padding = d.padding;
-      var start = d.position.y;
+      var start = d.position.y + padding;
       var line_height = this._default.line.height;
-      var y = 0;
+      var num = 0;
 
       var _iterator3 = _createForOfIteratorHelper(d.contents.list),
           _step3;
@@ -536,8 +536,8 @@ var EntityTailor = /*#__PURE__*/function (_Builder) {
           var item = _step3.value;
           item.position.x = d.position.x + padding;
           var item_h = line_height + item.name.padding * 2;
-          item.position.y = start + padding + line_height + y * item_h;
-          y = item.position.y;
+          item.position.y = start + num * item_h + item.name.padding;
+          num++;
         }
       } catch (err) {
         _iterator3.e(err);

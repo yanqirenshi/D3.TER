@@ -352,17 +352,20 @@ export default class EntityTailor extends Builder {
     }
     positioningColumnItems (d) {
         let padding = d.padding;
-        let start   = (d.position.y);
+        let start   = d.position.y + padding;
         let line_height = this._default.line.height;
 
-        let y = 0;
+        let num = 0;
+
         for (const item of d.contents.list) {
+
             item.position.x = d.position.x + padding;
 
             let item_h  = (line_height + item.name.padding * 2);
-            item.position.y = start + padding + line_height + y * item_h;
 
-            y = item.position.y;
+            item.position.y = start + num * item_h + item.name.padding;
+
+            num++;
         }
     }
     positioningIdentifiers () {
