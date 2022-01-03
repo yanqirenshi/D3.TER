@@ -245,9 +245,9 @@ var Painter = /*#__PURE__*/function () {
       }).attr('height', function (d) {
         return d.identifiers.size.h;
       }).attr('rx', function (d) {
-        return 3;
+        return 2;
       }).attr('ry', function (d) {
-        return 3;
+        return 2;
       }).attr('fill', function (d) {
         return d.identifiers.background.color;
       });

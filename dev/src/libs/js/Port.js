@@ -8,6 +8,10 @@ export default class Port extends Atman {
 
         this._owner = owner;
 
+        this._type = type;
+
+        this._core = data[type];
+
         this.position = data.position || { x:0, y:0 };
 
         owner._ports.push(this);
@@ -15,6 +19,6 @@ export default class Port extends Atman {
         this._entity  = null;
     }
     position_degree () {
-        return this._owner._core.position % 360;
+        return this._core.position % 360;
     }
 }

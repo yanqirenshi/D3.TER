@@ -222,8 +222,8 @@ export default class Painter {
             .attr('y',      d => d.identifiers.position.y)
             .attr('width',  d => d.identifiers.size.w)
             .attr('height', d => d.identifiers.size.h)
-            .attr('rx', (d) => 3)
-            .attr('ry', (d) => 3)
+            .attr('rx', (d) => 2)
+            .attr('ry', (d) => 2)
             .attr('fill',   d => d.identifiers.background.color);
     }
     drawIdentifiersText (texts) {

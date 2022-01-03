@@ -126,12 +126,12 @@ var Rectum = /*#__PURE__*/function (_Colon) {
 
       try {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var core = _step2.value;
-          var id_from = this.getIdentifier(core.from.id, entities);
-          var id_to = this.getIdentifier(core.to.id, entities);
-          var port_from = new _Port["default"]('from', id_from, core);
-          var port_to = new _Port["default"]('to', id_to, core);
-          var element = new _Relationship["default"](core, port_from, port_to);
+          var r = _step2.value;
+          var id_from = this.getIdentifier(r.from.id, entities);
+          var id_to = this.getIdentifier(r.to.id, entities);
+          var port_from = new _Port["default"]('from', id_from, r);
+          var port_to = new _Port["default"]('to', id_to, r);
+          var element = new _Relationship["default"](r, port_from, port_to);
           var entity_from = id_from._entity;
           var entity_to = id_to._entity;
           port_from._entity = entity_from;

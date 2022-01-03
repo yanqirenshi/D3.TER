@@ -712,6 +712,7 @@ var EntityTailor = /*#__PURE__*/function (_Builder) {
     key: "positioningPort",
     value: function positioningPort(port) {
       var entity = this;
+      console.log(port._relationship);
       var line_port = this.makePortLine(entity, port);
       var lines_entity = this.getEntityLines(entity);
       var point = this.getCrossPoint(lines_entity, line_port, port);

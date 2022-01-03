@@ -52,14 +52,14 @@ export default class Rectum extends Colon {
 
         let out = { list: [], ht: {} };
 
-        for (const core of relationships) {
-            const id_from = this.getIdentifier(core.from.id, entities);
-            const id_to   = this.getIdentifier(core.to.id, entities);
+        for (const r of relationships) {
+            const id_from = this.getIdentifier(r.from.id, entities);
+            const id_to   = this.getIdentifier(r.to.id, entities);
 
-            const port_from = new Port('from', id_from, core);
-            const port_to   = new Port('to',   id_to,   core);
+            const port_from = new Port('from', id_from, r);
+            const port_to   = new Port('to',   id_to,   r);
 
-            let element = new Relationship(core, port_from, port_to);
+            let element = new Relationship(r, port_from, port_to);
 
             const entity_from = id_from._entity;
             const entity_to   = id_to._entity;

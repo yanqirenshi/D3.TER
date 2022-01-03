@@ -45,6 +45,8 @@ var Port = /*#__PURE__*/function (_Atman) {
     _this._id = owner._id; // Idenrifier-Instance
 
     _this._owner = owner;
+    _this._type = type;
+    _this._core = data[type];
     _this.position = data.position || {
       x: 0,
       y: 0
@@ -59,7 +61,7 @@ var Port = /*#__PURE__*/function (_Atman) {
   _createClass(Port, [{
     key: "position_degree",
     value: function position_degree() {
-      return this._owner._core.position % 360;
+      return this._core.position % 360;
     }
   }]);
 

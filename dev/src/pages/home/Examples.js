@@ -70,7 +70,7 @@ const sample = {
             position: { x:-300, y:-100, z:0 },
             size: { w: 0, h: 0 },
             identifiers: [
-                { id: 100, identifier: 10, position: 270 }
+                { id: 100, identifier: 10 }
             ],
             attributes:  [
                 { id: 200, attribute: 30},
@@ -85,9 +85,9 @@ const sample = {
             position: { x:100, y:-100, z:0 },
             size: { w: 0, h: 0 },
             identifiers: [
-                { id: 101, identifier: 10, position: 90 },
-                { id: 102, identifier: 20, position: 90 },
-                { id: 103, identifier: 20, position: 90 },
+                { id: 101, identifier: 10 },
+                { id: 102, identifier: 20 },
+                { id: 103, identifier: 20 },
             ],
             attributes:  [
                 { id: 300, attribute: 30},
@@ -96,6 +96,6 @@ const sample = {
         },
     ],
     relationships: [
-        { from: { id: 100 }, to: { id: 101 } },
+        { from: { id: 100, position: 270 }, to: { id: 101, position: 90 } },
     ],
 };
