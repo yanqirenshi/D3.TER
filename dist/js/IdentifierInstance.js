@@ -9,13 +9,19 @@ exports["default"] = void 0;
 
 var _ColumnInstance2 = _interopRequireDefault(require("./ColumnInstance.js"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _Name = _interopRequireDefault(require("./utils/Name.js"));
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _Position = _interopRequireDefault(require("./utils/Position.js"));
+
+var _Size = _interopRequireDefault(require("./utils/Size.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -36,38 +42,20 @@ var IdentifierInstance = /*#__PURE__*/function (_ColumnInstance) {
 
   var _super = _createSuper(IdentifierInstance);
 
-  function IdentifierInstance() {
+  function IdentifierInstance(master, data) {
+    var _this;
+
     _classCallCheck(this, IdentifierInstance);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, 'IDENTIFIER-INSTANCE', master, data);
+    _this.name = new _Name["default"](data.name ? data.name : master.name);
+    _this.position = new _Position["default"]();
+    _this.size = new _Size["default"]();
+    _this._ports = [];
+    return _this;
   }
 
-  _createClass(IdentifierInstance, [{
-    key: "template",
-    value: function template() {
-      return {
-        _id: null,
-        _class: 'IDENTIFIER-INSTANCE',
-        name: {
-          physical: '??',
-          logical: ''
-        },
-        position: {
-          x: 0,
-          y: 0
-        },
-        size: {
-          w: 0,
-          h: 0
-        },
-        _master: null,
-        _core: null,
-        _ports: []
-      };
-    }
-  }]);
-
-  return IdentifierInstance;
+  return _createClass(IdentifierInstance);
 }(_ColumnInstance2["default"]);
 
 exports["default"] = IdentifierInstance;

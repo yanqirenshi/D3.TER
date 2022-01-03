@@ -1,9 +1,12 @@
 export default class Pool {
-    list2pool (list, f) {
-        let pool = {
+    make () {
+        return {
             list: [],
             ht: {},
         };
+    }
+    list2pool (list, f) {
+        let pool = this.make();
 
         if (!list)
             return pool;
@@ -14,7 +17,7 @@ export default class Pool {
 
                 acc.list.push(new_val);
 
-                acc.ht[new_val._id] = new_val;
+                acc.ht[new_val.id()] = new_val;
 
                 return acc;
             }, pool);
@@ -22,7 +25,7 @@ export default class Pool {
             return list.reduce((acc, val) => {
                 acc.list.push(val);
 
-                acc.ht[val.id] = val;
+                acc.ht[val.id()] = val;
                 return acc;
             }, pool);
     }

@@ -1,29 +1,13 @@
-import Pool from './Pool.js';
+import Atman from './Atman.js';
 
-export default class ColumnInstance {
-    list2pool (list) {
-        return new Pool().list2pool(list);
-    }
-    template () {
-        return {
-            _id: null,
-            _core: null,
-            _master: null,
-            name: null,
-        };
-    }
-    build (core, master) {
-        let element = this.template();
+export default class ColumnInstance extends Atman {
+    constructor (_class, master, data) {
+        super(_class, data);
 
-        element._id = core.id;
+        this.name = data.name || { physical: '???', logical: '???' };
 
-        element._core = core;
-        core._element = element;
+        this._master = master;
 
-        element._master = master;
-
-        element.name = {...(core.name ? core.name : master.name)};
-
-        return element;
+        this.name = {...(data.name ? data.name : master.name)};
     }
 }

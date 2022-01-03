@@ -1,13 +1,87 @@
-class Builder {
+import Atman from './Atman.js';
+
+import Name from './utils/Name.js';
+
+import IdentifierInstance from './IdentifierInstance.js';
+import AttributeInstance  from './AttributeInstance.js';
+
+class Builder extends Atman {
+    constructor (_class, data) {
+        super(_class, data);
+
+        this.init();
+
+        this.name.set(data.name);
+
+        this.description.contents = data.description;
+
+        this.position = {...data.position};
+        this.size = {...data.size};
+
+        this.type.contents = this.entityTypeContents();
+
+        this.background = this.entityBackground();
+    }
+    init () {
+        this.padding = 8;
+
+        this.margin = 3;
+
+        this.description = { name: '' };
+        this.description = { contents: '' };
+
+        this.position = { x:0, y:0, z:0 };
+
+        this.size = { w:0, h:0 };
+
+        this.bar = {
+            size: {
+                horizontal: 3,
+                header: 3,
+                contents: 3,
+            }
+        };
+
+        this.background = {
+            color: '',
+        };
+
+        this.name = new Name();
+
+        this.type = {
+            contents: '??',
+            padding: 8,
+            position: { x:0, y:0, z:0 },
+            size: { w:0, h:0 },
+        };
+
+        this.identifiers = {
+            padding: 0,
+            position: { x:0, y:0, z:0 },
+            size: { w: null, h: null },
+            items: { list: [], ht: {} },
+        };
+
+        this.attributes = {
+            padding: 0,
+            position: { x:0, y:0, z:0 },
+            size: { w: null, h: null },
+            items: { list: [], ht: {} },
+        };
+
+        this.ports = {
+            items: { list: [], ht: {} },
+        };
+    }
     template () {
         return {
             _id : null,
             _class: 'ENTITY',
+            padding: 11,
+            margin: 6,
             description: { contents: '' },
             position: { x:0, y:0, z:0 },
             size: { w:0, h:0 },
-            padding: 11,
-            margin: 6,
             bar: {
                 size: {
                     header: 11,
@@ -18,27 +92,27 @@ class Builder {
                 color: '',
             },
             name: {
+                padding: 11,
+                contents: '',
                 position: { x:0, y:0, z:0 },
                 size: { h: null, w: null },
-                padding: 11,
-                contents: ''
             },
             type: {
                 contents: '??',
+                padding: 11,
                 position: { x:0, y:0, z:0 },
                 size: { w:0, h:0 },
-                padding: 11,
             },
             identifiers: {
+                padding: 8,
                 position: { x:0, y:0, z:0 },
                 size: { w: null, h: null },
-                padding: 8,
                 items: { list: [], ht: {} },
             },
             attributes: {
+                padding: 8,
                 position: { x:0, y:0, z:0 },
                 size: { w: null, h: null },
-                padding: 8,
                 items: { list: [], ht: {} },
             },
             ports: {
@@ -46,17 +120,19 @@ class Builder {
             }
         };
     }
-    entityTypeContents (core) {
-        switch (core.type) {
+    entityTypeContents () {
+        const type = this._core.type;
+
+        switch (type) {
         case 'RESOURCE':        return 'Rsc';
         case 'RESOURCE-SUBSET': return 'Rsc';
         case 'COMPARATIVE':     return '対象';
         case 'EVENT':           return 'Evt';
         case 'EVENT-SUBSET':    return 'Evt';
-        default: throw new Error(core._class + " は知らないよ。");
+        default: throw new Error(type + " は知らないよ。");
         }
     }
-    entityBackground (core) {
+    entityBackground () {
         const background = {
             "resource":        { color: '#89c3eb' },
             "resource-subset": { color: '#a0d8ef' },
@@ -67,19 +143,23 @@ class Builder {
             "recursion":       { color: '#dbd0e6' },
         };
 
-        return background[core.type.toLowerCase()];
+        const key = this._core.type.toLowerCase();
+
+        return background[key];
     }
-    buildIdentifiers (core, state, entity_element) {
+    buildIdentifiers (state) {
         let out = { list: [], ht: {} };
 
         const masters = state.identifiers.ht;
 
-        for (let identifier of core.identifiers) {
-            const master = masters[identifier.identifier];
+        const targets = this._core.identifiers;
 
-            const element = this.identifier_instance.build(identifier, master);
+        for (let data of targets) {
+            const master = masters[data.identifier];
 
-            element._entity = entity_element;
+            const element = new IdentifierInstance(master, data);
+
+            element._entity = this;
 
             out.list.push(element);
             out.ht[element._id] = element;
@@ -93,17 +173,19 @@ class Builder {
             padding: 11,
         };
     }
-    buildAttributes (core, state, entity_element) {
+    buildAttributes (state) {
         let out = { list: [], ht: {} };
 
         const masters = state.attributes.ht;
 
-        for (let attribute of core.attributes) {
+        const targets = this._core.attributes;
+
+        for (let attribute of targets) {
             const master = masters[attribute.attribute];
 
-            const element = this.attribute_instance.build(attribute, master);
+            const element = new AttributeInstance(master, attribute);
 
-            element._entity = entity_element;
+            element._entity = this;
 
             out.list.push(element);
             out.ht[element._id] = element;
@@ -117,27 +199,11 @@ class Builder {
             padding: 11,
         };
     }
-    build (core, state) {
-        let element = this.template();
+    build (state) {
+        this.identifiers = this.buildIdentifiers(state);
+        this.attributes  = this.buildAttributes (state);
 
-        element._id = core.id;
-
-        element.name.contents        = core.name;
-        element.description.contents = core.description;
-
-        element.position      = {...core.position};
-        element.size          = {...core.size};
-        element.type.contents = this.entityTypeContents(core);
-
-        element.identifiers = this.buildIdentifiers(core, state, element);
-        element.attributes  = this.buildAttributes (core, state, element);
-
-        element.background = this.entityBackground(core);
-
-        element._core = core;
-        core._element = element;
-
-        return element;
+        return this;
     }
 }
 
@@ -145,83 +211,81 @@ export default class EntityTailor extends Builder {
     /* **************************************************************** *
      *   Size
      * **************************************************************** */
-    sizingType (entity) {
-        let data = entity.type;
+    sizingType () {
+        let data = this.type;
 
         if (!data.contents)
             data.contents = '??';
 
         data.size.h = this._default.line.height + data.padding * 2;
-        data.size.w = data.contents.length * this._default.line.font.size + data.padding * 2;
+
+        data.size.w =
+            data.contents.length * this._default.line.font.size;
+            // + data.padding * 2;
     }
-    sizingName (entity) {
-        let data = entity.name;
+    sizingName () {
+        let data = this.name;
 
         if (!data.contents)
             data.contents = '????????';
 
         data.size.h = this._default.line.height + data.padding * 2;
 
-        let type = entity.type;
+        let type = this.type;
 
-        data.size.w = (entity.size.w - (entity.padding * 2) -
-                       entity.bar.size.header -
+        data.size.w = (this.size.w - (this.padding * 2) -
+                       this.bar.size.header -
                        type.size.w);
     }
-    sizingIdentifiers (entity) {
-        let data = entity.identifiers;
-        let padding = entity.padding;
+    sizingIdentifiers () {
+        let data = this.identifiers;
+        let padding = this.padding;
 
         data.size.w =
-            ((entity.size.w - (padding * 2)) / 2) -
-            (entity.bar.size.contents / 2);
+            ((this.size.w - (padding * 2)) / 2) -
+            (this.bar.size.contents / 2);
 
         data.size.h = data.contents.list.length
             * (this._default.line.height + padding * 2);
     }
-    sizingAttributes (entity) {
-        let data = entity.attributes;
-        let padding = entity.padding;
+    sizingAttributes () {
+        let data = this.attributes;
+        let padding = this.padding;
 
         data.size.w =
-            ((entity.size.w - (entity.padding * 2)) / 2) -
-            (entity.bar.size.contents / 2);
+            ((this.size.w - (this.padding * 2)) / 2) -
+            (this.bar.size.contents / 2);
 
         data.size.h = data.contents.list.length * (this._default.line.height + padding * 2);
     }
-    sizingContentsArea (entity) {
-        let id_h = entity.identifiers.size.h;
-        let attr_h = entity.attributes.size.h;
+    sizingContentsArea () {
+        let id_h = this.identifiers.size.h;
+        let attr_h = this.attributes.size.h;
 
         if (id_h > attr_h)
-            entity.attributes.size.h = id_h;
+            this.attributes.size.h = id_h;
         else
-            entity.identifiers.size.h = attr_h;
+            this.identifiers.size.h = attr_h;
     }
-    sizingEntity (entity) {
-        this.sizingType(entity);
-        this.sizingName(entity);
-        this.sizingIdentifiers(entity);
-        this.sizingAttributes(entity);
-        this.sizingContentsArea(entity);
+    sizing () {
+        this.sizingType();
+        this.sizingName();
+        this.sizingIdentifiers();
+        this.sizingAttributes();
+        this.sizingContentsArea();
 
-        let padding = entity.padding * 2;
-        let header = entity.name.size.h;
-        let margin = 11;
-        let contents = entity.attributes.size.h;
+        let padding = this.padding * 2;
+        let header = this.name.size.h;
+        let bar = this.bar.size.horizontal;
+        let contents = this.attributes.size.h;
 
-        entity.size.h = padding + header + margin + contents;
-    }
-    sizingEntities (entities) {
-        for (let entity of entities)
-            this.sizingEntity (entity);
-    }
-    sizing (entities) {
-        this.sizingEntities(entities);
+        this.size.h = padding + header + bar + contents;
 
         return this;
     }
-    reSizingEntity (entity) {
+    reSizing () {
+        const entity = this;
+
         entity.name.size.w
             = Math.ceil(entity._max_w.name)
             + entity.name.padding * 2;
@@ -235,92 +299,94 @@ export default class EntityTailor extends Builder {
             + entity.attributes.padding * 2;
 
         let name_area_w =
-            entity.name.size.w +
-            entity.bar.size.header +
-            entity.type.size.w +
-            (entity.padding * 2);
+            entity.name.size.w
+            + entity.bar.size.header
+            + entity.type.size.w;
 
         let contents_area_w =
             entity.identifiers.size.w
             + entity.bar.size.contents
-            + entity.attributes.size.w
-            + (entity.padding * 2);
+            + entity.attributes.size.w;
 
-        entity.size.w = contents_area_w > name_area_w ? contents_area_w : name_area_w;
+        entity.size.w = (contents_area_w > name_area_w ? contents_area_w : name_area_w) + (entity.padding * 2);
 
         // fix size for attr area
         if (entity._max_w.attribute===0 || contents_area_w < name_area_w) {
             entity.attributes.size.w =
-                entity.size.w -
-                entity.identifiers.size.w -
-                entity.bar.size.contents -
-                (entity.padding * 2);
+                entity.size.w
+                - (entity.padding * 2)
+                - entity.identifiers.size.w
+                - entity.bar.size.contents;
         }
 
         // fix size for name area
         if (contents_area_w > name_area_w) {
             entity.name.size.w =
-                entity.size.w -
-                entity.bar.size.header -
-                entity.type.size.w -
-                (entity.padding * 2);
+                entity.size.w
+                - (entity.padding * 2)
+                - entity.bar.size.header
+                - entity.type.size.w;
         }
-    }
-    reSizing (groups, entities) {
-        groups
-            .each((entity) => {
-                this.reSizingEntity(entity);
-                this.positioningEntity(entity, entities);
-            });
 
-        this.redraw(groups);
+        return this;
     }
     /* **************************************************************** *
      *   Position
      * **************************************************************** */
-    positioningName (entity) {
+    positioningName () {
+        const entity = this;
+
         let d = entity.name;
+
         d.position.x = entity.padding;
         d.position.y = entity.padding;
     }
-    positioningType (entity) {
+    positioningType () {
+        const entity = this;
+
         let d = entity.type;
-        let margin = 11;
-        d.position.x = entity.padding + entity.name.size.w + margin;
+        let bar = this.bar.size.header;
+
+        d.position.x = entity.padding + entity.name.size.w + bar;
         d.position.y = entity.padding;
     }
     positioningColumnItems (d) {
-        let len     = d.contents.list.length;
         let padding = d.padding;
         let start   = (d.position.y);
         let line_height = this._default.line.height;
-        let item_h  = (line_height + padding * 2);
-        let magic_num = 3; // y軸の微調整係数
 
-        for (let i=0 ; i<len ; i++) {
-            let item = d.contents.list[i];
+        let y = 0;
+        for (const item of d.contents.list) {
             item.position.x = d.position.x + padding;
-            item.position.y = start + padding + line_height + i * item_h + magic_num;
+
+            let item_h  = (line_height + item.name.padding * 2);
+            item.position.y = start + padding + line_height + y * item_h;
+
+            y = item.position.y;
         }
     }
-    positioningIdentifiers (entity) {
+    positioningIdentifiers () {
+        const entity = this;
+
         let d = entity.identifiers;
-        let margin = 11;
+        let bar = this.bar.size.horizontal;
 
         d.position.x = entity.padding;
-        d.position.y = entity.padding + entity.name.size.h + margin;
+        d.position.y = entity.padding + entity.name.size.h + bar;
 
-        this.positioningColumnItems (d);
+        this.positioningColumnItems(d);
     }
-    positioningAttributes (entity) {
+    positioningAttributes () {
+        const entity = this;
+
         let d = entity.attributes;
-        let margin1 = (4 * 2);
-        let margin2 = 11;
+        let bar_contents = this.bar.size.contents;
+        let bar_horizontal = this.bar.size.horizontal;
 
-        d.position.x = entity.padding + margin1 + entity.identifiers.size.w;
-        d.position.y = entity.padding + entity.name.size.h + margin2;
+        d.position.x = entity.padding + bar_contents + entity.identifiers.size.w;
+        d.position.y = entity.padding + entity.name.size.h + bar_horizontal;
 
-        this.positioningColumnItems (d);
+        this.positioningColumnItems(d);
     }
     deg2rad (degree) {
         return degree * ( Math.PI / 180 );
@@ -349,7 +415,7 @@ export default class EntityTailor extends Builder {
         let x = 0;
         let y = this.getPortLineLength(entity);
 
-        let degree = port._position % 360;
+        let degree = port.position_degree();
 
         let radian = this.deg2rad(degree);
         let cos = Math.cos(radian);
@@ -435,7 +501,9 @@ export default class EntityTailor extends Builder {
             { from: bottom_left,  to: top_left     },
         ];
     }
-    positioningPort (entity, port) {
+    positioningPort (port) {
+        const entity = this;
+
         let line_port = this.makePortLine(entity, port);
         let lines_entity = this.getEntityLines(entity);
 
@@ -447,21 +515,21 @@ export default class EntityTailor extends Builder {
 
         return port;
     }
-    positioningPorts (entity, entities) {
-        for (let entity of entities.list)
-            for (let port of entity.ports.items.list)
-                this.positioningPort(entity, port);
+    positioningPorts () {
+        const ports = this.ports.items.list;
+
+        for (let port of ports)
+            this.positioningPort(port);
     }
     positioningEntity (entity, entities) {
-        this.positioningName(entity);
-        this.positioningType(entity);
-        this.positioningIdentifiers(entity);
-        this.positioningAttributes(entity);
-        this.positioningPorts(entity, entities);
+        this.positioningName();
+        this.positioningType();
+        this.positioningIdentifiers();
+        this.positioningAttributes();
+        this.positioningPorts();
     }
     positioning () {
-        for (let entity of this._data)
-            this.positioningEntity(entity);
+        this.positioningEntity(this);
 
         return this;
     }

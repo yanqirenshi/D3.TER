@@ -9,6 +9,12 @@ exports["default"] = void 0;
 
 var _ColumnInstance2 = _interopRequireDefault(require("./ColumnInstance.js"));
 
+var _Name = _interopRequireDefault(require("./utils/Name.js"));
+
+var _Position = _interopRequireDefault(require("./utils/Position.js"));
+
+var _Size = _interopRequireDefault(require("./utils/Size.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -36,10 +42,16 @@ var AttributeInstance = /*#__PURE__*/function (_ColumnInstance) {
 
   var _super = _createSuper(AttributeInstance);
 
-  function AttributeInstance() {
+  function AttributeInstance(master, data) {
+    var _this;
+
     _classCallCheck(this, AttributeInstance);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, 'ATTRIBUTE-INSTANCE', master, data);
+    _this.name = new _Name["default"](data.name || master.name);
+    _this.position = new _Position["default"]();
+    _this.size = new _Size["default"]();
+    return _this;
   }
 
   _createClass(AttributeInstance, [{
