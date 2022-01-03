@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import Measure from "react-measure";
 
-export default function Ben9i (props) {
+export default function D3Ter (props) {
     const [svgid] = useState(props.svgid);
     const [ass] = useState(props.asshole);
 

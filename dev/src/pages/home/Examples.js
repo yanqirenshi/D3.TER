@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import D3Ter from '../../libs/js/D3Ter.js';
-import Ben9i from '../../libs/components/Ben9i.js';
+import Rectum from '../../libs/js/Rectum.js';
+import D3Ter from '../../libs/components/D3Ter.js';
 
 const style = {
     root: {
@@ -47,7 +47,7 @@ const sample = {
 };
 
 export default function Examples() {
-    const [ass] = useState(new D3Ter({
+    const [ass] = useState(new Rectum({
         selector: '#' + svgid,
         camera: null,
     }));
@@ -59,7 +59,7 @@ export default function Examples() {
 
     return (
         <div style={style.root}>
-          <Ben9i svgid={svgid} asshole={ass}/>
+          <D3Ter svgid={svgid} asshole={ass}/>
         </div>
     );
 }

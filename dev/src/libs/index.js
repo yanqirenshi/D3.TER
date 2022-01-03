@@ -1,7 +1,12 @@
-import D3TER from './components/D3TER.js';
+import D3ter from './components/D3ter.js';
+
+import Rectum from './js/Rectum.js';
 
 import {Camera} from '@yanqirenshi/assh0le';
 
-export {Camera}
+export {
+    Camera,
+    Rectum,
+}
 
-export default D3TER;
+export default D3ter;
