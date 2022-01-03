@@ -1,4 +1,4 @@
-import Asshole from '@yanqirenshi/assh0le';
+import {Colon} from '@yanqirenshi/assh0le';
 
 import Entity       from './Entity.js';
 import Identifier   from './Identifier.js';
@@ -11,7 +11,7 @@ import Pool from './utils/Pool.js';
 
 const POOL = new Pool();
 
-export default class D3Ter extends Asshole {
+export default class Rectum extends Colon {
     constructor (params) {
         super(params);
 
@@ -88,15 +88,24 @@ export default class D3Ter extends Asshole {
             attributes:    this._attributes,
         };
 
-        this._entities = POOL.list2pool(data.entities, (d)=> new Entity(d).build(elements).sizing().positioning());
-
+        this._entities = POOL.list2pool(data.entities, (d)=> {
+            return new Entity(d).build(elements).sizing().positioning();
+        });
         this._relationships = this.buildRelationshipsWithPort(data.relationships);
 
-        this.draw();
+        super.data(
+            {
+                identifiers:   this._identifiers,
+                attributes:    this._attributes,
+                entities: this._entities,
+                relationships: this._relationships,
+            }
+        );
     }
     draw () {
-        const fore = this.layerForeground();
-        const back = this.layerBackground();
+        const fore = this.layer('foreground');
+        const back = this.layer('background');
+
         new Painter().draw(fore, back, this.entities(), this._relationships);
     }
 }

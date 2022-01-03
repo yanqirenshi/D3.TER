@@ -1,24 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 
-import Measure from "react-measure";
+import Asshole from '@yanqirenshi/assh0le';
 
 export default function D3Ter (props) {
-    const [svgid] = useState(props.svgid);
-    const [ass] = useState(props.asshole);
+    const rectum = props.rectum;
 
-    // useEffect(() => ass.focus(), [ass]);
-    // useEffect(() => core.data(props.source));
-
-    return (
-        <Measure bounds onResize={(cr) => ass.bounds({ ...cr.bounds})}>
-          {({ measureRef }) => {
-              return <div ref={measureRef}
-                          className="grid-inner"
-                          style={{width:'100%', height: '100%'}}>
-                       <svg id={svgid}>
-                       </svg>
-                     </div>;
-          }}
-        </Measure>
-    );
+    return <Asshole id="d3-network-graph" rectum={rectum}/>;
 }

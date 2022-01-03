@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Heading } from 'react-bulma-components';
 
-import Pool from '@yanqirenshi/react-masonry-with-measure';
-
 import Method from './Method.js';
 
 export default function Methods (props) {
@@ -31,23 +29,23 @@ export default function Methods (props) {
           </Heading>
 
           <div>
-            <Pool options={options}>
-              {methods.map(d => {
-                  const col = 5;
-                  const card_style = {
-                      width: col * options.columnWidth + (col - 1) * options.gutter,
-                      marginBottom: options.gutter,
-                  };
+            {/* <Pool options={options}> */}
+            {/*   {methods.map(d => { */}
+            {/*       const col = 5; */}
+            {/*       const card_style = { */}
+            {/*           width: col * options.columnWidth + (col - 1) * options.gutter, */}
+            {/*           marginBottom: options.gutter, */}
+            {/*       }; */}
 
-                  return (
-                      <div key={d.name}
-                           className={item_class}
-                           style={card_style}>
-                        <Method key={d.name} data={d}/>
-                      </div>
-                  );
-              })}
-            </Pool>
+            {/*       return ( */}
+            {/*           <div key={d.name} */}
+            {/*                className={item_class} */}
+            {/*                style={card_style}> */}
+            {/*             <Method key={d.name} data={d}/> */}
+            {/*           </div> */}
+            {/*       ); */}
+            {/*   })} */}
+            {/* </Pool> */}
           </div>
         </div>
     );

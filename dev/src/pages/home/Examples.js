@@ -4,13 +4,53 @@ import Rectum from '../../libs/js/Rectum.js';
 import D3Ter from '../../libs/components/D3Ter.js';
 
 const style = {
-    root: {
-        width:'100%',
-        height: '100%',
-    }
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    graph_area: {
+        width:  800 + (22*2),
+        height: 600 + (22*2),
+        background: '#eee',
+        padding: 22,
+        borderRadius: 5,
+    },
 };
 
-const svgid = 'xyz1234';
+export default function Examples() {
+    const [rectum, setRectum] = useState(null);
+    const [graph_data, setGraphData] = useState(sample);
+
+    useEffect(()=> {
+        if (rectum!==null) return;
+
+        setRectum(new Rectum({
+            transform: { k: 0.7, x: 400.0, y: 400.0 },
+            edge: { width: 6, color: '#333333' },
+            callbacks: {
+                node: {
+                    click: (node)=> {
+                        console.log(node);
+                    }
+                }
+            }
+        }));
+    }, [rectum]);
+
+    useEffect(()=> {
+        if (rectum)
+            rectum.data(graph_data);
+    }, [rectum, graph_data]);
+
+    return (
+        <div style={style}>
+          <div style={style.graph_area}>
+            <D3Ter rectum={rectum} />
+          </div>
+        </div>
+    );
+}
 
 const sample = {
     identifiers: [
@@ -45,21 +85,3 @@ const sample = {
         { from: { id: 100 }, to: { id: 101 } },
     ],
 };
-
-export default function Examples() {
-    const [ass] = useState(new Rectum({
-        selector: '#' + svgid,
-        camera: null,
-    }));
-
-    useEffect(() => {
-        ass.focus();
-        ass.data(sample);
-    }, [ass]);
-
-    return (
-        <div style={style.root}>
-          <D3Ter svgid={svgid} asshole={ass}/>
-        </div>
-    );
-}
