@@ -1,4 +1,4 @@
-import D3ter from './components/D3ter.js';
+import D3Ter from './components/D3Ter.js';
 
 import Rectum from './js/Rectum.js';
 
@@ -9,4 +9,4 @@ export {
     Rectum,
 }
 
-export default D3ter;
+export default D3Ter;
