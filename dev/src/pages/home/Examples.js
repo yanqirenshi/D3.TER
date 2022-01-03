@@ -54,10 +54,12 @@ export default function Examples() {
 
 const sample = {
     identifiers: [
-        { id: 1, name: 'id1' },
+        { id: 10, name: 'id1' },
+        { id: 20, name: 'id2' },
     ],
     attributes:  [
-        { id: 2, name: 'att41' },
+        { id: 30, name: 'att1' },
+        { id: 40, name: 'att2' },
     ],
     entities:    [
         {
@@ -67,8 +69,13 @@ const sample = {
             description: '??????',
             position: { x:-300, y:-100, z:0 },
             size: { w: 0, h: 0 },
-            identifiers: [{ id: 100, identifier: 1, position: 270 }],
-            attributes:  [{ id: 200, attribute:  2}],
+            identifiers: [
+                { id: 100, identifier: 10, position: 270 }
+            ],
+            attributes:  [
+                { id: 200, attribute: 30},
+                { id: 201, attribute: 40},
+            ],
         },
         {
             id: 4,
@@ -77,8 +84,15 @@ const sample = {
             description: '??????',
             position: { x:100, y:-100, z:0 },
             size: { w: 0, h: 0 },
-            identifiers: [{ id: 101, identifier: 1, position: 90 }],
-            attributes:  [{ id: 201, attribute:  2}],
+            identifiers: [
+                { id: 101, identifier: 10, position: 90 },
+                { id: 102, identifier: 20, position: 90 },
+                { id: 103, identifier: 20, position: 90 },
+            ],
+            attributes:  [
+                { id: 300, attribute: 30},
+                { id: 301, attribute: 40},
+            ],
         },
     ],
     relationships: [
