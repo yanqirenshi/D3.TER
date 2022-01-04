@@ -506,7 +506,7 @@ export default class EntityTailor extends Builder {
     }
     positioningPort (port) {
         const entity = this;
-        console.log(port._relationship);
+
         let line_port = this.makePortLine(entity, port);
         let lines_entity = this.getEntityLines(entity);
 

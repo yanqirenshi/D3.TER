@@ -1,6 +1,6 @@
 {
     "name": "@yanqirenshi/d3.ter",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "author": "yanqirenshi@gmail.com",
     "license": "GPL-3.0-or-later",
     "description": "See `src/index.html`",
@@ -26,7 +26,8 @@
         "react-dom": "^17.0.1"
     },
     "dependencies": {
-        "@yanqirenshi/assh0le": "0.2.10"
+        "@yanqirenshi/assh0le": "0.2.10",
+        "deepmerge": "^4.2.2"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.10",

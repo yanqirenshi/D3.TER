@@ -20,9 +20,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var Painter = /*#__PURE__*/function () {
-  function Painter() {
+  function Painter(foreground, background, callbacks) {
     _classCallCheck(this, Painter);
 
+    this.foreground = foreground;
+    this.background = background;
+    this.callbacks = callbacks;
     this._default = {
       line: {
         height: 14,
@@ -39,39 +42,61 @@ var Painter = /*#__PURE__*/function () {
 
   _createClass(Painter, [{
     key: "dragStart",
-    value: function dragStart(d) {// let e = d3.event;
-      // d._drag = {
-      //     start: {
-      //         x: e.x,
-      //         y: e.y,
-      //     }
-      // };
+    value: function dragStart(event, entity) {
+      entity._drag = {
+        start: {
+          x: event.x,
+          y: event.y
+        }
+      };
     }
   }, {
     key: "dragged",
-    value: function dragged(d) {// let e = d3.event;
-      // d.position.x += e.x - d._drag.start.x;
-      // d.position.y += e.y - d._drag.start.y;
-      // this.moveEntity(d);
+    value: function dragged(event, entity) {
+      entity.position.x += event.x - entity._drag.start.x;
+      entity.position.y += event.y - entity._drag.start.y;
+      this.moveEntity(entity);
+      this.moveEdges(entity);
     }
   }, {
     key: "dragEnd",
-    value: function dragEnd(entity) {// let campus = STORE.get('active.ter.campus');
-      // delete entity._drag;
-      // ACTIONS.saveTerEntityPosition(campus, entity);
+    value: function dragEnd(event, entity) {
+      // let campus = STORE.get('active.ter.campus');
+      delete entity._drag; // ACTIONS.saveTerEntityPosition(campus, entity);
     }
   }, {
-    key: "addMoveEvents2Body",
-    value: function addMoveEvents2Body(body) {
+    key: "addMoveEvents",
+    value: function addMoveEvents(body) {
       var _this = this;
 
-      return body.call(d3.drag().on("start", function (d) {
-        return _this.dragStart(d);
-      }).on("drag", function (d) {
-        return _this.dragged(d);
-      }).on("end", function (d) {
-        return _this.dragEnd(d);
+      return body.call(d3.drag().on("start", function (e, d) {
+        return _this.dragStart(e, d);
+      }).on("drag", function (e, d) {
+        return _this.dragged(e, d);
+      }).on("end", function (e, d) {
+        return _this.dragEnd(e, d);
       }));
+    }
+  }, {
+    key: "moveEntity",
+    value: function moveEntity(entity) {
+      var selection = this.foreground.selectAll('g.entity').data([entity], function (d) {
+        return d._id;
+      });
+      selection.attr('transform', function (d) {
+        return 'translate(' + d.position.x + ',' + d.position.y + ')';
+      });
+    }
+  }, {
+    key: "moveEdges",
+    value: function moveEdges(entity) {
+      var edges = entity.ports.items.list.map(function (p) {
+        return p._relationship;
+      });
+      var selection = this.background.selectAll('line.connector').data(edges, function (d) {
+        return d._id;
+      });
+      this.drawRelationshipsCore(selection);
     }
     /* **************************************************************** *
      *   Draw  this.entity
@@ -79,8 +104,8 @@ var Painter = /*#__PURE__*/function () {
 
   }, {
     key: "drawGroup",
-    value: function drawGroup(place, data) {
-      return place.selectAll('g.entity').data(data, function (d) {
+    value: function drawGroup(data) {
+      return this.foreground.selectAll('g.entity').data(data, function (d) {
         return d._id;
       }).enter().append('g').attr('class', 'entity').attr('entity-id', function (d) {
         return d._id;
@@ -116,7 +141,7 @@ var Painter = /*#__PURE__*/function () {
     value: function drawBody(groups) {
       var body = groups.append('rect');
       this.drawBodyCore(body);
-      return this.addMoveEvents2Body(body);
+      return body;
     }
     /* ************************************ *
      *  Name                                *
@@ -146,7 +171,7 @@ var Painter = /*#__PURE__*/function () {
     value: function drawNameText(texts) {
       var _this2 = this;
 
-      return texts.attr('class', 'entity-title').attr("x", function (d) {
+      texts.attr('class', 'entity-title').attr("x", function (d) {
         return d.padding + d.name.padding;
       }).attr("y", function (d) {
         return d.padding + d.name.padding + _this2._default.line.font.size;
@@ -157,16 +182,19 @@ var Painter = /*#__PURE__*/function () {
       }).text(function (d) {
         return d.name.val();
       });
+      this.addMoveEvents(texts);
+      return texts;
     }
   }, {
     key: "drawName",
-    value: function drawName(groups, callbacks) {
-      var rects = groups.append('rect').on("click", function (d) {
+    value: function drawName(groups) {
+      var callbacks = this.callbacks;
+      var rects = groups.append('rect').on("click", function (event, d) {
         var func = callbacks.entity.click;
         if (func) func(d);
       }).attr('class', 'entity-title');
       this.drawNameRect(rects);
-      var texts = groups.append('text').on("click", function (d) {
+      var texts = groups.append('text').on("click", function (event, d) {
         var func = callbacks.entity.click;
         if (func) func(d);
       }).attr('class', 'entity-title');
@@ -379,7 +407,8 @@ var Painter = /*#__PURE__*/function () {
     }
   }, {
     key: "drawRelationships",
-    value: function drawRelationships(place, relationships) {
+    value: function drawRelationships(relationships) {
+      var place = this.background;
       var data = relationships.list.filter(function (edge) {
         return edge.from._class === 'PORT-FROM' && edge.to._class === 'PORT-TO';
       });
@@ -407,10 +436,10 @@ var Painter = /*#__PURE__*/function () {
     }
   }, {
     key: "draw",
-    value: function draw(fore, back, entities, relationsihps) {
-      var groups = this.drawGroup(fore, entities.list);
+    value: function draw(entities, relationsihps) {
+      var groups = this.drawGroup(entities.list);
       this.drawBody(groups);
-      this.drawName(groups, this._callbacks);
+      this.drawName(groups);
       this.drawType(groups);
       this.drawIdentifiers(groups);
       this.drawAttributes(groups); // resizing & redraw
@@ -420,7 +449,7 @@ var Painter = /*#__PURE__*/function () {
       });
       this.redraw(groups);
       this.drawPorts(groups);
-      this.drawRelationships(back, relationsihps);
+      this.drawRelationships(relationsihps);
     }
   }]);
 

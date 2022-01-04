@@ -1,3 +1,4 @@
+import merge from 'deepmerge';
 import {Colon} from '@yanqirenshi/assh0le';
 
 import Entity       from './Entity.js';
@@ -15,6 +16,8 @@ export default class Rectum extends Colon {
     constructor (params) {
         super(params);
 
+        this.callbacks = this.ensureCallbacks(params.callbacks);
+
         this._entities      = POOL.make();
         this._relationships = POOL.make();
 
@@ -28,6 +31,15 @@ export default class Rectum extends Colon {
         };
 
         return this;
+    }
+    ensureCallbacks (callbacks) {
+        const template = {
+            entity: {
+                click: null,
+            },
+        };
+
+        return merge(template, callbacks);
     }
     entities () {
         return this._entities;
@@ -106,6 +118,7 @@ export default class Rectum extends Colon {
         const fore = this.layer('foreground');
         const back = this.layer('background');
 
-        new Painter().draw(fore, back, this.entities(), this._relationships);
+        new Painter(fore, back, this.callbacks)
+            .draw(this.entities(), this._relationships);
     }
 }

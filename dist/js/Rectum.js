@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _deepmerge = _interopRequireDefault(require("deepmerge"));
+
 var _assh0le = require("@yanqirenshi/assh0le");
 
 var _Entity = _interopRequireDefault(require("./Entity.js"));
@@ -68,6 +70,7 @@ var Rectum = /*#__PURE__*/function (_Colon) {
     _classCallCheck(this, Rectum);
 
     _this = _super.call(this, params);
+    _this.callbacks = _this.ensureCallbacks(params.callbacks);
     _this._entities = POOL.make();
     _this._relationships = POOL.make();
     _this._default = {
@@ -82,6 +85,16 @@ var Rectum = /*#__PURE__*/function (_Colon) {
   }
 
   _createClass(Rectum, [{
+    key: "ensureCallbacks",
+    value: function ensureCallbacks(callbacks) {
+      var template = {
+        entity: {
+          click: null
+        }
+      };
+      return (0, _deepmerge["default"])(template, callbacks);
+    }
+  }, {
     key: "entities",
     value: function entities() {
       return this._entities;
@@ -181,7 +194,7 @@ var Rectum = /*#__PURE__*/function (_Colon) {
     value: function draw() {
       var fore = this.layer('foreground');
       var back = this.layer('background');
-      new _Painter["default"]().draw(fore, back, this.entities(), this._relationships);
+      new _Painter["default"](fore, back, this.callbacks).draw(this.entities(), this._relationships);
     }
   }]);
 

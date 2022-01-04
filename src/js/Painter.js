@@ -1,7 +1,11 @@
 import * as d3 from 'd3';
 
 export default class Painter {
-    constructor() {
+    constructor(foreground, background, callbacks) {
+        this.foreground = foreground;
+        this.background = background;
+        this.callbacks = callbacks;
+
         this._default = {
             line: {
                 height: 14,
@@ -14,43 +18,59 @@ export default class Painter {
     /* **************************************************************** *
      *   Move
      * **************************************************************** */
-    dragStart (d) {
-        // let e = d3.event;
-
-        // d._drag = {
-        //     start: {
-        //         x: e.x,
-        //         y: e.y,
-        //     }
-        // };
+    dragStart (event, entity) {
+        entity._drag = {
+            start: {
+                x: event.x,
+                y: event.y,
+            }
+        };
     }
-    dragged (d) {
-        // let e = d3.event;
+    dragged (event, entity) {
+        entity.position.x += event.x - entity._drag.start.x;
+        entity.position.y += event.y - entity._drag.start.y;
 
-        // d.position.x += e.x - d._drag.start.x;
-        // d.position.y += e.y - d._drag.start.y;
-
-        // this.moveEntity(d);
+        this.moveEntity(entity);
+        this.moveEdges(entity);
     }
-    dragEnd (entity) {
+    dragEnd (event, entity) {
         // let campus = STORE.get('active.ter.campus');
 
-        // delete entity._drag;
+        delete entity._drag;
 
         // ACTIONS.saveTerEntityPosition(campus, entity);
     }
-    addMoveEvents2Body (body) {
+    addMoveEvents (body) {
         return body.call(
             d3.drag()
-                .on("start", (d) => this.dragStart(d))
-                .on("drag",  (d) => { return this.dragged(d); })
-                .on("end",   (d) => { return this.dragEnd(d); }));
+                .on("start", (e, d)=> this.dragStart(e, d))
+                .on("drag",  (e, d)=> { return this.dragged(e, d); })
+                .on("end",   (e, d)=> { return this.dragEnd(e, d); }));
+    }
+    moveEntity(entity) {
+        let selection = this.foreground
+            .selectAll('g.entity')
+            .data([entity], (d)=> { return d._id; });
+
+        selection
+            .attr('transform', (d)=>{
+                return 'translate(' + d.position.x + ',' + d.position.y + ')';
+            });
+    }
+    moveEdges (entity) {
+        const edges = entity.ports.items.list.map(p=>p._relationship);
+
+        let selection = this.background
+            .selectAll('line.connector')
+            .data(edges, (d)=> d._id);
+
+        this.drawRelationshipsCore(selection);
     }
     /* **************************************************************** *
      *   Draw  this.entity
      * **************************************************************** */
-    drawGroup (place, data) {
-        return place
+    drawGroup (data) {
+        return this.foreground
             .selectAll('g.entity')
             .data(data, d => d._id)
             .enter()
@@ -59,7 +79,7 @@ export default class Painter {
             .attr('entity-id',   d => d._id)
             .attr('entity-code', d => d._core.type)
             .attr('entity-type', d => d._class)
-            .attr("transform", (d) => {
+            .attr("transform", (d)=> {
                 return "translate(" + d.position.x + "," + d.position.y + ")";
             });
     }
@@ -69,11 +89,11 @@ export default class Painter {
     drawBodyCore (body) {
         body
             .attr('class', 'entity-body')
-            .attr('width', (d) => { return d.size.w;})
-            .attr('height', (d) => { return d.size.h;})
-            .attr('rx', (d) => 5)
-            .attr('ry', (d) => 5)
-            .attr('fill', (d) => {
+            .attr('width', (d)=> { return d.size.w;})
+            .attr('height', (d)=> { return d.size.h;})
+            .attr('rx', (d)=> 5)
+            .attr('ry', (d)=> 5)
+            .attr('fill', (d)=> {
                 return d.background.color;
             });
     }
@@ -82,47 +102,52 @@ export default class Painter {
 
         this.drawBodyCore(body);
 
-        return this.addMoveEvents2Body(body);
+        return body;
     }
     /* ************************************ *
      *  Name                                *
      * ************************************ */
     drawNameRect (rects) {
         rects
-            .attr('x', (d) => {
+            .attr('x', (d)=> {
                 return d.name.position.x;
             })
-            .attr('y', (d) => {
+            .attr('y', (d)=> {
                 return d.name.position.y;
             })
-            .attr('width', (d) => {
+            .attr('width', (d)=> {
                 return d.name.size.w;
             })
-            .attr('height', (d) => {
+            .attr('height', (d)=> {
                 return d.name.size.h;
             })
-            .attr('rx', (d) => 3)
-            .attr('ry', (d) => 3)
-            .attr('fill', (d) => d.background.color);
+            .attr('rx', (d)=> 3)
+            .attr('ry', (d)=> 3)
+            .attr('fill', (d)=> d.background.color);
     }
     drawNameText (texts) {
-        return texts
+        texts
             .attr('class', 'entity-title')
             .attr("x", d => d.padding + d.name.padding)
-            .attr("y", (d) => {
+            .attr("y", (d)=> {
                 return d.padding +
                     d.name.padding +
                     this._default.line.font.size;
             })
-            .attr("fill", (d) => '#fff')
-            .attr("font-size", (d) => 24)
+            .attr("fill", (d)=> '#fff')
+            .attr("font-size", (d)=> 24)
             .text(d => d.name.val());
 
+        this.addMoveEvents(texts);
+
+        return texts;
     }
-    drawName (groups, callbacks) {
+    drawName (groups) {
+        const callbacks = this.callbacks;
+
         let rects = groups
             .append('rect')
-            .on("click", (d) => {
+            .on("click", (event, d)=> {
                 let func = callbacks.entity.click;
 
                 if (func) func(d);
@@ -133,7 +158,7 @@ export default class Painter {
 
         let texts = groups
             .append('text')
-            .on("click", (d) => {
+            .on("click", (event, d)=> {
                 let func = callbacks.entity.click;
 
                 if (func) func(d);
@@ -160,37 +185,37 @@ export default class Painter {
     * ************************************ */
     drawTypeRect (selection) {
         selection
-            .attr('x', (d) => {
+            .attr('x', (d)=> {
                 return d.type.position.x;
             })
-            .attr('y', (d) => {
+            .attr('y', (d)=> {
                 return d.type.position.y;
             })
-            .attr('width', (d) => {
+            .attr('width', (d)=> {
                 return d.type.size.w;
             })
-            .attr('height', (d) => {
+            .attr('height', (d)=> {
                 return d.type.size.h;
             })
-            .attr('rx', (d) => 3)
-            .attr('ry', (d) => 3)
-            .attr('fill', (d) => d.background.color);
+            .attr('rx', (d)=> 3)
+            .attr('ry', (d)=> 3)
+            .attr('fill', (d)=> d.background.color);
     }
     drawTypeText (selection) {
         return selection
-            .attr("x", (d) => {
+            .attr("x", (d)=> {
                 return d.padding
                     + d.name.size.w
                     + 11
                     + d.type.padding;
             })
-            .attr("y", (d) => {
+            .attr("y", (d)=> {
                 return d.type.position.y
                     + d.type.padding
                     + this._default.line.font.size;
             })
-            .attr("fill", (d) => '#fff')
-            .text((d) => {
+            .attr("fill", (d)=> '#fff')
+            .text((d)=> {
                 return d.type.contents;
             });
     }
@@ -222,8 +247,8 @@ export default class Painter {
             .attr('y',      d => d.identifiers.position.y)
             .attr('width',  d => d.identifiers.size.w)
             .attr('height', d => d.identifiers.size.h)
-            .attr('rx', (d) => 2)
-            .attr('ry', (d) => 2)
+            .attr('rx', (d)=> 2)
+            .attr('ry', (d)=> 2)
             .attr('fill',   d => d.identifiers.background.color);
     }
     drawIdentifiersText (texts) {
@@ -264,8 +289,8 @@ export default class Painter {
             .attr('y',      d => d.attributes.position.y)
             .attr('width',  d => d.attributes.size.w)
             .attr('height', d => d.attributes.size.h)
-            .attr('rx', (d) => 3)
-            .attr('ry', (d) => 3)
+            .attr('rx', (d)=> 3)
+            .attr('ry', (d)=> 3)
             .attr('fill',   d => d.identifiers.background.color);
     }
     drawAttributesText (texts) {
@@ -283,13 +308,13 @@ export default class Painter {
 
         let texts = groups
             .selectAll('text.attribute')
-            .data((d) => {
+            .data((d)=> {
                 return d.attributes.contents.list;
             })
             .enter()
             .append('text')
             .attr('class', 'attribute')
-            .attr('attribute-id', (d) => { return d._id; });
+            .attr('attribute-id', (d)=> { return d._id; });
 
         this.drawAttributesText(texts)
             .each(function (attribute) {
@@ -305,27 +330,27 @@ export default class Painter {
     drawPortsCore (ports) {
         ports
             .attr('class', 'entity-port')
-            .attr('cx', (d) => {
+            .attr('cx', (d)=> {
                 return d.position.x;
             })
-            .attr('cy', (d) => {
+            .attr('cy', (d)=> {
                 return d.position.y;
             })
             .attr('r', 4)
             .attr('fill', '#fff')
             .attr('stroke', '#000')
             .attr('stroke-width', 0.5)
-            .attr('degree', (d) => {
+            .attr('degree', (d)=> {
                 return d._owner._core.position || 0;
             })
-            .attr('port-id', (d) => {
+            .attr('port-id', (d)=> {
                 return d._id;
             });
     }
     drawPorts (groups) {
         let ports = groups
             .selectAll('circle.entity-port')
-            .data((d) => {
+            .data((d)=> {
                 return d.ports.items.list;
             })
             .enter()
@@ -338,25 +363,25 @@ export default class Painter {
      * ************************************ */
     drawRelationshipsCore (edges) {
         edges
-            .attr('x1', (d) => {
+            .attr('x1', (d)=> {
                 let port = d.from;
                 let entity = d.from._entity;
 
                 return port.position.x + entity.position.x;
             })
-            .attr('y1', (d) => {
+            .attr('y1', (d)=> {
                 let port = d.from;
                 let entity = d.from._entity;
 
                 return port.position.y + entity.position.y;
             })
-            .attr('x2', (d) => {
+            .attr('x2', (d)=> {
                 let port = d.to;
                 let entity = d.to._entity;
 
                 return port.position.x + entity.position.x;
             })
-            .attr('y2', (d) => {
+            .attr('y2', (d)=> {
                 let port = d.to;
                 let entity = d.to._entity;
 
@@ -365,14 +390,16 @@ export default class Painter {
             .attr('stroke', '#888888')
             .attr('stroke-width', 1);
     }
-    drawRelationships (place, relationships) {
-        let data = relationships.list.filter((edge) => {
+    drawRelationships (relationships) {
+        const place = this.background;
+
+        let data = relationships.list.filter((edge)=> {
             return edge.from._class==='PORT-FROM' && edge.to._class==='PORT-TO';
         });
 
         let edges = place
             .selectAll('line.connector')
-            .data(data, (d) => { return d._id; })
+            .data(data, (d)=> d._id)
             .enter()
             .append('line')
             .attr('class', 'connector');
@@ -393,21 +420,21 @@ export default class Painter {
         this.drawAttributesRect(groups.selectAll('rect.entity-attributes'));
         this.drawAttributesText(groups.selectAll('text.attribute'));
     }
-    draw (fore, back, entities, relationsihps) {
-        const groups = this.drawGroup(fore, entities.list);
+    draw (entities, relationsihps) {
+        const groups = this.drawGroup(entities.list);
 
         this.drawBody(groups);
-        this.drawName(groups, this._callbacks);
+        this.drawName(groups);
         this.drawType(groups);
         this.drawIdentifiers(groups);
         this.drawAttributes(groups);
 
         // resizing & redraw
-        groups.each((entity) => entity.reSizing().positioning());
+        groups.each((entity)=> entity.reSizing().positioning());
         this.redraw(groups);
 
         this.drawPorts(groups);
 
-        this.drawRelationships(back, relationsihps);
+        this.drawRelationships(relationsihps);
     }
 }

@@ -29,7 +29,7 @@ export default function Examples() {
             transform: { k: 0.7, x: 400.0, y: 400.0 },
             edge: { width: 6, color: '#333333' },
             callbacks: {
-                node: {
+                entity: {
                     click: (node)=> {
                         console.log(node);
                     }
@@ -96,6 +96,6 @@ const sample = {
         },
     ],
     relationships: [
-        { from: { id: 100, position: 270 }, to: { id: 101, position: 90 } },
+        { id: 1, from: { id: 100, position: 270 }, to: { id: 101, position: 90 } },
     ],
 };

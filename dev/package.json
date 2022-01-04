@@ -8,6 +8,7 @@
         "@testing-library/user-event": "^12.1.10",
         "@yanqirenshi/assh0le": "^0.2.10",
         "@yanqirenshi/sogh": "^0.1.24",
+        "deepmerge": "^4.2.2",
         "react": "^17.0.1",
         "react-bulma-components": "^3.4.0",
         "react-dom": "^17.0.1",
