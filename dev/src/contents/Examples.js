@@ -26,7 +26,8 @@ const style = {
 
 export default function Examples () {
     const [rectum, setRectum] = useState(null);
-    const [graph_data, setGraphData] = useState(EXAMPLES_DATA);
+    const [graph_data] = useState(EXAMPLES_DATA);
+    // const [graph_data, setGraphData] = useState(EXAMPLES_DATA);
     const [tabs, setTabs] = useState({
         selected: 'graph',
         list: [
