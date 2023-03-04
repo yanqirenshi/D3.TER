@@ -7,7 +7,8 @@ export default function SprintTimes (props) {
     const repository = props.repository;
 
     return (
-        <div style={{width:'100%'}}>
+        <div style={{width:'100%', height: '100%', overflow:'auto'}}>
+
           {props.sogh.core &&
            <SOGH.ScrumTimeline sogh={sogh}
                                repository={repository}

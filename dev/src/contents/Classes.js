@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import {Footer} from '../../components/Common.js';
+import {Footer} from '../components/Common.js';
 
 import TabsClasses from './TabsClasses.js';
 
@@ -17,7 +17,7 @@ import Relationship from './classes/Relationship.js';
 import Port from './classes/Port.js';
 import Pool from './classes/Pool.js';
 
-import * as data from '../../data/Classes.js';
+import * as data from '../data/Classes.js';
 
 export default function Classes() {
     const [tabs, setTabs] = useState([
@@ -44,7 +44,7 @@ export default function Classes() {
     const isActive = (k) => tabs.find(d=>d.code===k).active;
 
     return (
-        <div style={{width:'100%'}}>
+        <div style={{width:'100%', height: '100%', overflow:'auto'}}>
 
           <div style={{marginTop: 22, display: 'flex', justifyContent: 'center'}}>
             <TabsClasses tabs={tabs} onClickTab={clickTab} />

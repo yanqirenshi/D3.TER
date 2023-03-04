@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {DiagramClass, Attributes, Methods} from '../../../components/Common.js';
+import {DiagramClass, Attributes, Methods} from '../../components/Common.js';
 
 const style = {
     root: {

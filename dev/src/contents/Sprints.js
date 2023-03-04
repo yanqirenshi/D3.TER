@@ -7,7 +7,8 @@ export default function Sprints (props) {
     const repository = props.repository;
 
     return (
-        <div style={{width:'100%'}}>
+        <div style={{width:'100%', height: '100%', overflow:'auto'}}>
+
           {props.sogh.core &&
            <SOGH.SprintPlanning sogh={sogh}
                                 repository={repository}

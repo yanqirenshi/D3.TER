@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import Measure from "react-measure";
-import D3Svg from '../../../libs/D3Svg.js';
+import D3Svg from '../../libs/D3Svg.js';
 
 const svg_id = `D3Svg-${Math.floor(Math.random() * Math.floor(88888888))}`;
 

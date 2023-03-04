@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from "react-router-dom";
 
-import HeroNavbar from './HeroNavbar.js';
+// import HeroNavbar from './HeroNavbar.js';
 import HeroTabs from './HeroTabs.js';
 
 function Hero(props) {
@@ -12,11 +12,11 @@ function Hero(props) {
 
     return (
         <section className="hero is-primary is-medium" style={{background:'#19448e'}}>
-          <div className="hero-head">
-            <HeroNavbar />
-          </div>
+          {/* <div className="hero-head"> */}
+          {/*   <HeroNavbar /> */}
+          {/* </div> */}
 
-          <div className="hero-body" style={{padding: '3rem 1.5rem'}}>
+          <div className="hero-body" style={{padding: '22px 0px 22px 0px'}}>
             <div className="container has-text-centered">
               <h1 className="title">
                 D3.TER

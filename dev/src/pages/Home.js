@@ -1,91 +1,79 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import Measure from 'react-measure';
 
 import Hero from '../components/Hero.js';
 import TabContents from '../components/TabContents.js';
 
-import Examples from './home/Examples.js';
-import Data from './home/Data.js';
-import Classes from './home/Classes.js';
-import Asshole from './home/Asshole.js';
-import Backlogs from './home/Backlogs.js';
-import Sprints from './home/Sprints.js';
-import SprintTimes from './home/SprintTimes.js';
-import SprintProjects from './home/SprintProjects.js';
+import Examples from '../contents/Examples.js';
+import Data from '../contents/Data.js';
+import Classes from '../contents/Classes.js';
+import Asshole from '../contents/Asshole.js';
+import Backlogs from '../contents/Backlogs.js';
+import Sprints from '../contents/Sprints.js';
+import SprintTimes from '../contents/SprintTimes.js';
+import SprintProjects from '../contents/SprintProjects.js';
 
 function Home (props) {
     const [tabs] = useState([
-        { code: 'examples', label: 'Examples'},
-        { code: 'asshole',  label: 'Asshole'},
-        { code: 'data',     label: 'Data'},
-        { code: 'classes',  label: 'Classes' },
-        { code: 'backlogs', label: 'Backlogs' },
-        { code: 'sprints',  label: 'Sprints' },
-        { code: 'sprint_p',  label: 'Sprint(P)' },
-        { code: 'sprint_t',  label: 'Sprint(T)' },
+        { code: 'examples',   label: 'Examples'},
+        { code: 'components', label: 'Components'},
+        { code: 'data',       label: 'Data'},
+        { code: 'classes',    label: 'Classes' },
+        { code: 'backlogs',   label: 'Backlogs' },
+        { code: 'sprints',    label: 'Sprints' },
+        { code: 'sprint_p',   label: 'Sprint(P)' },
+        { code: 'sprint_t',   label: 'Sprint(T)' },
     ]);
+    const [bounds, setBounds] = React.useState({height:0});
 
     const sogh = props.sogh;
     const repository = props.repository;
 
     return (
-        <div style={{width: '100%', height: '100%'}}>
-          <TabContents code="examples" tabs={tabs}>
-            <div style={{width: '100%', height: '100%', display:'flex', flexDirection: 'column'}}>
-              <Hero tabs={tabs} />
+        <div style={{width: '100vw', height: '100vh'}}>
+          <Measure bounds
+                   onResize={rect=> setBounds(rect.bounds)}>
+            {({ measureRef }) => (
+                <div ref={measureRef}>
+                  <Hero tabs={tabs} />
+                </div>
+            )}
+          </Measure>
+
+          <div style={{height: `calc(100% - ${bounds.height}px)`, width: '100%'}}>
+            <TabContents code="examples" tabs={tabs}>
               <Examples />
-            </div>
-          </TabContents>
+            </TabContents>
 
-          <TabContents code="asshole" tabs={tabs}>
-            <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
-              <Hero tabs={tabs} />
+            <TabContents code="components" tabs={tabs}>
               <Asshole />
-            </div>
-          </TabContents>
+            </TabContents>
 
-
-          <TabContents code="data" tabs={tabs}>
-            <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
-              <Hero tabs={tabs} />
+            <TabContents code="data" tabs={tabs}>
               <Data />
-            </div>
-          </TabContents>
+            </TabContents>
 
-          <TabContents code="classes" tabs={tabs}>
-            <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
-              <Hero tabs={tabs} />
+            <TabContents code="classes" tabs={tabs}>
               <Classes />
-            </div>
-          </TabContents>
+            </TabContents>
 
-          <TabContents code="backlogs" tabs={tabs}>
-            <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
-              <Hero tabs={tabs} />
+            <TabContents code="backlogs" tabs={tabs}>
               <Backlogs sogh={sogh} repository={repository} />
-            </div>
-          </TabContents>
+            </TabContents>
 
-          <TabContents code="sprints" tabs={tabs}>
-            <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
-              <Hero tabs={tabs} />
+            <TabContents code="sprints" tabs={tabs}>
               <Sprints sogh={sogh} repository={repository} />
-            </div>
-          </TabContents>
+            </TabContents>
 
-          <TabContents code="sprint_p" tabs={tabs}>
-            <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
-              <Hero tabs={tabs} />
+            <TabContents code="sprint_p" tabs={tabs}>
               <SprintProjects sogh={sogh} repository={repository} />
-            </div>
-          </TabContents>
+            </TabContents>
 
-          <TabContents code="sprint_t" tabs={tabs}>
-            <div style={{width: '100%', height: '100%', overflow: 'auto'}}>
-              <Hero tabs={tabs} />
+            <TabContents code="sprint_t" tabs={tabs}>
               <SprintTimes sogh={sogh} repository={repository} />
-            </div>
-          </TabContents>
+            </TabContents>
+          </div>
         </div>
     );
 }

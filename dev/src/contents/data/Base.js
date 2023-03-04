@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {JsonWithDescriptions} from '../../../components/Common.js';
+import {JsonWithDescriptions} from '../../components/Common.js';
 
 const style = {
     root: {
