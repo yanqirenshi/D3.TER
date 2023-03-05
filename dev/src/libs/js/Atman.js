@@ -3,7 +3,9 @@ export default class Atman {
         this._class = _class;
 
         this._id = data.id;
+
         this._core = data;
+
         this._core._obj = this;
     }
     id () {

@@ -4,7 +4,8 @@ import Base from './Base.js';
 
 export default function Port (props) {
     return (
-        <Base json={template} />
+        <Base json={template}>
+        </Base>
     );
 }
 

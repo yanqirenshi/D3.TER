@@ -4,11 +4,10 @@ import {JsonWithDescriptions} from '../../components/Common.js';
 
 const style = {
     root: {
-        display:'flex'
+        display:'flex',
+        justifyContent: 'center',
     },
     left: {
-        paddingLeft: 88,
-        paddingRight: 88,
     },
     right: {
         flexGrow: 1,
@@ -16,17 +15,14 @@ const style = {
 };
 
 export default function Base (props) {
-    // const column_width = 100;
-    // const gutter = 10;
+    const json = props.json;
+    const children = props.children;
 
     return (
         <div style={style.root}>
-          <div style={style.left}>
-            <JsonWithDescriptions json={props.json}/>
-          </div>
-
-          <div style={style.right}>
-          </div>
+          <JsonWithDescriptions json={json}>
+            {children}
+          </JsonWithDescriptions>
         </div>
     );
 }
