@@ -1,6 +1,7 @@
-import EntityTailor from './EntityTailor.js';
+import EntityBuilder from './EntityBuilder.js';
+import Tailor from './Tailor.js';
 
-export default class Entity extends EntityTailor { // extends EntityTailor
+export default class Entity extends EntityBuilder {
     constructor(data) {
         super('ENTITY', data);
 
@@ -12,5 +13,20 @@ export default class Entity extends EntityTailor { // extends EntityTailor
                 }
             },
         };
+    }
+    /* **************************************************************** *
+     *   Size
+     * **************************************************************** */
+    sizing () {
+        return new Tailor().sizing(this);
+    }
+    reSizing () {
+        return new Tailor().reSizing(this);
+    }
+    /* **************************************************************** *
+     *   Position
+     * **************************************************************** */
+    positioning () {
+        return new Tailor().positioning(this);
     }
 }
