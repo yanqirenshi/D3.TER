@@ -4,32 +4,28 @@ import {Footer} from '../components/Common.js';
 
 import TabsClasses from './TabsClasses.js';
 
-import Overview from './classes/Overview.js';
-import Entity from './classes/Entity.js';
-import Tailor from './classes/Tailor.js';
-import Builder from './classes/Builder.js';
-import ColumnInstance from './classes/ColumnInstance.js';
-import IdentifierInstance from './classes/IdentifierInstance.js';
-import AttributeInstance from './classes/AttributeInstance.js';
-import Identifier from './classes/Identifier.js';
-import Attribute from './classes/Attribute.js';
-import Relationship from './classes/Relationship.js';
-import Port from './classes/Port.js';
-import Pool from './classes/Pool.js';
+import Overview from './ClassesData/Overview.js';
+import Entity from './ClassesData/Entity.js';
+import ColumnInstance from './ClassesData/ColumnInstance.js';
+import IdentifierInstance from './ClassesData/IdentifierInstance.js';
+import AttributeInstance from './ClassesData/AttributeInstance.js';
+import Identifier from './ClassesData/Identifier.js';
+import Attribute from './ClassesData/Attribute.js';
+import Relationship from './ClassesData/Relationship.js';
+import Port from './ClassesData/Port.js';
+import Pool from './ClassesData/Pool.js';
 
 import * as data from '../data/Classes.js';
 
-export default function Classes() {
+export default function ClassesData () {
     const [tabs, setTabs] = useState([
         { code: 'overview',            label: 'Overviw',            active:  true },
         { code: 'entity',              label: 'Entity',             active: false },
-        { code: 'tailor',              label: 'Tailor',             active: false },
-        { code: 'builder',             label: 'Builder',            active: false },
         { code: 'column_instance',     label: 'ColumnInstance',     active: false },
-        { code: 'identifier_instance', label: 'IdentifierInstance', active: false },
-        { code: 'attribute_instance',  label: 'AttributeInstance',  active: false },
         { code: 'identifier',          label: 'Identifier',         active: false },
         { code: 'attribute',           label: 'Attribute',          active: false },
+        { code: 'identifier_instance', label: 'IdentifierInstance', active: false },
+        { code: 'attribute_instance',  label: 'AttributeInstance',  active: false },
         { code: 'relationship',        label: 'Relationship',       active: false },
         { code: 'port',                label: 'Port',               active: false },
         { code: 'pool',                label: 'Pool',               active: false },
@@ -52,8 +48,6 @@ export default function Classes() {
 
           {isActive('overview')            && <Overview />}
           {isActive('entity')              && <Entity             data={data.entity} />}
-          {isActive('tailor')              && <Tailor             data={data.entity_tailor} />}
-          {isActive('builder')             && <Builder            data={data.builder} />}
           {isActive('column_instance')     && <ColumnInstance     data={data.column_instance} />}
           {isActive('identifier_instance') && <IdentifierInstance data={data.identifier_instance} />}
           {isActive('attribute_instance')  && <AttributeInstance  data={data.attribute_instance} />}

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Base from './Base.js';
+import {Base} from '../../ui/index.js';
 
-export default function Port (props) {
+export default function Tailor (props) {
     return (
         <Base data={props.data} />
     );

@@ -5,13 +5,15 @@ import HeadingMethod from './HeadingMethod.js';
 import MethodSyntax from './MethodSyntax.js';
 
 export default function Method (props) {
-    const args = (props.data.arguments || []).map(d => d.name);
-    const ret = props.data.return;
+    const data = props.data;
+
+    const args = (data.arguments || []).map(d => d.name);
+    const ret = data.return;
 
     return (
         <Section style={{padding:22}}>
           <Container>
-            <HeadingMethod name={props.data.name}
+            <HeadingMethod name={data.name}
                            args={args}
                            ret={ret} />
 
@@ -20,20 +22,20 @@ export default function Method (props) {
                 <Heading size={4}>Syntax</Heading>
 
                 <Content>
-                  <MethodSyntax name={props.data.name}
+                  <MethodSyntax name={data.name}
                                 args={args}
                                 ret={ret}/>
                 </Content>
               </Container>
             </Section>
 
-            {props.data.arguments && props.data.arguments.length>0 &&
+            {data.arguments && data.arguments.length>0 &&
              <Section style={{padding:11}}>
                <Container>
                  <Heading size={4}>Arguments</Heading>
 
                  <Content>
-                   {props.data.arguments.map(d => {
+                   {data.arguments.map(d => {
                        return <p key={d.name}>{d.name} : {d.description}</p>;
                    })}
                  </Content>
@@ -45,18 +47,18 @@ export default function Method (props) {
                 <Heading size={4}>Value</Heading>
 
                 <Content>
-                  {props.data.return}
+                  {data.return}
                 </Content>
               </Container>
             </Section>
 
-            {props.data.description && props.data.description.length > 0 &&
+            {data.description && data.description.length > 0 &&
              <Section style={{padding:11}}>
                <Container>
                  <Heading size={4}>Description</Heading>
 
                  <Content>
-                   {props.data.description}
+                   {data.description}
                  </Content>
                </Container>
              </Section>}

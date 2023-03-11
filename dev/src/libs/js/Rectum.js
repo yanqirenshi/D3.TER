@@ -18,6 +18,8 @@ export default class Rectum extends Colon {
 
         this.callbacks = this.ensureCallbacks(params.callbacks);
 
+        this._identifiers   = POOL.make();
+        this._attributes    = POOL.make();
         this._entities      = POOL.make();
         this._relationships = POOL.make();
 
@@ -59,19 +61,29 @@ export default class Rectum extends Colon {
 
         return null;
     }
+    /**
+     *
+     *  Arguments
+     *  ---------
+     *  relationships:
+     *   ？
+     *
+     *  Description
+     *  -----------
+     *   Port(from/to), Relationship を作成する。
+     *   Port(from/to) は、それぞれの Entity にセットする。
+     *   
+     */
     buildRelationshipsWithPort (relationships) {
         const entities = this.entities();
 
-        let out = { list: [], ht: {} };
-
-        for (const r of relationships) {
+        const f = (out, r)=> {
             const id_from = this.getIdentifier(r.from.id, entities);
-            const id_to   = this.getIdentifier(r.to.id, entities);
+            const id_to   = this.getIdentifier(r.to.id,   entities);
 
-            const port_from = new Port('from', id_from, r);
-            const port_to   = new Port('to',   id_to,   r);
-
-            let element = new Relationship(r, port_from, port_to);
+            const port_from    = new Port('from', id_from, r);
+            const port_to      = new Port('to',   id_to,   r);
+            const relationship = new Relationship(r, port_from, port_to);
 
             const entity_from = id_from._entity;
             const entity_to   = id_to._entity;
@@ -85,38 +97,60 @@ export default class Rectum extends Colon {
             entity_to.ports.items.ht[port_to._id] = port_to;
             entity_to.ports.items.list.push(port_to);
 
-            out.list.push(element);
-            out.ht[element._id] = element;
-        }
+            out.list.push(relationship);
+            out.ht[relationship._id] = relationship;
 
-        return out;
-    }
-    data (data) {
-        this._identifiers = POOL.list2pool(data.identifiers, (d)=> new Identifier(d));
-        this._attributes = POOL.list2pool(data.attributes, (d)=> new Attribute(d));
-
-        const elements = {
-            identifiers:   this._identifiers,
-            attributes:    this._attributes,
+            return out;
         };
 
-        this._entities = POOL.list2pool(data.entities, (data)=> {
-            const entity
-                  = new Entity(data)
-                  .build(elements)
-                  .sizing()
-                  .positioning();
+        return relationships.reduce(f, { list: [], ht: {} });
+    }
+    /**
+     *  Arguments
+     *  ---------
+     *  Data:
+     *   { identifiers: [data], attributes: [data], entities: [data], relationships: [data] },
+     *
+     *  Description
+     *  -----------
+     *   data をクラスインスタンスに変換する。
+     *   変換したものをインスタンス変数に格納する。
+     *
+     *   
+     *
+     *
+     */
+    data (data) {
+        const identifiers = data.identifiers;
+        const attributes = data.attributes;
+        const entities = data.entities;
+        const relationships = data.relationships;
+
+        const data2entity = (data)=> {
+            const entity = new Entity(data);
+
+            entity
+                .build({
+                    identifiers: this._identifiers,
+                    attributes:  this._attributes,
+                })
+                .sizing()
+                .positioning();
 
             return entity;
-        });
+        };
 
-        this._relationships = this.buildRelationshipsWithPort(data.relationships);
+        this._identifiers = POOL.list2pool(identifiers, (d)=> new Identifier(d));
+        this._attributes  = POOL.list2pool(attributes,  (d)=> new Attribute(d));
+        this._entities    = POOL.list2pool(entities,    data2entity);
+
+        this._relationships = this.buildRelationshipsWithPort(relationships);
 
         super.data(
             {
                 identifiers:   this._identifiers,
                 attributes:    this._attributes,
-                entities: this._entities,
+                entities:      this._entities,
                 relationships: this._relationships,
             }
         );

@@ -7,8 +7,10 @@ import TabContents from '../components/TabContents.js';
 
 import Examples from '../contents/Examples.js';
 import Data from '../contents/Data.js';
-import Classes from '../contents/Classes.js';
-import Asshole from '../contents/Asshole.js';
+import ClassesData from '../contents/ClassesData.js';
+import ClassesAss from '../contents/ClassesAss.js';
+
+// import Asshole from '../contents/Asshole.js';
 import Backlogs from '../contents/Backlogs.js';
 import Sprints from '../contents/Sprints.js';
 import SprintTimes from '../contents/SprintTimes.js';
@@ -16,14 +18,15 @@ import SprintProjects from '../contents/SprintProjects.js';
 
 function Home (props) {
     const [tabs] = useState([
-        { code: 'examples',   label: 'Examples'},
-        { code: 'components', label: 'Components'},
-        { code: 'data',       label: 'Data'},
-        { code: 'classes',    label: 'Classes' },
-        { code: 'backlogs',   label: 'Backlogs' },
-        { code: 'sprints',    label: 'Sprints' },
-        { code: 'sprint_p',   label: 'Sprint(P)' },
-        { code: 'sprint_t',   label: 'Sprint(T)' },
+        { code: 'examples',     label: 'Examples'},
+        // { code: 'components',   label: 'Components'},
+        { code: 'data',         label: 'Data'},
+        { code: 'classes_ass',  label: 'Classes(Ass)' },
+        { code: 'classes_data', label: 'Classes(Data)' },
+        { code: 'backlogs',     label: 'Backlogs' },
+        { code: 'sprints',      label: 'Sprints' },
+        { code: 'sprint_p',     label: 'Sprint(P)' },
+        { code: 'sprint_t',     label: 'Sprint(T)' },
     ]);
     const [bounds, setBounds] = React.useState({height:0});
 
@@ -46,16 +49,21 @@ function Home (props) {
               <Examples />
             </TabContents>
 
-            <TabContents code="components" tabs={tabs}>
-              <Asshole />
-            </TabContents>
+            {/* <TabContents code="components" tabs={tabs}> */}
+            {/*   <Asshole /> */}
+            {/* </TabContents> */}
 
             <TabContents code="data" tabs={tabs}>
               <Data />
             </TabContents>
 
-            <TabContents code="classes" tabs={tabs}>
-              <Classes />
+
+            <TabContents code="classes_ass" tabs={tabs}>
+              <ClassesAss />
+            </TabContents>
+
+            <TabContents code="classes_data" tabs={tabs}>
+              <ClassesData />
             </TabContents>
 
             <TabContents code="backlogs" tabs={tabs}>

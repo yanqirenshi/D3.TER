@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Base from './Base.js';
+import {Base} from '../../ui/index.js';
 
-export default function IdentifierInstance (props) {
+export default function Builder (props) {
     return (
         <Base data={props.data} />
     );
