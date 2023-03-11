@@ -100,9 +100,16 @@ export default class Rectum extends Colon {
             attributes:    this._attributes,
         };
 
-        this._entities = POOL.list2pool(data.entities, (d)=> {
-            return new Entity(d).build(elements).sizing().positioning();
+        this._entities = POOL.list2pool(data.entities, (data)=> {
+            const entity
+                  = new Entity(data)
+                  .build(elements)
+                  .sizing()
+                  .positioning();
+
+            return entity;
         });
+
         this._relationships = this.buildRelationshipsWithPort(data.relationships);
 
         super.data(

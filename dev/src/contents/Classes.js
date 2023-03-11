@@ -6,7 +6,7 @@ import TabsClasses from './TabsClasses.js';
 
 import Overview from './classes/Overview.js';
 import Entity from './classes/Entity.js';
-import EntityTailor from './classes/EntityTailor.js';
+import Tailor from './classes/Tailor.js';
 import Builder from './classes/Builder.js';
 import ColumnInstance from './classes/ColumnInstance.js';
 import IdentifierInstance from './classes/IdentifierInstance.js';
@@ -23,7 +23,7 @@ export default function Classes() {
     const [tabs, setTabs] = useState([
         { code: 'overview',            label: 'Overviw',            active:  true },
         { code: 'entity',              label: 'Entity',             active: false },
-        { code: 'entity_tailor',       label: 'EntityTailor',       active: false },
+        { code: 'tailor',              label: 'Tailor',             active: false },
         { code: 'builder',             label: 'Builder',            active: false },
         { code: 'column_instance',     label: 'ColumnInstance',     active: false },
         { code: 'identifier_instance', label: 'IdentifierInstance', active: false },
@@ -52,7 +52,7 @@ export default function Classes() {
 
           {isActive('overview')            && <Overview />}
           {isActive('entity')              && <Entity             data={data.entity} />}
-          {isActive('entity_tailor')       && <EntityTailor       data={data.entity_tailor} />}
+          {isActive('tailor')              && <Tailor             data={data.entity_tailor} />}
           {isActive('builder')             && <Builder            data={data.builder} />}
           {isActive('column_instance')     && <ColumnInstance     data={data.column_instance} />}
           {isActive('identifier_instance') && <IdentifierInstance data={data.identifier_instance} />}

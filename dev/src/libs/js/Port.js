@@ -5,12 +5,11 @@ export default class Port extends Atman {
         super(type==='from' ? 'PORT-FROM' : 'PORT-TO', data);
 
         this._id = owner._id; // Idenrifier-Instance
+        this._core = data[type];
 
         this._owner = owner;
 
         this._type = type;
-
-        this._core = data[type];
 
         this.position = data.position || { x:0, y:0 };
 

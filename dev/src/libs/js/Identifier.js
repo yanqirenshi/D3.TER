@@ -1,11 +1,9 @@
-import Atman from './Atman.js';
+import Column from './Column.js';
 
 import Name from './utils/Name.js';
 
-export default class Identifier extends Atman {
+export default class Identifier extends Column {
     constructor (data) {
         super('IDENTIFIER', data);
-
-        this.name = new Name(data.name);
     }
 }
