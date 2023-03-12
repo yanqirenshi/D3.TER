@@ -1,18 +1,21 @@
 import React from 'react';
+
 import style from './DiagramClassStyles.js';
+
+import Box from '@mui/material/Box';
 
 export default function DiagramClassAttribute (props) {
     const data = props.data;
 
     return (
-        <div style={style.item.root}>
-          <div style={style.item.visibility}>
+        <Box sx={style.item.root}>
+          <Box sx={style.item.visibility}>
             {data.visibility}
-          </div>
+          </Box>
 
-          <div style={style.item.name}>
+          <Box sx={style.item.name}>
             {data.name}
-          </div>
+          </Box>
 
           {/* <div style={{marginLeft:22,marginRight:22}}> */}
           {/*   <p>:</p> */}
@@ -21,6 +24,6 @@ export default function DiagramClassAttribute (props) {
           {/* <div style={style.item.name}> */}
           {/*   {data.type.name} */}
           {/* </div> */}
-        </div>
+        </Box>
     );
 }

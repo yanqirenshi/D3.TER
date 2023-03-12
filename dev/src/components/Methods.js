@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Heading, Section} from 'react-bulma-components';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import Method from './Method.js';
 
@@ -23,18 +24,18 @@ export default function Methods (props) {
     }, []);
 
     return (
-        <div>
-          <Heading size={1}>
+        <Box>
+          <Typography variant="h3">
             Methods
-          </Heading>
+          </Typography>
 
           <div>
             {methods.map(d=> {
                 return (
-                    <Method data={d}/>
+                    <Method key={d.name} data={d}/>
                 );
             })}
           </div>
-        </div>
+        </Box>
     );
 }

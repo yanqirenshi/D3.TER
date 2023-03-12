@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Section, Container, Heading, Content } from 'react-bulma-components';
-import HeadingMethod from './HeadingMethod.js';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
 import MethodSyntax from './MethodSyntax.js';
 
 export default function Method (props) {
@@ -11,59 +12,50 @@ export default function Method (props) {
     const ret = data.return;
 
     return (
-        <Section style={{padding:22}}>
-          <Container>
-            <HeadingMethod name={data.name}
-                           args={args}
-                           ret={ret} />
+        <Box style={{padding:22}}>
 
-            <Section style={{padding:11}}>
-              <Container>
-                <Heading size={4}>Syntax</Heading>
+          <Typography variant="h4">
+            {data.name}
+          </Typography>
 
-                <Content>
-                  <MethodSyntax name={data.name}
-                                args={args}
-                                ret={ret}/>
-                </Content>
-              </Container>
-            </Section>
+          <Box style={{padding:11}}>
+            <MethodSyntax name={data.name} args={args} ret={ret}/>
+          </Box>
 
-            {data.arguments && data.arguments.length>0 &&
-             <Section style={{padding:11}}>
-               <Container>
-                 <Heading size={4}>Arguments</Heading>
+          {data.arguments && data.arguments.length>0 &&
+           <Box sx={{p:'11px', pl: '22px'}}>
+             <Typography variant="h5">
+               Arguments
+             </Typography>
 
-                 <Content>
-                   {data.arguments.map(d => {
-                       return <p key={d.name}>{d.name} : {d.description}</p>;
-                   })}
-                 </Content>
-               </Container>
-             </Section>}
+             <Box sx={{pl:'11px'}}>
+               {data.arguments.map(d => {
+                   return <p key={d.name}>{d.name} : {d.description}</p>;
+               })}
+             </Box>
+           </Box>}
 
-            <Section style={{padding:11}}>
-              <Container>
-                <Heading size={4}>Value</Heading>
+          <Box sx={{p:'11px', pl: '22px'}}>
+            <Typography variant="h5">
+              Value
+            </Typography>
 
-                <Content>
-                  {data.return}
-                </Content>
-              </Container>
-            </Section>
+             <Box sx={{pl:'11px'}}>
+              {data.return}
+            </Box>
+          </Box>
 
-            {data.description && data.description.length > 0 &&
-             <Section style={{padding:11}}>
-               <Container>
-                 <Heading size={4}>Description</Heading>
+          {data.description && data.description.length > 0 &&
+           <Box sx={{p:'11px', pl: '22px'}}>
+             <Typography variant="h5">
+               Description
+             </Typography>
 
-                 <Content>
-                   {data.description}
-                 </Content>
-               </Container>
-             </Section>}
+             <Box sx={{pl:'11px'}}>
+               {data.description}
+             </Box>
+           </Box>}
 
-          </Container>
-        </Section>
+        </Box>
     );
 }

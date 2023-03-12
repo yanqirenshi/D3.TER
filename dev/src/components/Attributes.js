@@ -1,25 +1,20 @@
 import React from 'react';
 
-import { Heading } from 'react-bulma-components';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import Attribute from './Attribute.js';
 
 export default function Attributes (props) {
     const item_class = 'pool-item-attribute';
-    const options = {
-        columnWidth:  props.column_width,
-        itemSelector: `.${item_class}`,
-        gutter:       props.gutter,
-        itemClass:    item_class, // original parameter
-    };
 
     const attributes = props.data.attributes;
 
     return (
-        <div>
-          <Heading size={1}>
+        <Box>
+          <Typography variant="h3">
             Attributes
-          </Heading>
+          </Typography>
 
           <div>
             {attributes.map(d=> {
@@ -28,6 +23,6 @@ export default function Attributes (props) {
                 );
             })}
           </div>
-        </div>
+        </Box>
     );
 }

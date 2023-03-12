@@ -1,13 +1,13 @@
 import React from 'react';
-import { Section, Container } from 'react-bulma-components';
+
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 export default function Overview () {
     return (
-        <Section>
+        <Box>
           <Container>
-            <div>
-            </div>
           </Container>
-        </Section>
+        </Box>
     );
 }

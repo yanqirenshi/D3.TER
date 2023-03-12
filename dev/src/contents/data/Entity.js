@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Section, Container, Heading, } from 'react-bulma-components';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 
 import Base from './Base.js';
 
@@ -10,117 +12,61 @@ export default function Entity (props) {
     return (
         <Base json={entity}>
 
-          <Section style={{paddingTop:0}}>
-            <Container>
-              <Heading>_id</Heading>
+          <Box>
+            <Typography variant="h4">_id</Typography>
+          </Box>
 
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
+          <Box>
+            <Typography variant="h4">_class</Typography>
+          </Box>
 
-          <Section>
-            <Container>
-              <Heading>_class</Heading>
+          <Box>
+            <Typography variant="h4">padding</Typography>
+          </Box>
 
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
+          <Box>
+            <Typography variant="h4">margin</Typography>
+          </Box>
 
-          <Section>
-            <Container>
-              <Heading>padding</Heading>
+          <Box>
+            <Typography variant="h4">description</Typography>
+          </Box>
 
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
+          <Box>
+            <Typography variant="h4">position</Typography>
+          </Box>
 
-          <Section>
-            <Container>
-              <Heading>margin</Heading>
+          <Box>
+            <Typography variant="h4">size</Typography>
+          </Box>
 
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
+          <Box>
+            <Typography variant="h4">bar</Typography>
+          </Box>
 
-          <Section>
-            <Container>
-              <Heading>description</Heading>
+          <Box>
+            <Typography variant="h4">background</Typography>
+          </Box>
 
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
+          <Box>
+            <Typography variant="h4">name</Typography>
+          </Box>
 
-          <Section>
-            <Container>
-              <Heading>position</Heading>
+          <Box>
+            <Typography variant="h4">type</Typography>
+          </Box>
 
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
+          <Box>
+            <Typography variant="h4">identifiers</Typography>
+          </Box>
 
-          <Section>
-            <Container>
-              <Heading>size</Heading>
+          <Box>
+            <Typography variant="h4">attributes</Typography>
+          </Box>
 
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
-
-          <Section>
-            <Container>
-              <Heading>bar</Heading>
-
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
-
-          <Section>
-            <Container>
-              <Heading>background</Heading>
-
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
-
-          <Section>
-            <Container>
-              <Heading>name</Heading>
-
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
-
-          <Section>
-            <Container>
-              <Heading>type</Heading>
-
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
-
-          <Section>
-            <Container>
-              <Heading>identifiers</Heading>
-
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
-
-          <Section>
-            <Container>
-              <Heading>attributes</Heading>
-
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
-
-          <Section>
-            <Container>
-              <Heading>ports</Heading>
-
-              <Heading subtitle></Heading>
-            </Container>
-          </Section>
+          <Box>
+            <Typography variant="h4">ports</Typography>
+          </Box>
 
         </Base>
     );

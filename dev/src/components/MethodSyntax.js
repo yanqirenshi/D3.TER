@@ -1,24 +1,32 @@
 import React from 'react';
 
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
 export default function MethodSyntax (props) {
     return (
-        <div style={{display: 'flex'}}>
-          <p style={{fontWeight: 800}}>{props.name}</p>
+        <Box sx={{display: 'flex', background:'rgba(234, 244, 252, 0.3)', p: '8px 22px', borderRadius: '5px'}}>
+
+          <Typography style={{fontWeight: 800, fontSize: '22px'}}>
+            {props.name}
+          </Typography>
 
           {props.args && props.args.length>0 &&
-           <p style={{marginLeft:11, fontStyle: 'oblique'}}>
+           <Typography style={{marginLeft:11, fontStyle: 'oblique', fontSize: '22px'}}>
              {props.args.map((d,i) => {
                  return <span key={i} style={i===0 ? null : {marginLeft:11}}>
-                                      {d}
-                                    </span>;
+                          {d}
+                        </span>;
              })}
-           </p>}
+           </Typography>}
 
-          <p style={{marginLeft:11}}>⇒</p>
+        <Typography style={{marginLeft:11, fontSize: '22px', color: '#aaa'}}>
+            ⇒
+          </Typography>
 
-          <p style={{marginLeft:11, fontStyle: 'oblique'}}>
+          <Typography style={{marginLeft:11, fontStyle: 'oblique', fontSize: '22px'}}>
             {props.ret || "NULL"}
-          </p>
-        </div>
+          </Typography>
+        </Box>
     );
 }

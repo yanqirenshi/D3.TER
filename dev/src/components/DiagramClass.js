@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {
-    Panel
-} from 'react-bulma-components';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
 
 import DiagramClassAttributes from './DiagramClassAttributes.js';
 import DiagramClassMethods from './DiagramClassMethods.js';
@@ -11,16 +11,16 @@ export default function DiagramClass (props) {
     const data = props.data;
 
     return (
-        <Panel>
-          <Panel.Header>{data.name}</Panel.Header>
+        <Card>
+          <CardHeader title={data.name}/>
 
-          <Panel.Block>
+          <CardContent>
             <DiagramClassAttributes attributes={data.attributes}/>
-          </Panel.Block>
+          </CardContent>
 
-          <Panel.Block>
+          <CardContent>
             <DiagramClassMethods methods={data.methods} />
-          </Panel.Block>
-        </Panel>
+          </CardContent>
+        </Card>
     );
 }

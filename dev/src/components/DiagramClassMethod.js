@@ -1,6 +1,8 @@
 import React from 'react';
-import style from './DiagramClassStyles.js';
 
+import Typography from '@mui/material/Typography';
+
+import style from './DiagramClassStyles.js';
 
 export default function DiagramClassMethod (props) {
     const data = props.data;
@@ -8,11 +10,15 @@ export default function DiagramClassMethod (props) {
     return (
         <div style={style.item.root}>
           <div style={style.item.visibility}>
-            {data.visibility}
+            <Typography>
+              {data.visibility}
+            </Typography>
           </div>
 
           <div style={style.item.name}>
-            {data.name}
+            <Typography>
+              {data.name}
+            </Typography>
           </div>
         </div>
     );

@@ -1,17 +1,18 @@
 import React from 'react';
-import { Section, Container } from 'react-bulma-components';
+
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 
 export default function Overview () {
     return (
-        <Section>
+        <Box>
           <Container>
-            <div>
-              <p style={{fontSize:16, lineHeight:'16px'}}>
-                <pre>{x.join('\n')}</pre>
-              </p>
-            </div>
+            <Typography sx={{fontSize:16, lineHeight:'16px'}}>
+              <pre>{x.join('\n')}</pre>
+            </Typography>
           </Container>
-        </Section>
+        </Box>
     );
 }
 

@@ -7,22 +7,6 @@ import Base from './Base.js';
 export default function Relationship (props) {
     return (
         <Base json={template}>
-
-          <Section>
-            <Container>
-              <Heading>
-                Section
-              </Heading>
-              <Heading subtitle>
-                A simple container to divide your page into{' '}
-                <strong>
-                  sections
-                </strong>
-                , like the one you are currently reading
-              </Heading>
-            </Container>
-          </Section>
-
         </Base>
     );
 }

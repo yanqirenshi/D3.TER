@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Section, Container } from 'react-bulma-components';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 import {
     DiagramClass,
@@ -27,17 +28,22 @@ export default function Base (props) {
     const gutter = props.gutter || 10;
 
     return (
-        <Section>
+        <Box>
           <Container style={style.root}>
-            <div style={style.left}>
+            <Box style={style.left}>
               <DiagramClass data={props.data} />
-            </div>
+            </Box>
 
-            <div style={style.right}>
-              <Attributes data={props.data} column_width={column_width} gutter={gutter} />
-              <Methods    data={props.data} column_width={column_width} gutter={gutter} />
-            </div>
+            <Box style={style.right}>
+              <Box>
+                <Attributes data={props.data} column_width={column_width} gutter={gutter} />
+              </Box>
+
+              <Box sx={{mt:'55px'}}>
+                <Methods    data={props.data} column_width={column_width} gutter={gutter} />
+              </Box>
+            </Box>
           </Container>
-        </Section>
+        </Box>
     );
 }
