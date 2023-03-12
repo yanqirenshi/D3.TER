@@ -6,8 +6,6 @@ import Typography from '@mui/material/Typography';
 import Attribute from './Attribute.js';
 
 export default function Attributes (props) {
-    const item_class = 'pool-item-attribute';
-
     const attributes = props.data.attributes;
 
     return (

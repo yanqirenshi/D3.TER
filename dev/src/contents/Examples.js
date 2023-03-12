@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
+import Box from '@mui/material/Box';
+
 import Rectum from '../libs/js/Rectum.js';
 import D3Ter from '../libs/components/D3Ter.js';
 
 import SideMenu from './examples/SideMenu.js';
 import TabContents from './examples/TabContents.js';
-
 
 import EXAMPLES_DATA from '../data/EXAMPLES_DATA.js';
 
@@ -67,15 +68,15 @@ export default function Examples () {
     };
 
     return (
-        <div style={style}>
+        <Box style={style}>
           <SideMenu tabs={tabs} callbacks={callbacks}/>
 
-          <div style={{height: '100%', flexGrow: 1}}>
+          <Box style={{height: '100%', flexGrow: 1}}>
 
             <TabContents code="graph" tabs={tabs}>
-              <div style={style.graph_area}>
+              <Box style={style.graph_area}>
                 <D3Ter rectum={rectum} />
-              </div>
+              </Box>
             </TabContents>
 
             <TabContents code="id" tabs={tabs}>
@@ -90,7 +91,7 @@ export default function Examples () {
             <TabContents code="i.attr" tabs={tabs}>
             </TabContents>
 
-          </div>
-        </div>
+          </Box>
+        </Box>
     );
 }

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Section, Container, Heading, } from 'react-bulma-components';
-
 import Base from './Base.js';
 
 export default function Relationship (props) {

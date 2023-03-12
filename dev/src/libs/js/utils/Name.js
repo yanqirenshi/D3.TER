@@ -16,7 +16,8 @@ export default class Name {
         if (arguments.lengh===0 || !v) {
             return this;
         } else if ('string'===typeof v) {
-            const isLogical = (str) => str.match(/^[^\x01-\x7E\xA1-\xDF]+$/);
+            // const isLogical = (str) => str.match(/^[^\x01-\x7E\xA1-\xDF]+$/);
+            const isLogical = (str) => str.match(/^[^\\x01-\\x7E\\xA1-\\xDF]+$/);
 
             if (isLogical)
                 this.physical = v;
