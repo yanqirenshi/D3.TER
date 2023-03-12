@@ -1,97 +1,83 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import Measure from 'react-measure';
+import React from 'react';
 
-import Hero from '../components/Hero.js';
-import TabContents from '../components/TabContents.js';
+import TabPanel from '@mui/lab/TabPanel';
 
-import Examples from '../contents/Examples.js';
-import Data from '../contents/Data.js';
-import ClassesData from '../contents/ClassesData.js';
-import ClassesAss from '../contents/ClassesAss.js';
+import {
+    ContentsWithTabs,
+    makeTabs,
+    selectTab,
+} from '../ui/layout.js';
 
-// import Asshole from '../contents/Asshole.js';
-import Backlogs from '../contents/Backlogs.js';
-import Sprints from '../contents/Sprints.js';
-import SprintTimes from '../contents/SprintTimes.js';
-import SprintProjects from '../contents/SprintProjects.js';
+import {
+    TabContents,
+} from '../ui/index.js';
 
-function Home (props) {
-    const [tabs] = useState([
-        { code: 'examples',     label: 'Examples'},
-        // { code: 'components',   label: 'Components'},
-        { code: 'data',         label: 'Data'},
-        { code: 'classes_ass',  label: 'Classes(Ass)' },
-        { code: 'classes_data', label: 'Classes(Data)' },
-        { code: 'backlogs',     label: 'Backlogs' },
-        { code: 'sprints',      label: 'Sprints' },
-        { code: 'sprint_p',     label: 'Sprint(P)' },
-        { code: 'sprint_t',     label: 'Sprint(T)' },
-    ]);
-    const [bounds, setBounds] = React.useState({height:0});
+import * as content from '../contents/index.js';
 
-    const sogh = props.sogh;
-    const repository = props.repository;
+import sogh from '../manegers/sogh.js';
+
+const style = {
+    contents: {
+        height:'100%',
+        boxSizing: 'border-box',
+        overflow: 'auto',
+    },
+};
+
+export default function Home (props) {
+    const [tabs, setTabs] = React.useState(makeTabs(
+        'examples',
+        [
+            { code: 'examples',     label: 'Examples'},
+            // { code: 'components',   label: 'Components'},
+            { code: 'data',         label: 'Data'},
+            { code: 'classes_ass',  label: 'Classes(Ass)' },
+            { code: 'classes_data', label: 'Classes(Data)' },
+            { code: 'backlogs',     label: 'Backlogs' },
+            { code: 'sprints',      label: 'Sprints' },
+            { code: 'sprint_p',     label: 'Sprint(P)' },
+            { code: 'sprint_t',     label: 'Sprint(T)' },
+        ]));
 
     return (
-        <div style={{width: '100vw', height: '100vh'}}>
-          <Measure bounds
-                   onResize={rect=> setBounds(rect.bounds)}>
-            {({ measureRef }) => (
-                <div ref={measureRef}>
-                  <Hero tabs={tabs} />
-                </div>
-            )}
-          </Measure>
+        <ContentsWithTabs data={tabs}
+                          onChange={(code)=> setTabs(selectTab(code, tabs))}>
 
-          <div style={{height: `calc(100% - ${bounds.height}px)`, width: '100%'}}>
-            <TabContents code="examples" tabs={tabs}>
-              <Examples />
-            </TabContents>
+          <TabContents tabs={tabs} code="examples">
+            <content.Examples/>
+          </TabContents>
 
-            {/* <TabContents code="components" tabs={tabs}> */}
-            {/*   <Asshole /> */}
-            {/* </TabContents> */}
+          <TabContents tabs={tabs} code="components">
+          </TabContents>
 
-            <TabContents code="data" tabs={tabs}>
-              <Data />
-            </TabContents>
+          <TabContents tabs={tabs} code="data">
+            <content.Data/>
+          </TabContents>
 
+          <TabContents tabs={tabs} code="classes_ass">
+            <content.ClassesAss/>
+          </TabContents>
 
-            <TabContents code="classes_ass" tabs={tabs}>
-              <ClassesAss />
-            </TabContents>
+          <TabContents tabs={tabs} code="classes_data">
+            <content.ClassesData/>
+          </TabContents>
 
-            <TabContents code="classes_data" tabs={tabs}>
-              <ClassesData />
-            </TabContents>
+          <TabContents tabs={tabs} code="backlogs">
+            <content.Backlogs/>
+          </TabContents>
 
-            <TabContents code="backlogs" tabs={tabs}>
-              <Backlogs sogh={sogh} repository={repository} />
-            </TabContents>
+          <TabContents tabs={tabs} code="sprints">
+            <content.Sprints sogh={sogh} repository={null} />
+          </TabContents>
 
-            <TabContents code="sprints" tabs={tabs}>
-              <Sprints sogh={sogh} repository={repository} />
-            </TabContents>
+          <TabContents tabs={tabs} code="sprint_p">
+            <content.SprintProjects sogh={sogh} repository={null} />
+          </TabContents>
 
-            <TabContents code="sprint_p" tabs={tabs}>
-              <SprintProjects sogh={sogh} repository={repository} />
-            </TabContents>
+          <TabContents tabs={tabs} code="sprint_t">
+            <content.SprintTimes sogh={sogh} repository={null} /> {/* repository */}
+          </TabContents>
 
-            <TabContents code="sprint_t" tabs={tabs}>
-              <SprintTimes sogh={sogh} repository={repository} />
-            </TabContents>
-          </div>
-        </div>
+        </ContentsWithTabs>
     );
 }
-
-export default connect(
-    (state) => {
-        return {
-            sogh: state.sogh,
-            repository: state.repository,
-        };
-    },
-    (dispatch) => ({}),
-)(Home);

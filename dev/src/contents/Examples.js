@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import Box from '@mui/material/Box';
 
-import Rectum from '../libs/js/Rectum.js';
-import D3Ter from '../libs/components/D3Ter.js';
+import Rectum from '../tm/js/Rectum.js';
+import D3Ter from '../tm/components/D3Ter.js';
 
-import SideMenu from './examples/SideMenu.js';
-import TabContents from './examples/TabContents.js';
+import SideMenu from './Examples/SideMenu.js';
+import TabContents from './Examples/TabContents.js';
 
 import EXAMPLES_DATA from '../data/EXAMPLES_DATA.js';
 
@@ -26,10 +26,10 @@ const style = {
 };
 
 export default function Examples () {
-    const [rectum, setRectum] = useState(null);
-    const [graph_data] = useState(EXAMPLES_DATA);
-    // const [graph_data, setGraphData] = useState(EXAMPLES_DATA);
-    const [tabs, setTabs] = useState({
+    const [rectum, setRectum] = React.useState(null);
+    const [graph_data] = React.useState(EXAMPLES_DATA);
+    // const [graph_data, setGraphData] = React.useState(EXAMPLES_DATA);
+    const [tabs, setTabs] = React.useState({
         selected: 'graph',
         list: [
             { code: 'graph',  label: 'Graph', },
@@ -40,7 +40,7 @@ export default function Examples () {
         ],
     });
 
-    useEffect(()=> {
+    React.useEffect(()=> {
         if (rectum!==null) return;
 
         setRectum(new Rectum({
@@ -56,7 +56,7 @@ export default function Examples () {
         }));
     }, [rectum]);
 
-    useEffect(()=> {
+    React.useEffect(()=> {
         if (rectum)
             rectum.data(graph_data);
     }, [rectum, graph_data]);

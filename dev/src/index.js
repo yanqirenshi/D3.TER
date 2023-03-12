@@ -1,24 +1,24 @@
 import React from 'react';
+// import ReactDOM from 'react-dom/client';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import 'react-bulma-components/dist/react-bulma-components.min.css';
 import './index.css';
 
-import App from './App';
+import store from './store.js';
 
-import Store from './Store.js';
+import * as serviceWorkerRegistration from './js/serviceWorkerRegistration';
+import reportWebVitals from './js/reportWebVitals';
 
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
+import App from './App.js';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={Store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

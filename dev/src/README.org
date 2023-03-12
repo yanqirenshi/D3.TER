@@ -1,0 +1,24 @@
+* Directories
+
+| Name       |            | 概要                              |
+|------------+------------+-----------------------------------|
+| components | componet   | ui コンポーネント の格納場所      |
+| js         | javascript | javascript の格納場所             |
+| lib        | all        | 外部ライブラリに切り出せるもの    |
+| modals     | componet   |                                   |
+| pages      | componet   | ページ コンポーネント の格納場所  |
+| contents   | componet   | Page の Top レベル コンポーネント |
+| slices     | javascript | Action / Reducer                  |
+| test       | javascript |                                   |
+
+* Files
+
+| Name        | 概要        |
+|-------------+-------------|
+| App.js      |             |
+| App.test.js |             |
+| index.css   |             |
+| index.js    |             |
+| Modals.js   |             |
+| sogh.js     |             |
+| store.js    | Redux Store |

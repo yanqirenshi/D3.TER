@@ -1,47 +1,30 @@
-import React, {useEffect} from 'react';
-import { connect } from 'react-redux';
-import {
-    BrowserRouter as Router, Switch, Route,
-} from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from './pages/Home.js';
+import * as page from './pages/index.js';
+import Modals from './Modals.js';
 
-import { connectGithub } from './actions/sogh.js';
+import {Page} from './ui/layout.js';
 
-function makeSogh (sogh, connect) {
-    const token = process.env.REACT_APP_GITHUB_PARSONAL_TOKEN;
+import * as shadow from './shadows/index.js';
 
-    if (!token)
-        return;
-
-    if (sogh.updated_at!==null)
-        return;
-
-    connect(token);
-}
-
-function App(props) {
-    useEffect(() => makeSogh(props.sogh, props.connectGithub), [props.sogh, props.connectGithub]);
-
+export default function App() {
     return (
-        <Router>
-          <Switch>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </Router>
+        <>
+          <shadow.Github/>
+
+          <Modals/>
+
+          <BrowserRouter>
+            <Routes>
+              <Route path="/"         element={<Page><page.Home/></Page>} />
+              <Route path="/wbs/:id"  element={<Page><page.WbsNode/></Page>} />
+              <Route path="/wbs"      element={<Page><page.WbsTrees/></Page>} />
+              <Route path="/backlogs" element={<Page><page.Backlogs/></Page>} />
+
+              <Route path="/dev.network" element={<Page><page.DevNetworkGraph/></Page>} />
+            </Routes>
+          </BrowserRouter>
+        </>
     );
 }
-
-export default connect(
-    (state) => {
-        return {
-            sogh: state.sogh,
-            repository: state.repository,
-        };
-    },
-    (dispatch) => ({
-        connectGithub: (token) => dispatch(connectGithub(token)),
-    }),
-)(App);

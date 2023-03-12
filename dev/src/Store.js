@@ -1,27 +1,19 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+import { configureStore } from '@reduxjs/toolkit';
 
-import rootReducer from './reducers';
+import github from './slices/github.js';
+import modals from './slices/modals.js';
+import page_admin from './slices/page_admin.js';
+import backlogs from './slices/backlogs.js';
 
-let StoreModel = {
-    repository: {
-        owner: 'yanqirenshi',
-        name:  'D3.TER',
-    },
-    sogh: {
-        core: null,
-        updated_at: null,
-    },
-};
-
-const Store = createStore(
-    rootReducer,
-    StoreModel,
-    applyMiddleware(
-        thunk,
-        logger,
-    ),
-);
-
-export default Store;
+export default configureStore({
+  reducer: {
+      // tools
+      github: github,
+      // modals
+      modals: modals,
+      // pages
+      page_admin,
+      // contents
+      backlogs,
+  }
+});
