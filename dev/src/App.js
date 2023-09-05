@@ -1,30 +1,55 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import * as page from './pages/index.js';
-import Modals from './Modals.js';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import S from '@mui/material/Typography';
 
-import {Page} from './ui/layout.js';
-
-import * as shadow from './shadows/index.js';
+import Graph from './Graph.js';
 
 export default function App() {
-    return (
-        <>
-          <shadow.Github/>
+  return (
+      <Container maxWidth="md"
+                 sx={{pt: 3, pb: 22}}>
+        <Box sx={{height:333, p: 2, background: '#f8f8f8'}}>
+          <Graph/>
+        </Box>
 
-          <Modals/>
+        <Box sx={{mt:6}}>
+          <S variant="h5">Data Model</S>
+        </Box>
 
-          <BrowserRouter>
-            <Routes>
-              <Route path="/"         element={<Page><page.Home/></Page>} />
-              <Route path="/wbs/:id"  element={<Page><page.WbsNode/></Page>} />
-              <Route path="/wbs"      element={<Page><page.WbsTrees/></Page>} />
-              <Route path="/backlogs" element={<Page><page.Backlogs/></Page>} />
+        <Box sx={{mt:6}}>
+          <S variant="h5">Object Model</S>
 
-              <Route path="/dev.network" element={<Page><page.DevNetworkGraph/></Page>} />
-            </Routes>
-          </BrowserRouter>
-        </>
-    );
+          <Box sx={{mt:3}}>
+            <S variant="h6">Identifier</S>
+          </Box>
+
+          <Box sx={{mt:3}}>
+            <S variant="h6">Attribute</S>
+          </Box>
+
+          <Box sx={{mt:3}}>
+            <S variant="h6">IdentifierInstance</S>
+          </Box>
+
+          <Box sx={{mt:3}}>
+            <S variant="h6">AttributeInstance</S>
+          </Box>
+
+          <Box sx={{mt:3}}>
+            <S variant="h6">Entity</S>
+          </Box>
+
+          <Box sx={{mt:3}}>
+            <S variant="h6">Port</S>
+          </Box>
+
+          <Box sx={{mt:3}}>
+            <S variant="h6">Relationship</S>
+          </Box>
+
+        </Box>
+      </Container>
+  );
 }
