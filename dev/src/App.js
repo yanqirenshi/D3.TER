@@ -8,6 +8,7 @@ import Graph from './Graph.js';
 import InputDataModel from './InputDataModel.js';
 import DataModel from './DataModel.js';
 import ObjectModel from './ObjectModel.js';
+import Classes from './Classes.js';
 
 export default function App() {
     return (
@@ -45,6 +46,11 @@ export default function App() {
           <Box sx={{mt:6}}>
             <S variant="h5">Object Model</S>
             <ObjectModel/>
+          </Box>
+
+          <Box sx={{mt:6}}>
+            <S variant="h5">Classes</S>
+            <Classes/>
           </Box>
         </Container>
     );
