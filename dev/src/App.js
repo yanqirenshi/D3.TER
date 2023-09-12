@@ -9,12 +9,14 @@ import Graph from './Graph.js';
 import Overview from './Overview.js';
 import Models from './Models.js';
 import Views from './Views.js';
+import Classes from './Classes.js';
 
 export default function App() {
     const [tabs, setTabs] = React.useState({
         selected: 'overview',
         list: [
             { code: 'overview', label: 'Overview' },
+            { code: 'classes',  label: 'Classes' },
             { code: 'models',   label: 'Models' },
             { code: 'views',    label: 'Views' },
         ],
@@ -34,6 +36,7 @@ export default function App() {
           </Box>
 
           {'overview'===tabs.selected && <Overview/>}
+          {'classes'===tabs.selected && <Classes/>}
           {'models'===tabs.selected && <Models/>}
           {'views'===tabs.selected && <Views/>}
         </Container>

@@ -6,7 +6,6 @@ import S from '@mui/material/Typography';
 import InputDataModel from './InputDataModel.js';
 import DataModel from './DataModel.js';
 import ObjectModel from './ObjectModel.js';
-import Classes from './Classes.js';
 
 export default function Models () {
     return (
@@ -24,11 +23,6 @@ export default function Models () {
           <Box sx={{mt:6}}>
             <S variant="h5">Object Model</S>
             <ObjectModel/>
-          </Box>
-
-          <Box sx={{mt:6}}>
-            <S variant="h5">Classes</S>
-            <Classes/>
           </Box>
         </Box>
     );
