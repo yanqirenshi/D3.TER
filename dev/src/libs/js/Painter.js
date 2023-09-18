@@ -1,5 +1,8 @@
 import * as d3 from 'd3';
 
+import Ports from './Painters/Ports.js';
+import Relationships from './Painters/Relationships.js';
+
 export default class Painter {
     constructor(foreground, background, callbacks) {
         this.foreground = foreground;
@@ -13,6 +16,11 @@ export default class Painter {
                     size: 14
                 }
             },
+        };
+
+        this._painters = {
+            ports: new Ports(),
+            relationships: new Relationships(),
         };
     }
     /* **************************************************************** *
@@ -64,7 +72,7 @@ export default class Painter {
             .selectAll('line.connector')
             .data(edges, (d)=> d._id);
 
-        this.drawRelationshipsCore(selection);
+        this._painters.relationships.drawRelationshipsCore(selection);
     }
     /* **************************************************************** *
      *   Draw  this.entity
@@ -325,88 +333,6 @@ export default class Painter {
             });
     }
     /* ************************************ *
-     *  Port                                *
-     * ************************************ */
-    drawPortsCore (ports) {
-        ports
-            .attr('class', 'entity-port')
-            .attr('cx', (d)=> {
-                return d.position.x;
-            })
-            .attr('cy', (d)=> {
-                return d.position.y;
-            })
-            .attr('r', 4)
-            .attr('fill', '#fff')
-            .attr('stroke', '#000')
-            .attr('stroke-width', 0.5)
-            .attr('degree', (d)=> {
-                return d._owner._core.position || 0;
-            })
-            .attr('port-id', (d)=> {
-                return d._id;
-            });
-    }
-    drawPorts (groups) {
-        let ports = groups
-            .selectAll('circle.entity-port')
-            .data((d)=> {
-                return d.ports.items.list;
-            })
-            .enter()
-            .append('circle');
-
-        this.drawPortsCore(ports);
-    }
-    /* ************************************ *
-     *  relationships                       *
-     * ************************************ */
-    drawRelationshipsCore (edges) {
-        edges
-            .attr('x1', (d)=> {
-                let port = d.from;
-                let entity = d.from._entity;
-
-                return port.position.x + entity.position.x;
-            })
-            .attr('y1', (d)=> {
-                let port = d.from;
-                let entity = d.from._entity;
-
-                return port.position.y + entity.position.y;
-            })
-            .attr('x2', (d)=> {
-                let port = d.to;
-                let entity = d.to._entity;
-
-                return port.position.x + entity.position.x;
-            })
-            .attr('y2', (d)=> {
-                let port = d.to;
-                let entity = d.to._entity;
-
-                return port.position.y + entity.position.y;
-            })
-            .attr('stroke', '#888888')
-            .attr('stroke-width', 1);
-    }
-    drawRelationships (relationships) {
-        const place = this.background;
-
-        let data = relationships.list.filter((edge)=> {
-            return edge.from._class==='PORT-FROM' && edge.to._class==='PORT-TO';
-        });
-
-        let edges = place
-            .selectAll('line.connector')
-            .data(data, (d)=> d._id)
-            .enter()
-            .append('line')
-            .attr('class', 'connector');
-
-        this.drawRelationshipsCore(edges);
-    }
-    /* ************************************ *
      *  Draw Main                           *
      * ************************************ */
     redraw (groups) {
@@ -433,8 +359,8 @@ export default class Painter {
         groups.each((entity)=> entity.reSizing().positioning());
         this.redraw(groups);
 
-        this.drawPorts(groups);
+        this._painters.ports.drawPorts(groups);
 
-        this.drawRelationships(relationsihps);
+        this._painters.relationships.drawRelationships(this.background, relationsihps);
     }
 }
