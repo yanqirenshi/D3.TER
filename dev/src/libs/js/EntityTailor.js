@@ -211,62 +211,6 @@ export default class EntityTailor extends Builder {
     /* **************************************************************** *
      *   Size
      * **************************************************************** */
-    sizingType () {
-        let data = this.type;
-
-        if (!data.contents)
-            data.contents = '??';
-
-        data.size.h = this._default.line.height + data.padding * 2;
-
-        data.size.w =
-            data.contents.length * this._default.line.font.size;
-            // + data.padding * 2;
-    }
-    sizingName () {
-        let data = this.name;
-
-        if (!data.contents)
-            data.contents = '????????';
-
-        data.size.h = this._default.line.height + data.padding * 2;
-
-        let type = this.type;
-
-        data.size.w = (this.size.w - (this.padding * 2) -
-                       this.bar.size.header -
-                       type.size.w);
-    }
-    sizingIdentifiers () {
-        let data = this.identifiers;
-        let padding = this.padding;
-
-        data.size.w =
-            ((this.size.w - (padding * 2)) / 2) -
-            (this.bar.size.contents / 2);
-
-        data.size.h = data.contents.list.length
-            * (this._default.line.height + padding * 2);
-    }
-    sizingAttributes () {
-        let data = this.attributes;
-        let padding = this.padding;
-
-        data.size.w =
-            ((this.size.w - (this.padding * 2)) / 2) -
-            (this.bar.size.contents / 2);
-
-        data.size.h = data.contents.list.length * (this._default.line.height + padding * 2);
-    }
-    sizingContentsArea () {
-        let id_h = this.identifiers.size.h;
-        let attr_h = this.attributes.size.h;
-
-        if (id_h > attr_h)
-            this.attributes.size.h = id_h;
-        else
-            this.identifiers.size.h = attr_h;
-    }
     sizing () {
         this.sizingType();
         this.sizingName();
@@ -333,6 +277,51 @@ export default class EntityTailor extends Builder {
     /* **************************************************************** *
      *   Position
      * **************************************************************** */
+    positioning () {
+        this.positioningEntity(this);
+
+        return this;
+    }
+    /* **************************************************************** *
+     *  Entity
+     * **************************************************************** */
+    positioningEntity (entity, entities) {
+        this.positioningName();
+        this.positioningType();
+        this.positioningIdentifiers();
+        this.positioningAttributes();
+        this.positioningPorts();
+    }
+    /* **************************************************************** *
+     *  Contents Area
+     * **************************************************************** */
+    sizingContentsArea () {
+        let id_h = this.identifiers.size.h;
+        let attr_h = this.attributes.size.h;
+
+        if (id_h > attr_h)
+            this.attributes.size.h = id_h;
+        else
+            this.identifiers.size.h = attr_h;
+    }
+    /* **************************************************************** *
+     *  Name
+     * **************************************************************** */
+    sizingName () {
+        let data = this.name;
+
+        if (!data.contents)
+            data.contents = '????????';
+
+        data.size.h = this._default.line.height + data.padding * 2;
+
+        let type = this.type;
+
+        data.size.w = this.size.w<=0 ? 0 :
+            (this.size.w - (this.padding * 2) -
+             this.bar.size.header -
+             type.size.w);
+    }
     positioningName () {
         const entity = this;
 
@@ -340,6 +329,21 @@ export default class EntityTailor extends Builder {
 
         d.position.x = entity.padding;
         d.position.y = entity.padding;
+    }
+    /* **************************************************************** *
+     *  Type
+     * **************************************************************** */
+    sizingType () {
+        let data = this.type;
+
+        if (!data.contents)
+            data.contents = '??';
+
+        data.size.h = this._default.line.height + data.padding * 2;
+
+        data.size.w =
+            data.contents.length * this._default.line.font.size;
+        // + data.padding * 2;
     }
     positioningType () {
         const entity = this;
@@ -350,6 +354,9 @@ export default class EntityTailor extends Builder {
         d.position.x = entity.padding + entity.name.size.w + bar;
         d.position.y = entity.padding;
     }
+    /* **************************************************************** *
+     *  ColumnItems
+     * **************************************************************** */
     positioningColumnItems (d) {
         let padding = d.padding;
         let start   = d.position.y + padding;
@@ -368,6 +375,20 @@ export default class EntityTailor extends Builder {
             num++;
         }
     }
+    /* **************************************************************** *
+     *  Identifiers
+     * **************************************************************** */
+    sizingIdentifiers () {
+        let data = this.identifiers;
+        let padding = this.padding;
+
+        data.size.w = this.size.w<=0 ? 0 :
+            ((this.size.w - (padding * 2)) / 2) -
+            (this.bar.size.contents / 2);
+
+        data.size.h = data.contents.list.length
+            * (this._default.line.height + padding * 2);
+    }
     positioningIdentifiers () {
         const entity = this;
 
@@ -378,6 +399,19 @@ export default class EntityTailor extends Builder {
         d.position.y = entity.padding + entity.name.size.h + bar;
 
         this.positioningColumnItems(d);
+    }
+    /* **************************************************************** *
+     *  Attributes
+     * **************************************************************** */
+    sizingAttributes () {
+        let data = this.attributes;
+        let padding = this.padding;
+
+        data.size.w = this.size.w<=0 ? 0 :
+            ((this.size.w - (this.padding * 2)) / 2) -
+            (this.bar.size.contents / 2);
+
+        data.size.h = data.contents.list.length * (this._default.line.height + padding * 2);
     }
     positioningAttributes () {
         const entity = this;
@@ -391,6 +425,9 @@ export default class EntityTailor extends Builder {
 
         this.positioningColumnItems(d);
     }
+    /* **************************************************************** *
+     *  Port
+     * **************************************************************** */
     deg2rad (degree) {
         return degree * ( Math.PI / 180 );
     }
@@ -523,17 +560,5 @@ export default class EntityTailor extends Builder {
 
         for (let port of ports)
             this.positioningPort(port);
-    }
-    positioningEntity (entity, entities) {
-        this.positioningName();
-        this.positioningType();
-        this.positioningIdentifiers();
-        this.positioningAttributes();
-        this.positioningPorts();
-    }
-    positioning () {
-        this.positioningEntity(this);
-
-        return this;
     }
 }
