@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 
 import D3Ter, {Rectum}  from './libs/index.js';
 
-import TM_DATA from './data/TM_DATA.js';
+import TM_DATA from './data/TM.js';
 
 export default function Graph () {
     const [rectum, setRectum] = React.useState(null);
