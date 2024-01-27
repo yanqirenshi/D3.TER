@@ -44,7 +44,7 @@ const ENTITY_EVENT = [
         id: 30002,
         type: 'RESOURCE',
         name: 'Entity',
-        description: 'User',
+        description: '',
         position: { x: 250, y: 800, z:0 },
         size: { w: 0, h: 0 },
         identifiers: [
@@ -57,28 +57,6 @@ const ENTITY_EVENT = [
             { id: 30002204, attribute: 20005 },
         ],
     },
-    {
-        id: 30003,
-        type: 'RESOURCE',
-        name: 'Relationship',
-        description: 'User',
-        position: { x: 1500, y: 0, z:0 },
-        size: { w: 0, h: 0 },
-        identifiers: [
-            { id: 30003101, identifier: 10005 },
-        ],
-        attributes:  [
-            { id: 30003200, attribute: 20007 },
-            { id: 30003201, attribute: 20008 },
-            { id: 30003202, attribute: 20009 },
-            { id: 30003203, attribute: 20010 },
-            { id: 30003204, attribute: 20008 },
-            { id: 30003205, attribute: 20009 },
-            { id: 30003206, attribute: 20010 },
-            { id: 30003206, attribute: 20005 },
-        ],
-    },
-
     {
         id: 30004,
         type: 'RESOURCE',
@@ -236,103 +214,6 @@ const ENTITY_EVENT = [
         attributes:  [
         ],
     },
-
-
-
-    {
-        id: 30016,
-        type: 'RESOURCE',
-        name: 'Relattionship (E-R)',
-        description: '',
-        position: { x: 1600, y: 400, z:0 },
-        size: { w: 0, h: 0 },
-        identifiers: [
-            { id: 30016101, identifier: 10005 },
-        ],
-        attributes:  [
-        ],
-    },
-    {
-        id: 30017,
-        type: 'RESOURCE',
-        name: 'Relattionship (E-E)',
-        description: '',
-        position: { x: 2000, y: 400, z:0 },
-        size: { w: 0, h: 0 },
-        identifiers: [
-            { id: 30017101, identifier: 10005 },
-        ],
-        attributes:  [
-        ],
-    },
-    {
-        id: 30018,
-        type: 'RESOURCE',
-        name: 'Relattionship (R-R)',
-        description: '',
-        position: { x: 2400, y: 400, z:0 },
-        size: { w: 0, h: 0 },
-        identifiers: [
-            { id: 30018101, identifier: 10005 },
-        ],
-        attributes:  [
-        ],
-    },
-    {
-        id: 30019,
-        type: 'RESOURCE',
-        name: 'Relattionship (再帰)',
-        description: '',
-        position: { x: 2800, y: 400, z:0 },
-        size: { w: 0, h: 0 },
-        identifiers: [
-            { id: 30019101, identifier: 10005 },
-        ],
-        attributes:  [
-        ],
-    },
-
-
-    {
-        id: 30020,
-        type: 'RESOURCE',
-        name: 'Relattionship (Subset)',
-        description: '',
-        position: { x: 1600, y: 500, z:0 },
-        size: { w: 0, h: 0 },
-        identifiers: [
-            { id: 30020101, identifier: 10005 },
-        ],
-        attributes:  [
-        ],
-    },
-    {
-        id: 30021,
-        type: 'RESOURCE',
-        name: 'Relattionship (MO)',
-        description: '',
-        position: { x: 2000, y: 500, z:0 },
-        size: { w: 0, h: 0 },
-        identifiers: [
-            { id: 30021101, identifier: 10005 },
-        ],
-        attributes:  [
-        ],
-    },
-    {
-        id: 30022,
-        type: 'RESOURCE',
-        name: 'Relattionship (HDR-DTL)',
-        description: '',
-        position: { x: 2400, y: 500, z:0 },
-        size: { w: 0, h: 0 },
-        identifiers: [
-            { id: 30022101, identifier: 10005 },
-        ],
-        attributes:  [
-        ],
-    },
-
 ];
 
 export default ENTITY_EVENT;

@@ -22,11 +22,6 @@ const RELATIONSHIPS = [
         from: { id: 30002101, position: 180 },
         to:   { id: 40001102, position:   0 },
     },
-    {   // relationship - setting relationship
-        id: id++,
-        from: { id: 30003101, position: 180 },
-        to:   { id: 40002101, position:   0 },
-    },
     {   // identifier - setting relationship
         id: id++,
         from: { id: 40000101, position: 270 },
@@ -36,6 +31,23 @@ const RELATIONSHIPS = [
         id: id++,
         from: { id: 40000101, position: 270 },
         to:   { id: 40002103, position:  90 },
+    },
+    // entity - relationship
+    {
+        id: id++,
+        from: { id: 30002101, position: 270 },
+        to:   { id: 40003102, position:  90 },
+    },
+    {
+        id: id++,
+        from: { id: 30002101, position: 270 },
+        to:   { id: 40003103, position:  90 },
+    },
+    // relationship - setting relationship
+    {
+        id: id++,
+        from: { id: 40003101, position: 270 },
+        to:   { id: 40002101, position:  90 },
     },
 ];
 
@@ -127,27 +139,6 @@ const RELATIONSHIPS_NEXT = [
             }
         ],
         description: 'entity - entity_attribute',
-    },
-    {
-        id: id++,
-        type: null,
-        from: {
-            cardinality: null,
-            optionality: null,
-            position: 0,
-        },
-        to: {
-            cardinality: null,
-            optionality: null,
-            position: 0,
-        },
-        details: [
-            {
-                from: { id: 30003101, position: 180 },
-                to:   { id: 40002101, position:   0 },
-            }
-        ],
-        description: 'relationship - setting relationship',
     },
     {
         id: id++,
