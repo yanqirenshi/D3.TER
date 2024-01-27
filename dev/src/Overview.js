@@ -41,9 +41,13 @@ export default function Overview () {
                 結線の種類
               </S>
               <S>1 対 1</S>
-              <S>1 対 複数</S>
+              <img src={process.env.PUBLIC_URL + '/assets/2024-01-27_130647.png'}/>
               <S>1 対 (1 or 値なし)</S>
+              <img src={process.env.PUBLIC_URL + '/assets/2024-01-27_130706.png'}/>
+              <S>1 対 複数</S>
+              <img src={process.env.PUBLIC_URL + '/assets/2024-01-27_130724.png'}/>
               <S>1 対 (複数 or 値なし)</S>
+              <img src={process.env.PUBLIC_URL + '/assets/2024-01-27_130740.png'}/>
               <S>対照表、対応表</S>
               <S>再帰</S>
             </Box>

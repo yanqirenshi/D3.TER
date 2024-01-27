@@ -2,97 +2,126 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
+import {H} from 'tion';
+
+
 export default function Classes () {
     return (
-        <Container maxWidth="md"
-                   sx={{pt: 3, pb: 22}}>
-          <Box>
+        <Box sx={{display:'flex', justifyContent: 'center', pt: 5}}>
+          <Box sx={{ml:2, mr:2}}>
+            <H lev="5">Rectum</H>
+            <pre style={{lineHeight: '13px'}}>
+              {z.join('\n')}
+            </pre>
+          </Box>
+
+          <Box sx={{ml:2, mr:2}}>
+            <H lev="5">Painter</H>
+            <pre style={{lineHeight: '13px'}}>
+              {y.join('\n')}
+            </pre>
+          </Box>
+
+          <Box sx={{ml:2, mr:2}}>
+            <H lev="5">Tailer(Stylest)</H>
             <pre style={{lineHeight: '13px'}}>
               {x.join('\n')}
             </pre>
           </Box>
-        </Container>
+        </Box>
     );
 }
 
+const z = [
+    '+-----------------------------+',
+    '| Rectum (Colon)              |',
+    '|=============================|',
+    '|+ callbacks                  |',
+    '|- _entities                  |',
+    '|- _relationships             |',
+    '|- _default                   |',
+    '|-----------------------------|',
+    '|  ensureCallbacks            |',
+    '|  entities                   |',
+    '|  bounds                     |',
+    '|  getIdentifier              |',
+    '|  buildRelationshipsWithPort |',
+    '|+ data                       |',
+    '|  draw                       |',
+    '+-----------------------------+',
+];
+
 const x = [
-    '                                                                    utils/',
-    '                                                                    +-----------+  +------------+  +----------+  +------+',
-    '                                                                    | Name      |  | Pool       |  | Position |  | Size |',
-    '     +---------+                                                    |===========|  |============|  |==========|  |======|',
-    '     | Atman   |                                                    |+ physical |  |------------|  |+ x       |  |+ h   |',
-    '     |=========|                                                    |+ logical  |  |+ make      |  |+ y       |  |+ w   |',
-    '     |- _class |                                                    |+ padding  |  |+ list2pool |  |+ z       |  |------|',
-    '     |- _id    |                                                    |+ position |  +------------+  |----------|  +------+',
-    '     |- _core  |                                                    |+ size     |                  +----------+',
-    '     |---------|                                                    |-----------|',
-    '     |+ id     |                                                    |+ set      |',
-    '     +---------+                                                    |+ val      |',
-    '          ^                                                         +-----------+',
-    '          |',
-    '          +--------------------------+-------------------+---------------+---------------+---------------------+',
-    '          |                          |                   |               |               |                     |',
-    '   +---------------------+      +----------------+  +-----------+  +------------+  +------------------+  +--------------+',
-    '   | Builder             |      | ColumnInstance |  | Attribute |  | Identifier |  | Port             |  | Relationship |',
-    '   |=====================|      |================|  |===========|  |============|  |==================|  |==============|',
-    '   |+ name               |      |+ name          |  |+ name     |  |+ name      |  |- _id             |  |+ from        |',
-    '   |+ description        |      |- _master       |  |-----------|  |------------|  |- _owner          |  |+ to          |',
-    '   |+ position           |      |----------------|  +-----------+  +------------+  |- _type           |  |--------------|',
-    '   |+ size               |      +----------------+                                 |- _core           |  +--------------+',
-    '   |+ type               |           ^                                             |+ position        |',
-    '   |+ background         |           |                                             |- _entity         |',
-    '   |---------------------|           +------------------------+                    |------------------|',
-    '   |+ init               |           |                        |                    |+ position_degree |',
-    '   |+ template           |      +-------------------+    +--------------------+    +------------------+',
-    '   |- entityTypeContents |      | AttributeInstance |    | IdentifierInstance |',
-    '   |- entityBackground   |      |===================|    |====================|',
-    '   |- buildIdentifiers   |      |+ name             |    |+ name              |',
-    '   |- buildAttributes    |      |+ position         |    |+ position          |',
-    '   |- build              |      |+ size             |    |+ size              |',
-    '   +---------------------+      |-------------------|    |- _ports            |',
-    '          ^                     |+ template         |    |--------------------|',
-    '          |                     +-------------------+    +--------------------+',
-    '   +-------------------------+',
-    '   | EntityTailor            |',
-    '   |=========================|',
-    '   |<Size>                   |',
-    '   |- sizingType             |',
-    '   |  sizingName             |      +-----------------------------+',
-    '   |  sizingIdentifiers      |      | Rectum (Colon)              |',
-    '   |  sizingAttributes       |      |=============================|',
-    '   |  sizingContentsArea     |      |+ callbacks                  |',
-    '   |+ sizing                 |      |- _entities                  |',
-    '   |+ reSizing               |      |- _relationships             |',
-    '   |                         |      |- _default                   |',
-    '   |<Position>               |      |-----------------------------|',
-    '   |- positioningName        |      |  ensureCallbacks            |',
-    '   |  positioningType        |      |  entities                   |',
-    '   |  positioningColumnItems |      |  bounds                     |',
-    '   |  positioningIdentifiers |      |  getIdentifier              |',
-    '   |  positioningAttributes  |      |  buildRelationshipsWithPort |',
-    '   |  deg2rad                |      |+ data                       |',
-    '   |  getPortLineLength      |      |  draw                       |',
-    '   |  getPortLineFrom        |      +-----------------------------+',
-    '   |  makePortLine           |',
-    '   |  isCorss                |',
-    '   |  getCrossPointCore      |',
-    '   |  getCrossPoint          |',
-    '   |  getEntityLines         |',
-    '   |  positioningPort        |',
-    '   |  positioningPorts       |',
-    '   |  positioningEntity      |',
-    '   |+ positioning            |',
-    '   +-------------------------+',
-    '          ^',
-    '          |',
-    '   +-----------+',
-    '   | Entity    |',
-    '   |===========|',
-    '   |- _default |',
-    '   |-----------|',
-    '   +-----------+',
-    '',
-    '',
+    '                                  +---------+',
+    '                                  | Atman   |',
+    '                                  |=========|',
+    '                                  |- _class |',
+    '                                  |- _id    |',
+    '                                  |- _core  |',
+    '                                  |---------|',
+    '                                  |+ id     |',
+    '                                  +---------+',
+    '                                       ^',
+    '                                       |',
+    '       +-------------------------------+------------+-------------------+---------------+-----------+---------------------+',
+    '       |                                            |                   |               |           |                     |',
+    '+---------------------+                        +----------------+  +-----------+  +------------+    |                     |',
+    '| Builder             |                        | ColumnInstance |  | Attribute |  | Identifier |    |                     |',
+    '|=====================|                        |================|  |===========|  |============|    |                     |',
+    '|+ name               |                        |+ name          |  |+ name     |  |+ name      |    |                     |',
+    '|+ description        |                        |- _master       |  |-----------|  |------------|    |                     |',
+    '|+ position           |                        |----------------|  +-----------+  +------------+    |                     |',
+    '|+ size               |                        +----------------+                                   |                     |',
+    '|+ type               |                             ^                                               |                     |',
+    '|+ background         |                             |                                               |                     |',
+    '|---------------------|      +---------+            +----------------------+                        |                     |',
+    '|+ init               |      |         |            |                      |                        |                     |',
+    '|+ template           |      |  +-----------+  +-------------------+  +--------------------+  +------------------+  +--------------+',
+    '|- entityTypeContents |      |  | Entity    |  | AttributeInstance |  | IdentifierInstance |  | Port             |  | Relationship |',
+    '|- entityBackground   |      |  |===========|  |===================|  |====================|  |==================|  |==============|',
+    '|- buildIdentifiers   |      |  |- _default |  |+ name             |  |+ name              |  |- _id             |  |+ from        |',
+    '|- buildAttributes    |      |  |-----------|  |+ position         |  |+ position          |  |- _owner          |  |+ to          |',
+    '|- build              |      |  +-----------+  |+ size             |  |+ size              |  |- _type           |  |--------------|',
+    '+---------------------+      |                 |-------------------|  |- _ports            |  |- _core           |  +--------------+',
+    '       ^                     |                 |+ template         |  |--------------------|  |+ position        |',
+    '       |                     |                 +-------------------+  +--------------------+  |- _entity         |',
+    '+-------------------------+  |                                                                |------------------|',
+    '| EntityTailor            |  |                                                                |+ position_degree |',
+    '|=========================|  |                                                                +------------------+',
+    '|<Size>                   |  |',
+    '|- sizingType             |  |',
+    '|  sizingName             |  |',
+    '|  sizingIdentifiers      |  |',
+    '|  sizingAttributes       |  |',
+    '|  sizingContentsArea     |  |',
+    '|+ sizing                 |  |',
+    '|+ reSizing               |  |',
+    '|                         |  |',
+    '|<Position>               |  |',
+    '|- positioningName        |  |',
+    '|  positioningType        |  |',
+    '|  positioningColumnItems |  |',
+    '|  positioningIdentifiers |  |',
+    '|  positioningAttributes  |  |',
+    '|  deg2rad                |  |                                              utils/',
+    '|  getPortLineLength      |  |                                              +-----------+  +------------+  +----------+  +------+',
+    '|  getPortLineFrom        |  |                                              | Name      |  | Pool       |  | Position |  | Size |',
+    '|  makePortLine           |  |                                              |===========|  |============|  |==========|  |======|',
+    '|  isCorss                |  |                                              |+ physical |  |------------|  |+ x       |  |+ h   |',
+    '|  getCrossPointCore      |  |                                              |+ logical  |  |+ make      |  |+ y       |  |+ w   |',
+    '|  getCrossPoint          |  |                                              |+ padding  |  |+ list2pool |  |+ z       |  |------|',
+    '|  getEntityLines         |  |                                              |+ position |  +------------+  |----------|  +------+',
+    '|  positioningPort        |  |                                              |+ size     |                  +----------+',
+    '|  positioningPorts       |  |                                              |-----------|',
+    '|  positioningEntity      |  |                                              |+ set      |',
+    '|+ positioning            |  |                                              |+ val      |',
+    '+-------------------------+  |                                              +-----------+',
+    '       ^                     |',
+    '       |                     |',
+    '       +---------------------+',
+];
+
+const y = [
     '+----------------+       +----------------------+   +------------------------+   +----------------+',
     '| Painter        |       | Entity               |   | Relationships          |   | Ports          |',
     '|================|       |======================|   |========================|   |================|',
