@@ -4,7 +4,6 @@ import Container from '@mui/material/Container';
 
 import {H} from 'tion';
 
-
 export default function Classes () {
     return (
         <Box sx={{display:'flex', justifyContent: 'center', pt: 5}}>

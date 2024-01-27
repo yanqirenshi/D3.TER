@@ -6,10 +6,10 @@ import Container from '@mui/material/Container';
 import Tabs from './Tabs.js';
 import Graph from './Graph.js';
 
-import Overview from './Overview.js';
-import Models from './Models.js';
-import Views from './Views.js';
-import Classes from './Classes.js';
+import Overview from './tabs/Overview.js';
+import Models from './tabs/Models.js';
+import Views from './tabs/Views.js';
+import Classes from './tabs/Classes.js';
 
 export default function App() {
     const [tabs, setTabs] = React.useState({

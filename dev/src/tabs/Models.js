@@ -3,8 +3,8 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import S from '@mui/material/Typography';
 
-import InputDataModel from './InputDataModel.js';
-import ObjectModel from './ObjectModel.js';
+import InputDataModel from '../panels/InputDataModel.js';
+import ObjectModel from '../panels/ObjectModel.js';
 
 export default function Models () {
     return (
