@@ -19,7 +19,8 @@ export default function Tabs (props) {
                       centered>
           {tabs.list.map(tab=> {
               return (
-                  <Tab value={tab.code}
+                  <Tab key={tab.code}
+                       value={tab.code}
                        label={tab.label}/>
               );
           })}

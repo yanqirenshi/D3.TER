@@ -4,25 +4,25 @@ export default class Relationships {
         edges
             .attr('x1', (d)=> {
                 let port = d.from;
-                let entity = d.from._entity;
+                let entity = d.from._owner;
 
                 return port.position.x + entity.position.x;
             })
             .attr('y1', (d)=> {
                 let port = d.from;
-                let entity = d.from._entity;
+                let entity = d.from._owner;
 
                 return port.position.y + entity.position.y;
             })
             .attr('x2', (d)=> {
                 let port = d.to;
-                let entity = d.to._entity;
+                let entity = d.to._owner;
 
                 return port.position.x + entity.position.x;
             })
             .attr('y2', (d)=> {
                 let port = d.to;
-                let entity = d.to._entity;
+                let entity = d.to._owner;
 
                 return port.position.y + entity.position.y;
             })

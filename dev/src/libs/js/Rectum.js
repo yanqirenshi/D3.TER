@@ -59,40 +59,39 @@ export default class Rectum extends Colon {
 
         return null;
     }
-    buildRelationshipsWithPort (relationships) {
+    getEntity (id) {
         const entities = this.entities();
+
+        return entities.ht[id] || null;
+    }
+    buildRelationshipsWithPort (relationships) {
 
         return relationships.reduce((out, r)=> {
             const from  = r.from;
             const to    = r.to;
 
             // entity identifier を取得する。
-            const id_from = this.getIdentifier(from.id, entities);
-            const id_to   = this.getIdentifier(to.id,   entities);
+            const entity_from = this.getEntity(from.entity);
+            const entity_to   = this.getEntity(to.entity);
 
             // Port のクラスインスタンスを作成する。
-            const port_from = new Port('from', id_from, r);
-            const port_to   = new Port('to',   id_to,   r);
+            const port_from = new Port('from', entity_from, r);
+            const port_to   = new Port('to',   entity_to,   r);
 
             // Relationship のクラスインスタンスを作成する。
             let element = new Relationship(r, port_from, port_to);
 
             // entity(from) に port をセットする。
-            const entity_from = id_from._entity;
+            // entity_from.ports.items.ht[port_from._id] = port_from;
+            // entity_from.ports.items.list.push(port_from);
 
-            entity_from.ports.items.ht[port_from._id] = port_from;
-            entity_from.ports.items.list.push(port_from);
-
-            port_from._entity = entity_from;
+            // port_from._entity = entity_from;
 
             // entity(to) に port をセットする。
-            const entity_to   = id_to._entity;
+            // entity_to.ports.items.ht[port_to._id] = port_to;
+            // entity_to.ports.items.list.push(port_to);
 
-            entity_to.ports.items.ht[port_to._id] = port_to;
-            entity_to.ports.items.list.push(port_to);
-
-            port_to._entity = entity_to;
-
+            // port_to._entity = entity_to;
 
             // out
             out.list.push(element);
