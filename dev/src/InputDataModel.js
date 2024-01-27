@@ -4,41 +4,69 @@ import S from '@mui/material/Typography';
 
 export default function InputDataModel () {
     return (
-        <Box>
-          <S>なんかこれ、、、複数項目でリレーション貼るのにイマイチだな。</S>
-          <pre style={{lineHeight: '13px'}}>
-            {x.join('\n')}
-          </pre>
+        <Box sx={{display:'flex', justifyContent: 'center', mr:2}}>
+          <Box sx={{pl:2,pr:2}}>
+            <pre style={{lineHeight: '13px'}}>
+              {x.join('\n')}
+            </pre>
+          </Box>
+
+          <Box sx={{pl:2,pr:2}}>
+            <pre style={{lineHeight: '13px'}}>
+              {y.join('\n')}
+            </pre>
+          </Box>
         </Box>
     );
 }
 
 const x = [
-    '+-------------+          +-------------+',
-    '| IDENTIFIER  |----+     | ENTITY      |',
-    '|=============|    |     |=============|',
-    '| id          |    |     | id          |',
-    '| name        |    |     | type        |< - -| ???',
-    '| type        |    |     | name        |',
-    '| length      |    |     | description |',
-    '| description |    |     | position    | { x: 0, y: 0, z: 0 }',
-    '+-------------+    |     | size        | { w: 0, h: 0 }',
-    '                   `---->| identifiers | { id: 0, identifier: 0 } --+',
-    '+-------------+    +---->| attributes  |                            |',
-    '| ATTRIBUTE   |    |     +-------------+                            |',
-    '|=============|    |                                                |',
-    '| id          |----+                                                |',
-    '| name        |                                                     |',
-    '| type        |< - -| ???                                           |',
-    '| length      |                                                     |',
-    '| description |                                                     |',
-    '+-------------+                                                     |',
-    '                                                                    |',
-    '+---------------+                                                   |',
-    '| RELATIONSHIPS |                                                   |',
-    '|===============|                                                   |',
-    '| id            |                                                   |',
-    '| from          | { id: 0, position: 0 } <--------------------------+',
-    '| to            | { id: 0, position: 0 } <--------------------------+',
     '+---------------+',
+    '| Entity        |                                      +---------------+',
+    '|---------------|           +--------------------(1)--o| Name          |',
+    '| id            |           |                          |===============|',
+    '| type          |           |               +-------+  | physical name |',
+    '| name          |-----------+ +------------o| point |  | logical name  |',
+    '| description   |             |   +------+  |=======|  +---------------+',
+    '| position      |<------------+   | rect |  | x     |',
+    '| size          |<---------------o|======|  | y     |',
+    '| identifiers   ||[]<------+      | w    |  | z     |',
+    '| attributes    ||[]<---+  |      | h    |  +-------+',
+    '+---------------+       |  |      +------+',
+    '                        |  |      +-------------------+',
+    '                        |  +-----o| entity identifier |       +---------------+',
+    '                        |         |===================|       | identifier    |',
+    '                        |         | id                |       |===============|',
+    '                        |         | identifier id     |<-----o| id            |',
+    '                        |         | name              |<--(1) | name          |<--(1)',
+    '                        |         | description       |       | description   |',
+    '                        |         +-------------------+       +---------------+',
+    '                        |         +------------------+',
+    '                        +--------o| entity attribute |        +---------------+',
+    '                                  |==================|        | attribute     |',
+    '                                  | id               |        |===============|',
+    '                                  | attribute id     |<------o| id            |',
+    '                                  | name             |<--(1)  | name          |<--(1)',
+    '                                  | description      |        | description   |',
+    '                                  +------------------+        +---------------+',
+];
+
+const y = [
+    '+--------------+',
+    '| Relationship |',
+    '|==============|         +-------------+',
+    '| id           |         | port        |',
+    '| type         |         |=============|',
+    '| from         ||<------o| cardinality |',
+    '| to           ||<------o| optionality |',
+    '| details      |[]<--+   | position    |',
+    '| description  |     |   +-------------+',
+    '+--------------+     |',
+    '                     |   +------+',
+    '                     +--o| item |     +----------+',
+    '                         |======|     | node     |',
+    '                         | from ||<--o|==========|',
+    '                         | tto  ||<--o| id       |',
+    '                         +------+     | position |',
+    '                                      +----------+',
 ];

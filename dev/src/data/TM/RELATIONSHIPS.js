@@ -45,58 +45,123 @@ export default RELATIONSHIPS;
 const RELATIONSHIPS_NEXT = [
     {
         id: id++,
-        description: 'identifier - entity_identifier',
+        type: null,
+        from: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
+        to: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
         details: [
             {
                 from: { id: 30000101, position:   0 },
                 to:   { id: 40000103, position: 180 },
             }
-        ]
+        ],
+        description: 'identifier - entity_identifier',
     },
     {
         id: id++,
-        description: 'entity - entity_identifier',
+        type: null,
+        from: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
+        to: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
         details: [
             {
                 from: { id: 30002101, position: 180 },
                 to:   { id: 40000102, position:   0 },
             }
         ],
+        description: 'entity - entity_identifier',
     },
 
     {
         id: id++,
-        description: 'attribute - entity_attribute',
+        type: null,
+        from: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
+        to: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
         details: [
             {
                 from: { id: 30001101, position:   0 },
                 to:   { id: 40001103, position: 180 },
             }
         ],
+        description: 'attribute - entity_attribute',
     },
     {
         id: id++,
-        description: 'entity - entity_attribute',
+        type: null,
+        from: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
+        to: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
         details: [
             {
                 from: { id: 30002101, position: 180 },
                 to:   { id: 40001102, position:   0 },
             }
         ],
+        description: 'entity - entity_attribute',
     },
     {
         id: id++,
-        description: 'relationship - setting relationship',
+        type: null,
+        from: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
+        to: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
         details: [
             {
                 from: { id: 30003101, position: 180 },
                 to:   { id: 40002101, position:   0 },
             }
         ],
+        description: 'relationship - setting relationship',
     },
     {
         id: id++,
-        description: 'identifier - setting relationship',
+        type: null,
+        from: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
+        to: {
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
         details: [
             {
                 from: { id: 40000101, position: 270 },
@@ -107,5 +172,6 @@ const RELATIONSHIPS_NEXT = [
                 to:   { id: 40002103, position:  90 },
             },
         ],
+        description: 'identifier - setting relationship',
     },
 ];
