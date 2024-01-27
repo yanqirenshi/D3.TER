@@ -40,3 +40,72 @@ const RELATIONSHIPS = [
 ];
 
 export default RELATIONSHIPS;
+
+
+const RELATIONSHIPS_NEXT = [
+    {
+        id: id++,
+        description: 'identifier - entity_identifier',
+        details: [
+            {
+                from: { id: 30000101, position:   0 },
+                to:   { id: 40000103, position: 180 },
+            }
+        ]
+    },
+    {
+        id: id++,
+        description: 'entity - entity_identifier',
+        details: [
+            {
+                from: { id: 30002101, position: 180 },
+                to:   { id: 40000102, position:   0 },
+            }
+        ],
+    },
+
+    {
+        id: id++,
+        description: 'attribute - entity_attribute',
+        details: [
+            {
+                from: { id: 30001101, position:   0 },
+                to:   { id: 40001103, position: 180 },
+            }
+        ],
+    },
+    {
+        id: id++,
+        description: 'entity - entity_attribute',
+        details: [
+            {
+                from: { id: 30002101, position: 180 },
+                to:   { id: 40001102, position:   0 },
+            }
+        ],
+    },
+    {
+        id: id++,
+        description: 'relationship - setting relationship',
+        details: [
+            {
+                from: { id: 30003101, position: 180 },
+                to:   { id: 40002101, position:   0 },
+            }
+        ],
+    },
+    {
+        id: id++,
+        description: 'identifier - setting relationship',
+        details: [
+            {
+                from: { id: 40000101, position: 270 },
+                to:   { id: 40002102, position:  90 },
+            },
+            {
+                from: { id: 40000101, position: 270 },
+                to:   { id: 40002103, position:  90 },
+            },
+        ],
+    },
+];
