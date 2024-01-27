@@ -16,7 +16,7 @@ export default function Graph () {
             transform: {
                 k: 0.7,
                 x: 400.0,
-                y: 400.0,
+                y:   0.0,
             },
             svg: {
                 style: {

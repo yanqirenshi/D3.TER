@@ -13,7 +13,7 @@ import Classes from './Classes.js';
 
 export default function App() {
     const [tabs, setTabs] = React.useState({
-        selected: 'overview',
+        selected: 'models',
         list: [
             { code: 'overview', label: 'Overview' },
             { code: 'classes',  label: 'Classes' },
@@ -25,9 +25,8 @@ export default function App() {
     const onChange = (new_tabs)=> setTabs(new_tabs);
 
     return (
-        <Container maxWidth="md"
-                   sx={{pt: 3, pb: 22}}>
-          <Box sx={{height:333, p: 2, background: '#f8f8f8'}}>
+        <Box sx={{pt: 3, pb: 22}}>
+          <Box sx={{height:777, p: 2, background: '#f8f8f8'}}>
             <Graph/>
           </Box>
 
@@ -39,6 +38,6 @@ export default function App() {
           {'classes'===tabs.selected && <Classes/>}
           {'models'===tabs.selected && <Models/>}
           {'views'===tabs.selected && <Views/>}
-        </Container>
+        </Box>
     );
 }

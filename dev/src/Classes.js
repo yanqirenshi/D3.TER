@@ -1,13 +1,17 @@
 import React from 'react';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 export default function Classes () {
     return (
-        <Box>
-          <pre style={{lineHeight: '13px'}}>
-            {x.join('\n')}
-          </pre>
-        </Box>
+        <Container maxWidth="md"
+                   sx={{pt: 3, pb: 22}}>
+          <Box>
+            <pre style={{lineHeight: '13px'}}>
+              {x.join('\n')}
+            </pre>
+          </Box>
+        </Container>
     );
 }
 
