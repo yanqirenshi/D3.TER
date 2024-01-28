@@ -69,8 +69,8 @@ const ENTITY_EVENT = [
         size: { w: 0, h: 0 },
         identifiers: [
             { id: 40003101, identifier: 10005 },
-            { id: 40003102, identifier: 10002 },
-            { id: 40003103, identifier: 10002 },
+            { id: 40003102, identifier: 10002, name: {logical: 'Entity ID (From)', physical: 'entity_id_from' } },
+            { id: 40003103, identifier: 10002, name: {logical: 'Entity ID (To)',   physical: 'entity_id_to' } },
         ],
         attributes:  [
             { id: 40003200, attribute: 20007 },
