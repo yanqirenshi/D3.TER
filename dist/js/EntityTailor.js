@@ -15,6 +15,8 @@ var _IdentifierInstance = _interopRequireDefault(require("./IdentifierInstance.j
 
 var _AttributeInstance = _interopRequireDefault(require("./AttributeInstance.js"));
 
+var _Geometry = _interopRequireDefault(require("./Geometry.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
@@ -70,6 +72,7 @@ var Builder = /*#__PURE__*/function (_Atman) {
     _this.size = _objectSpread({}, data.size);
     _this.type.contents = _this.entityTypeContents();
     _this.background = _this.entityBackground();
+    _this.geometry = new _Geometry["default"]();
     return _this;
   }
 
@@ -419,52 +422,12 @@ var EntityTailor = /*#__PURE__*/function (_Builder) {
   }
 
   _createClass(EntityTailor, [{
-    key: "sizingType",
+    key: "sizing",
     value:
     /* **************************************************************** *
      *   Size
      * **************************************************************** */
-    function sizingType() {
-      var data = this.type;
-      if (!data.contents) data.contents = '??';
-      data.size.h = this._default.line.height + data.padding * 2;
-      data.size.w = data.contents.length * this._default.line.font.size; // + data.padding * 2;
-    }
-  }, {
-    key: "sizingName",
-    value: function sizingName() {
-      var data = this.name;
-      if (!data.contents) data.contents = '????????';
-      data.size.h = this._default.line.height + data.padding * 2;
-      var type = this.type;
-      data.size.w = this.size.w - this.padding * 2 - this.bar.size.header - type.size.w;
-    }
-  }, {
-    key: "sizingIdentifiers",
-    value: function sizingIdentifiers() {
-      var data = this.identifiers;
-      var padding = this.padding;
-      data.size.w = (this.size.w - padding * 2) / 2 - this.bar.size.contents / 2;
-      data.size.h = data.contents.list.length * (this._default.line.height + padding * 2);
-    }
-  }, {
-    key: "sizingAttributes",
-    value: function sizingAttributes() {
-      var data = this.attributes;
-      var padding = this.padding;
-      data.size.w = (this.size.w - this.padding * 2) / 2 - this.bar.size.contents / 2;
-      data.size.h = data.contents.list.length * (this._default.line.height + padding * 2);
-    }
-  }, {
-    key: "sizingContentsArea",
-    value: function sizingContentsArea() {
-      var id_h = this.identifiers.size.h;
-      var attr_h = this.attributes.size.h;
-      if (id_h > attr_h) this.attributes.size.h = id_h;else this.identifiers.size.h = attr_h;
-    }
-  }, {
-    key: "sizing",
-    value: function sizing() {
+    function sizing() {
       this.sizingType();
       this.sizingName();
       this.sizingIdentifiers();
@@ -504,12 +467,67 @@ var EntityTailor = /*#__PURE__*/function (_Builder) {
      * **************************************************************** */
 
   }, {
+    key: "positioning",
+    value: function positioning() {
+      this.positioningEntity(this);
+      return this;
+    }
+    /* **************************************************************** *
+     *  Entity
+     * **************************************************************** */
+
+  }, {
+    key: "positioningEntity",
+    value: function positioningEntity(entity, entities) {
+      this.positioningName();
+      this.positioningType();
+      this.positioningIdentifiers();
+      this.positioningAttributes();
+      this.positioningPorts();
+    }
+    /* **************************************************************** *
+     *  Contents Area
+     * **************************************************************** */
+
+  }, {
+    key: "sizingContentsArea",
+    value: function sizingContentsArea() {
+      var id_h = this.identifiers.size.h;
+      var attr_h = this.attributes.size.h;
+      if (id_h > attr_h) this.attributes.size.h = id_h;else this.identifiers.size.h = attr_h;
+    }
+    /* **************************************************************** *
+     *  Name
+     * **************************************************************** */
+
+  }, {
+    key: "sizingName",
+    value: function sizingName() {
+      var data = this.name;
+      if (!data.contents) data.contents = '????????';
+      data.size.h = this._default.line.height + data.padding * 2;
+      var type = this.type;
+      data.size.w = this.size.w <= 0 ? 0 : this.size.w - this.padding * 2 - this.bar.size.header - type.size.w;
+    }
+  }, {
     key: "positioningName",
     value: function positioningName() {
       var entity = this;
       var d = entity.name;
       d.position.x = entity.padding;
       d.position.y = entity.padding;
+    }
+    /* **************************************************************** *
+     *  Type
+     * **************************************************************** */
+
+  }, {
+    key: "sizingType",
+    value: function sizingType() {
+      var data = this.type;
+      if (!data.contents) data.contents = '??';
+      data.size.h = this._default.line.height + data.padding * 2;
+      data.size.w = data.contents.length * this._default.line.font.size; // + data.padding * 2;
     }
   }, {
     key: "positioningType",
@@ -520,6 +538,10 @@ var EntityTailor = /*#__PURE__*/function (_Builder) {
       d.position.x = entity.padding + entity.name.size.w + bar;
       d.position.y = entity.padding;
     }
+    /* **************************************************************** *
+     *  ColumnItems
+     * **************************************************************** */
+
   }, {
     key: "positioningColumnItems",
     value: function positioningColumnItems(d) {
@@ -545,6 +567,18 @@ var EntityTailor = /*#__PURE__*/function (_Builder) {
         _iterator3.f();
       }
     }
+    /* **************************************************************** *
+     *  Identifiers
+     * **************************************************************** */
+
+  }, {
+    key: "sizingIdentifiers",
+    value: function sizingIdentifiers() {
+      var data = this.identifiers;
+      var padding = this.padding;
+      data.size.w = this.size.w <= 0 ? 0 : (this.size.w - padding * 2) / 2 - this.bar.size.contents / 2;
+      data.size.h = data.contents.list.length * (this._default.line.height + padding * 2);
+    }
   }, {
     key: "positioningIdentifiers",
     value: function positioningIdentifiers() {
@@ -554,6 +588,18 @@ var EntityTailor = /*#__PURE__*/function (_Builder) {
       d.position.x = entity.padding;
       d.position.y = entity.padding + entity.name.size.h + bar;
       this.positioningColumnItems(d);
+    }
+    /* **************************************************************** *
+     *  Attributes
+     * **************************************************************** */
+
+  }, {
+    key: "sizingAttributes",
+    value: function sizingAttributes() {
+      var data = this.attributes;
+      var padding = this.padding;
+      data.size.w = this.size.w <= 0 ? 0 : (this.size.w - this.padding * 2) / 2 - this.bar.size.contents / 2;
+      data.size.h = data.contents.list.length * (this._default.line.height + padding * 2);
     }
   }, {
     key: "positioningAttributes",
@@ -566,195 +612,38 @@ var EntityTailor = /*#__PURE__*/function (_Builder) {
       d.position.y = entity.padding + entity.name.size.h + bar_horizontal;
       this.positioningColumnItems(d);
     }
-  }, {
-    key: "deg2rad",
-    value: function deg2rad(degree) {
-      return degree * (Math.PI / 180);
-    }
-  }, {
-    key: "getPortLineLength",
-    value: function getPortLineLength(entity) {
-      var max_length = Math.floor(Math.sqrt(entity.size.w * entity.size.w + entity.size.h * entity.size.h));
-      return 0.8 * max_length;
-    }
-  }, {
-    key: "getPortLineFrom",
-    value: function getPortLineFrom(entity) {
-      return {
-        x: Math.floor(entity.size.w / 2),
-        y: Math.floor(entity.size.h / 2)
-      };
-    }
-  }, {
-    key: "makePortLine",
-    value: function makePortLine(entity, port) {
-      var out = {
-        from: {
-          x: 0,
-          y: 0
-        },
-        to: {
-          x: 0,
-          y: 0
-        }
-      };
-      var from = this.getPortLineFrom(entity);
-      out.from.x = from.x;
-      out.from.y = from.y;
-      var x = 0;
-      var y = this.getPortLineLength(entity);
-      var degree = port.position_degree();
-      var radian = this.deg2rad(degree);
-      var cos = Math.cos(radian);
-      var sin = Math.sin(radian);
-      out.to.x = Math.floor(x * cos - y * sin);
-      out.to.y = Math.floor(x * sin + y * cos);
-      out.to.x += out.from.x;
-      out.to.y += out.from.y;
-      port._from = out.from;
-      port._to = out.to;
-      return out;
-    }
-  }, {
-    key: "isCorss",
-    value: function isCorss(A, B, C, D) {
-      // 二つの線分の交差チェック
-      // https://www.hiramine.com/programming/graphics/2d_segmentintersection.html
-      var ACx = C.x - A.x;
-      var ACy = C.y - A.y;
-      var BUNBO = (B.x - A.x) * (D.y - C.y) - (B.y - A.y) * (D.x - C.x);
-      if (BUNBO === 0) return false;
-      var r = ((D.y - C.y) * ACx - (D.x - C.x) * ACy) / BUNBO;
-      var s = ((B.y - A.y) * ACx - (B.x - A.x) * ACy) / BUNBO;
-      return 0 <= r && r <= 1 && 0 <= s && s <= 1;
-    }
-  }, {
-    key: "getCrossPointCore",
-    value: function getCrossPointCore(line, line_port, port) {
-      // ２直線の交点を求める公式
-      var out = {
-        x: 0,
-        y: 0
-      };
-      var A = line.from;
-      var B = line.to;
-      var C = line_port.from;
-      var D = line_port.to;
-      var bunbo = (B.y - A.y) * (D.x - C.x) - (B.x - A.x) * (D.y - C.y);
-      if (!this.isCorss(A, B, C, D)) return null; // 二つの線分の交点を算出する。
-      // http://mf-atelier.sakura.ne.jp/mf-atelier/modules/tips/program/algorithm/a1.html
+    /* **************************************************************** *
+     *  Port
+     * **************************************************************** */
 
-      var d1, d2;
-      d1 = C.y * D.x - C.x * D.y;
-      d2 = A.y * B.x - A.x * B.y;
-      out.x = (d1 * (B.x - A.x) - d2 * (D.x - C.x)) / bunbo;
-      out.y = (d1 * (B.y - A.y) - d2 * (D.y - C.y)) / bunbo;
-      return out;
-    }
-  }, {
-    key: "getCrossPoint",
-    value: function getCrossPoint(lines, line_port, port) {
-      var _iterator4 = _createForOfIteratorHelper(lines),
-          _step4;
-
-      try {
-        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-          var line = _step4.value;
-          var point = this.getCrossPointCore(line, line_port, port);
-          if (point) return point;
-        }
-      } catch (err) {
-        _iterator4.e(err);
-      } finally {
-        _iterator4.f();
-      }
-
-      return null;
-    }
-  }, {
-    key: "getEntityLines",
-    value: function getEntityLines(entity) {
-      var port_r = 4;
-      var margin = entity.margin + port_r;
-      var w = entity.size.w;
-      var h = entity.size.h;
-      var top_left = {
-        x: 0 - margin,
-        y: 0 - margin
-      };
-      var top_right = {
-        x: w + margin,
-        y: 0 - margin
-      };
-      var bottom_rigth = {
-        x: w + margin,
-        y: h + margin
-      };
-      var bottom_left = {
-        x: 0 - margin,
-        y: h + margin
-      };
-      return [{
-        from: top_left,
-        to: top_right
-      }, {
-        from: top_right,
-        to: bottom_rigth
-      }, {
-        from: bottom_rigth,
-        to: bottom_left
-      }, {
-        from: bottom_left,
-        to: top_left
-      }];
-    }
   }, {
     key: "positioningPort",
     value: function positioningPort(port) {
       var entity = this;
-      var line_port = this.makePortLine(entity, port);
-      var lines_entity = this.getEntityLines(entity);
-      var point = this.getCrossPoint(lines_entity, line_port, port);
-      if (!point) point = {
-        x: 0,
-        y: 0
-      };
-      port.position = point;
-      return port;
+      var line_port = this.geometry.getPortLine(port, entity);
+      var lines_entity = this.geometry.getFourSideLines(entity);
+      var point = this.geometry.getCrossPoint(lines_entity, line_port);
+      port.position = point.point;
+      return port.point;
     }
   }, {
     key: "positioningPorts",
     value: function positioningPorts() {
       var ports = this.ports.items.list;
 
-      var _iterator5 = _createForOfIteratorHelper(ports),
-          _step5;
+      var _iterator4 = _createForOfIteratorHelper(ports),
+          _step4;
 
       try {
-        for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-          var port = _step5.value;
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var port = _step4.value;
           this.positioningPort(port);
         }
       } catch (err) {
-        _iterator5.e(err);
+        _iterator4.e(err);
       } finally {
-        _iterator5.f();
+        _iterator4.f();
       }
-    }
-  }, {
-    key: "positioningEntity",
-    value: function positioningEntity(entity, entities) {
-      this.positioningName();
-      this.positioningType();
-      this.positioningIdentifiers();
-      this.positioningAttributes();
-      this.positioningPorts();
-    }
-  }, {
-    key: "positioning",
-    value: function positioning() {
-      this.positioningEntity(this);
-      return this;
     }
   }]);
 

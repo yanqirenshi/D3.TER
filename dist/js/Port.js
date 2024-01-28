@@ -9,6 +9,8 @@ exports["default"] = void 0;
 
 var _Atman2 = _interopRequireDefault(require("./Atman.js"));
 
+var _Geometry = _interopRequireDefault(require("./Geometry.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -36,29 +38,238 @@ var Port = /*#__PURE__*/function (_Atman) {
 
   var _super = _createSuper(Port);
 
-  function Port(type, owner, data) {
+  function Port(type, entity, relatihonship_data) {
     var _this;
 
     _classCallCheck(this, Port);
 
-    _this = _super.call(this, type === 'from' ? 'PORT-FROM' : 'PORT-TO', data);
-    _this._id = owner._id; // Idenrifier-Instance
+    _this = _super.call(this, type === 'from' ? 'PORT-FROM' : 'PORT-TO', relatihonship_data);
+    _this._id = relatihonship_data.id + '_' + entity._id; // Idenrifier-Instance
 
-    _this._owner = owner;
+    _this._owner = entity;
     _this._type = type;
-    _this._core = data[type];
-    _this.position = data.position || {
+    _this._core = relatihonship_data[type];
+    _this.position = relatihonship_data.position || {
       x: 0,
       y: 0
     };
 
-    owner._ports.push(_assertThisInitialized(_this));
+    _this.addPort2Entity(entity);
 
     _this._entity = null;
+    _this.geometry = new _Geometry["default"]();
     return _this;
   }
+  /* **************************************************************** *
+   *  Data manegement
+   * **************************************************************** */
+
 
   _createClass(Port, [{
+    key: "calLinePoints",
+    value: function calLinePoints(port) {
+      var table = port._column_instance._table;
+      var rect = {
+        position: {
+          x: table.x,
+          y: table.y
+        },
+        size: {
+          w: table.w,
+          h: table.h
+        }
+      };
+      var geometry = this.geometry;
+      var four_side_lines = geometry.getFourSideLines(rect);
+      var line_port = geometry.getPortLine(port, rect);
+      var cross_point = geometry.getCrossPoint(four_side_lines, line_port);
+      var len = 33 + 4;
+      var to_point = cross_point.point;
+      var from_point;
+
+      if (cross_point.target === 'top') {
+        from_point = {
+          x: to_point.x,
+          y: to_point.y + len
+        };
+      } else if (cross_point.target === 'right') {
+        from_point = {
+          x: to_point.x - len,
+          y: to_point.y
+        };
+      } else if (cross_point.target === 'bottom') {
+        from_point = {
+          x: to_point.x,
+          y: to_point.y - len
+        };
+      } else if (cross_point.target === 'left') {
+        from_point = {
+          x: to_point.x + len,
+          y: to_point.y
+        };
+      }
+
+      return {
+        from: from_point,
+        to: to_point
+      };
+    }
+  }, {
+    key: "calOneLine",
+    value: function calOneLine(d, distance) {
+      var r = 11;
+
+      if (d.line.from.x === d.line.to.x) {
+        // 縦
+        if (d.line.from.y < d.line.to.y) {
+          // (2)
+          return {
+            from: {
+              x: d.line.from.x + r,
+              y: d.line.from.y + distance
+            },
+            to: {
+              x: d.line.from.x - r,
+              y: d.line.from.y + distance
+            }
+          };
+        } else if (d.line.from.y > d.line.to.y) {
+          // (1)
+          return {
+            from: {
+              x: d.line.from.x + r,
+              y: d.line.from.y - distance
+            },
+            to: {
+              x: d.line.from.x - r,
+              y: d.line.from.y - distance
+            }
+          };
+        }
+      } else if (d.line.from.y === d.line.to.y) {
+        // 横
+        if (d.line.from.x < d.line.to.x) {
+          // (2)
+          return {
+            from: {
+              x: d.line.from.x + distance,
+              y: d.line.from.y + r
+            },
+            to: {
+              x: d.line.from.x + distance,
+              y: d.line.from.y - r
+            }
+          };
+        } else if (d.line.from.x > d.line.to.x) {
+          // (1)
+          return {
+            from: {
+              x: d.line.from.x - distance,
+              y: d.line.from.y + r
+            },
+            to: {
+              x: d.line.from.x - distance,
+              y: d.line.from.y - r
+            }
+          };
+        }
+      }
+
+      return {
+        from: {
+          x: 0,
+          y: 0
+        },
+        to: {
+          x: 0,
+          y: 0
+        }
+      };
+    }
+  }, {
+    key: "calThreeLine",
+    value: function calThreeLine(d, distance) {
+      if (d.line.from.x === d.line.to.x) {
+        // 縦
+        if (d.line.from.y < d.line.to.y) {
+          return [[d.line.from.x - distance, d.line.from.y], [d.line.from.x, d.line.from.y + distance], [d.line.from.x + distance, d.line.from.y]];
+        } else if (d.line.from.y > d.line.to.y) {
+          return [[d.line.from.x - distance, d.line.from.y], [d.line.from.x, d.line.from.y - distance], [d.line.from.x + distance, d.line.from.y]];
+        }
+      } else if (d.line.from.y === d.line.to.y) {
+        // 横
+        if (d.line.from.x < d.line.to.x) {
+          return [[d.line.from.x, d.line.from.y - distance], [d.line.from.x + distance, d.line.from.y], [d.line.from.x, d.line.from.y + distance]];
+        } else if (d.line.from.x > d.line.to.x) {
+          return [[d.line.from.x, d.line.from.y - distance], [d.line.from.x - distance, d.line.from.y], [d.line.from.x, d.line.from.y + distance]];
+        }
+      }
+
+      return {
+        from: {
+          x: 0,
+          y: 0
+        },
+        to: {
+          x: 0,
+          y: 0
+        }
+      };
+    }
+  }, {
+    key: "calCircle",
+    value: function calCircle(d) {
+      var distance = 22;
+
+      if (d.line.from.x === d.line.to.x) {
+        // 縦
+        if (d.line.from.y < d.line.to.y) {
+          // (2)
+          return {
+            x: d.line.from.x,
+            y: d.line.from.y + distance
+          };
+        } else if (d.line.from.y > d.line.to.y) {
+          // (1)
+          return {
+            x: d.line.from.x,
+            y: d.line.from.y - distance
+          };
+        }
+      } else if (d.line.from.y === d.line.to.y) {
+        // 横
+        if (d.line.from.x < d.line.to.x) {
+          // (2)
+          return {
+            x: d.line.from.x + distance,
+            y: d.line.from.y
+          };
+        } else if (d.line.from.x > d.line.to.x) {
+          // (1)
+          return {
+            x: d.line.from.x - distance,
+            y: d.line.from.y
+          };
+        }
+      }
+
+      return {
+        x: 0,
+        y: 0
+      };
+    }
+  }, {
+    key: "addPort2Entity",
+    value:
+    /* **************************************************************** *
+     *  
+     * **************************************************************** */
+    function addPort2Entity(entity) {
+      var port = this;
+      entity.ports.items.ht[port.id()] = port;
+      entity.ports.items.list.push(port);
+    }
+  }, {
     key: "position_degree",
     value: function position_degree() {
       return this._core.position % 360;

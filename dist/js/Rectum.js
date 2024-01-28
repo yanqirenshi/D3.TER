@@ -126,43 +126,45 @@ var Rectum = /*#__PURE__*/function (_Colon) {
       return null;
     }
   }, {
+    key: "getEntity",
+    value: function getEntity(id) {
+      var entities = this.entities();
+      return entities.ht[id] || null;
+    }
+  }, {
     key: "buildRelationshipsWithPort",
     value: function buildRelationshipsWithPort(relationships) {
-      var entities = this.entities();
-      var out = {
+      var _this2 = this;
+
+      return relationships.reduce(function (out, r) {
+        var from = r.from;
+        var to = r.to; // entity identifier を取得する。
+
+        var entity_from = _this2.getEntity(from.entity);
+
+        var entity_to = _this2.getEntity(to.entity); // Port のクラスインスタンスを作成する。
+
+
+        var port_from = new _Port["default"]('from', entity_from, r);
+        var port_to = new _Port["default"]('to', entity_to, r); // Relationship のクラスインスタンスを作成する。
+
+        var element = new _Relationship["default"](r, port_from, port_to); // entity(from) に port をセットする。
+        // entity_from.ports.items.ht[port_from._id] = port_from;
+        // entity_from.ports.items.list.push(port_from);
+        // port_from._entity = entity_from;
+        // entity(to) に port をセットする。
+        // entity_to.ports.items.ht[port_to._id] = port_to;
+        // entity_to.ports.items.list.push(port_to);
+        // port_to._entity = entity_to;
+        // out
+
+        out.list.push(element);
+        out.ht[element._id] = element;
+        return out;
+      }, {
         list: [],
         ht: {}
-      };
-
-      var _iterator2 = _createForOfIteratorHelper(relationships),
-          _step2;
-
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var r = _step2.value;
-          var id_from = this.getIdentifier(r.from.id, entities);
-          var id_to = this.getIdentifier(r.to.id, entities);
-          var port_from = new _Port["default"]('from', id_from, r);
-          var port_to = new _Port["default"]('to', id_to, r);
-          var element = new _Relationship["default"](r, port_from, port_to);
-          var entity_from = id_from._entity;
-          var entity_to = id_to._entity;
-          port_from._entity = entity_from;
-          port_to._entity = entity_to;
-          entity_from.ports.items.ht[port_from._id] = port_from;
-          entity_from.ports.items.list.push(port_from);
-          entity_to.ports.items.ht[port_to._id] = port_to;
-          entity_to.ports.items.list.push(port_to);
-          out.list.push(element);
-          out.ht[element._id] = element;
-        }
-      } catch (err) {
-        _iterator2.e(err);
-      } finally {
-        _iterator2.f();
-      }
-
-      return out;
+      });
     }
   }, {
     key: "data",

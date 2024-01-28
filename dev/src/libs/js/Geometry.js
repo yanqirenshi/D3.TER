@@ -23,7 +23,8 @@ export default class Geometry {
         let h = rect.size.h;
 
         let port_r = 4;
-        let margin =  33 + port_r;
+        // let margin =  33 + port_r;
+        let margin =  11 + port_r;
 
         let top_left     = { x: x -     margin, y: y -     margin};
         let top_right    = { x: x + w + margin, y: y -     margin};

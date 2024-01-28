@@ -2,10 +2,10 @@ import D3Ter from './components/D3Ter.js';
 
 import Rectum from './js/Rectum.js';
 
-import {Camera} from '@yanqirenshi/assh0le';
+// import {Camera} from '@yanqirenshi/assh0le';
 
 export {
-    Camera,
+    // Camera,
     Rectum,
 }
 

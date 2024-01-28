@@ -59,57 +59,70 @@ export default class Rectum extends Colon {
 
         return null;
     }
-    buildRelationshipsWithPort (relationships) {
+    getEntity (id) {
         const entities = this.entities();
 
-        let out = { list: [], ht: {} };
+        return entities.ht[id] || null;
+    }
+    buildRelationshipsWithPort (relationships) {
 
-        for (const r of relationships) {
-            const id_from = this.getIdentifier(r.from.id, entities);
-            const id_to   = this.getIdentifier(r.to.id, entities);
+        return relationships.reduce((out, r)=> {
+            const from  = r.from;
+            const to    = r.to;
 
-            const port_from = new Port('from', id_from, r);
-            const port_to   = new Port('to',   id_to,   r);
+            // entity identifier を取得する。
+            const entity_from = this.getEntity(from.entity);
+            const entity_to   = this.getEntity(to.entity);
 
+            // Port のクラスインスタンスを作成する。
+            const port_from = new Port('from', entity_from, r);
+            const port_to   = new Port('to',   entity_to,   r);
+
+            // Relationship のクラスインスタンスを作成する。
             let element = new Relationship(r, port_from, port_to);
 
-            const entity_from = id_from._entity;
-            const entity_to   = id_to._entity;
+            // entity(from) に port をセットする。
+            // entity_from.ports.items.ht[port_from._id] = port_from;
+            // entity_from.ports.items.list.push(port_from);
 
-            port_from._entity = entity_from;
-            port_to._entity   = entity_to;
+            // port_from._entity = entity_from;
 
-            entity_from.ports.items.ht[port_from._id] = port_from;
-            entity_from.ports.items.list.push(port_from);
+            // entity(to) に port をセットする。
+            // entity_to.ports.items.ht[port_to._id] = port_to;
+            // entity_to.ports.items.list.push(port_to);
 
-            entity_to.ports.items.ht[port_to._id] = port_to;
-            entity_to.ports.items.list.push(port_to);
+            // port_to._entity = entity_to;
 
+            // out
             out.list.push(element);
             out.ht[element._id] = element;
-        }
 
-        return out;
+            return out;
+        }, { list: [], ht: {} });
     }
     data (data) {
         this._identifiers = POOL.list2pool(data.identifiers, (d)=> new Identifier(d));
-        this._attributes = POOL.list2pool(data.attributes, (d)=> new Attribute(d));
+        this._attributes  = POOL.list2pool(data.attributes,  (d)=> new Attribute(d));
 
         const elements = {
-            identifiers:   this._identifiers,
-            attributes:    this._attributes,
+            identifiers: this._identifiers,
+            attributes:  this._attributes,
         };
 
         this._entities = POOL.list2pool(data.entities, (d)=> {
-            return new Entity(d).build(elements).sizing().positioning();
+            return new Entity(d)
+                .build(elements)
+                .sizing()
+                .positioning();
         });
+
         this._relationships = this.buildRelationshipsWithPort(data.relationships);
 
         super.data(
             {
                 identifiers:   this._identifiers,
                 attributes:    this._attributes,
-                entities: this._entities,
+                entities:      this._entities,
                 relationships: this._relationships,
             }
         );
