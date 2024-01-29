@@ -22,6 +22,9 @@ export default class Port extends Atman {
 
         this.geometry = new Geometry();
     }
+    degree () {
+        return this._core.position || 0;
+    }
     /* **************************************************************** *
      *  Data manegement
      * **************************************************************** */
@@ -182,7 +185,7 @@ export default class Port extends Atman {
         return { x:0, y:0 };
     };
     /* **************************************************************** *
-     *  
+     *
      * **************************************************************** */
     addPort2Entity (entity) {
         const port = this;

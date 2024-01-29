@@ -5,7 +5,7 @@ export default class Relationship extends Atman {
         super('RELATIONSHIP', data);
 
         this.from = port_from;
-        this.to = port_to;
+        this.to   = port_to;
 
         port_from._relationship = this;
         port_to._relationship   = this;

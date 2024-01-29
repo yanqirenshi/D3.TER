@@ -65,7 +65,6 @@ export default class Rectum extends Colon {
         return entities.ht[id] || null;
     }
     buildRelationshipsWithPort (relationships) {
-
         return relationships.reduce((out, r)=> {
             const from  = r.from;
             const to    = r.to;

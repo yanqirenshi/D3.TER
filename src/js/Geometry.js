@@ -80,7 +80,7 @@ export default class Geometry {
     }
     getPortLine (port, rect) { // degree,
         let from = this.getPortLineFrom(rect);
-        let to   = this.getPortLineTo(port.degree, rect);
+        let to   = this.getPortLineTo(port.degree(), rect);
 
         return {
             from: {

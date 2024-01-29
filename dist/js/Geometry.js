@@ -129,7 +129,7 @@ var Geometry = /*#__PURE__*/function () {
     value: function getPortLine(port, rect) {
       // degree,
       var from = this.getPortLineFrom(rect);
-      var to = this.getPortLineTo(port.degree, rect);
+      var to = this.getPortLineTo(port.degree(), rect);
       return {
         from: {
           x: from.x,

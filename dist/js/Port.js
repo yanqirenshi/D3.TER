@@ -60,12 +60,17 @@ var Port = /*#__PURE__*/function (_Atman) {
     _this.geometry = new _Geometry["default"]();
     return _this;
   }
-  /* **************************************************************** *
-   *  Data manegement
-   * **************************************************************** */
-
 
   _createClass(Port, [{
+    key: "degree",
+    value: function degree() {
+      return this._core.position || 0;
+    }
+    /* **************************************************************** *
+     *  Data manegement
+     * **************************************************************** */
+
+  }, {
     key: "calLinePoints",
     value: function calLinePoints(port) {
       var table = port._column_instance._table;
@@ -262,7 +267,7 @@ var Port = /*#__PURE__*/function (_Atman) {
     key: "addPort2Entity",
     value:
     /* **************************************************************** *
-     *  
+     *
      * **************************************************************** */
     function addPort2Entity(entity) {
       var port = this;
