@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 
-import D3Ter, {Rectum}  from './libs/index.js';
+import D3Ter, {Rectum}  from './lib/index.js';
 
 import TM_DATA from './data/TM.js';
 
