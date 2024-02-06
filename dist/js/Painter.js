@@ -67,8 +67,11 @@ var Painter = /*#__PURE__*/function () {
   }, {
     key: "draw",
     value: function draw(entities, relationsihps) {
-      var groups = this.entity().draw(entities.list);
-      this.ports().drawPorts(groups);
+      // entity の描画
+      var groups = this.entity().draw(entities.list); // port の描画
+
+      this.ports().drawPorts(groups); // relationship の描画
+
       this.relationships().drawRelationships(this.background, relationsihps);
     }
   }]);

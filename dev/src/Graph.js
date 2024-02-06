@@ -27,8 +27,18 @@ export default function Graph () {
             callbacks: {
                 entity: {
                     click: (node)=> {
-                    }
-                }
+                    },
+                },
+                identifier: {
+                    click: (node)=> {
+                        console.log(node);
+                    },
+                },
+                attribute: {
+                    click: (node)=> {
+                        console.log(node);
+                    },
+                },
             }
         }));
     }, [rectum]);

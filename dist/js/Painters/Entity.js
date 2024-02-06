@@ -47,7 +47,7 @@ var Entity = /*#__PURE__*/function () {
       return this._parent._default;
     }
     /* **************************************************************** *
-     *   Move 
+     *   Move
      *   TODO: これは Painter に持っていくべきかも。全部じゃないにしても。
      * **************************************************************** */
 
@@ -306,11 +306,15 @@ var Entity = /*#__PURE__*/function () {
   }, {
     key: "drawIdentifiers",
     value: function drawIdentifiers(groups) {
+      var callbacks = this.callbacks();
       var rects = groups.append('rect').attr('class', 'entity-identifiers');
       this.drawIdentifiersRect(rects);
       var texts = groups.selectAll('text.identifier').data(function (d) {
         return d.identifiers.contents.list;
-      }).enter().append('text').attr('class', 'identifier').attr('identifier-id', function (d) {
+      }).enter().append('text').on("click", function (event, d) {
+        var func = callbacks.identifier.click;
+        if (func) func(d);
+      }).attr('class', 'identifier').attr('identifier-id', function (d) {
         return d._id;
       });
       this.drawIdentifiersText(texts).each(function (identifier) {
@@ -355,11 +359,15 @@ var Entity = /*#__PURE__*/function () {
   }, {
     key: "drawAttributes",
     value: function drawAttributes(groups) {
+      var callbacks = this.callbacks();
       var rects = groups.append('rect').attr('class', 'entity-attributes');
       this.drawAttributesRect(rects);
       var texts = groups.selectAll('text.attribute').data(function (d) {
         return d.attributes.contents.list;
-      }).enter().append('text').attr('class', 'attribute').attr('attribute-id', function (d) {
+      }).enter().append('text').on("click", function (event, d) {
+        var func = callbacks.attribute.click;
+        if (func) func(d);
+      }).attr('class', 'attribute').attr('attribute-id', function (d) {
         return d._id;
       });
       this.drawAttributesText(texts).each(function (attribute) {

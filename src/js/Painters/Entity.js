@@ -17,7 +17,7 @@ export default class Entity {
         return this._parent._default;
     }
     /* **************************************************************** *
-     *   Move 
+     *   Move
      *   TODO: これは Painter に持っていくべきかも。全部じゃないにしても。
      * **************************************************************** */
     dragStart (event, entity) {
@@ -261,6 +261,8 @@ export default class Entity {
             .text(d => d.name.val());
     }
     drawIdentifiers (groups) {
+        const callbacks = this.callbacks();
+
         let rects = groups
             .append('rect')
             .attr('class', 'entity-identifiers');
@@ -272,6 +274,11 @@ export default class Entity {
             .data(d => d.identifiers.contents.list)
             .enter()
             .append('text')
+            .on("click", (event, d)=> {
+                const func = callbacks.identifier.click;
+
+                if (func) func(d);
+            })
             .attr('class', 'identifier')
             .attr('identifier-id', d => d._id);
 
@@ -303,6 +310,8 @@ export default class Entity {
             .text(d => d.name.val());
     }
     drawAttributes (groups) {
+        const callbacks = this.callbacks();
+
         let rects = groups
             .append('rect')
             .attr('class', 'entity-attributes');
@@ -316,6 +325,11 @@ export default class Entity {
             })
             .enter()
             .append('text')
+            .on("click", (event, d)=> {
+                const func = callbacks.attribute.click;
+
+                if (func) func(d);
+            })
             .attr('class', 'attribute')
             .attr('attribute-id', (d)=> { return d._id; });
 

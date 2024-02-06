@@ -1,7 +1,7 @@
 const ATTRIBUTES = [
-    { id: 20000, name: 'name' },
-    { id: 20001, name: '物理名称', description: 'Physical Name' },
-    { id: 20002, name: '論理名称', description: 'Logical Name'  },
+    { id: 20000, name: { physical: 'name', logical: '名称' }, },
+    { id: 20001, name: { physical: 'physical_name', logical: '物理名称' }, description: 'Physical Name' },
+    { id: 20002, name: { physical: 'logical_name',  logical: '論理名称' }, description: 'Logical Name'  },
     { id: 20003, name: 'データ・タイプ', description: 'Data Type' },
     { id: 20004, name: 'データ長', description: 'Data Length ' },
     { id: 20005, name: '備考', description: 'Description' },
