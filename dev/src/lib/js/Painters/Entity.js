@@ -17,7 +17,7 @@ export default class Entity {
         return this._parent._default;
     }
     /* **************************************************************** *
-     *   Move 
+     *   Move
      *   TODO: これは Painter に持っていくべきかも。全部じゃないにしても。
      * **************************************************************** */
     dragStart (event, entity) {

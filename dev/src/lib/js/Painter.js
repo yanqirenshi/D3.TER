@@ -34,10 +34,13 @@ export default class Painter {
      *  Draw Main                           *
      * ************************************ */
     draw (entities, relationsihps) {
+        // entity の描画
         const groups = this.entity().draw(entities.list);
 
+        // port の描画
         this.ports().drawPorts(groups);
 
+        // relationship の描画
         this.relationships().drawRelationships(this.background, relationsihps);
     }
 }
