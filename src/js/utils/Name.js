@@ -13,14 +13,8 @@ export default class Name {
         this.set(v);
     }
     set (v) {
-        console.log('set-----');
-
-        console.log(v);
-
         if (arguments.lengh===0 || !v)
             return this;
-
-        console.log(typeof v);
 
         if ('string'===typeof v) {
             const isLogical = (str) => str.match(/^[^\x01-\x7E\xA1-\xDF]+$/);

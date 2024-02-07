@@ -34,10 +34,7 @@ var Name = /*#__PURE__*/function () {
   _createClass(Name, [{
     key: "set",
     value: function set(v) {
-      console.log('set-----');
-      console.log(v);
       if (arguments.lengh === 0 || !v) return this;
-      console.log(_typeof(v));
 
       if ('string' === typeof v) {
         var isLogical = function isLogical(str) {
