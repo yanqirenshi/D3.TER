@@ -13,18 +13,31 @@ export default class Name {
         this.set(v);
     }
     set (v) {
-        if (arguments.lengh===0 || !v) {
+        console.log('set-----');
+
+        console.log(v);
+
+        if (arguments.lengh===0 || !v)
             return this;
-        } else if ('string'===typeof v) {
+
+        console.log(typeof v);
+
+        if ('string'===typeof v) {
             const isLogical = (str) => str.match(/^[^\x01-\x7E\xA1-\xDF]+$/);
 
             if (isLogical)
                 this.physical = v;
             else
                 this.logical = v;
-        } else if ("object"===typeof v) {
+
+            return this;
+        }
+
+        if ("object"===typeof v) {
             this.physical = v.physical || null;
             this.logical  = v.logical  || null;
+
+            return this;
         }
 
         return this;

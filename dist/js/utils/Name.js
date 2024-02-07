@@ -34,17 +34,24 @@ var Name = /*#__PURE__*/function () {
   _createClass(Name, [{
     key: "set",
     value: function set(v) {
-      if (arguments.lengh === 0 || !v) {
-        return this;
-      } else if ('string' === typeof v) {
+      console.log('set-----');
+      console.log(v);
+      if (arguments.lengh === 0 || !v) return this;
+      console.log(_typeof(v));
+
+      if ('string' === typeof v) {
         var isLogical = function isLogical(str) {
           return str.match(/^[^\x01-\x7E\xA1-\xDF]+$/);
         };
 
         if (isLogical) this.physical = v;else this.logical = v;
-      } else if ("object" === _typeof(v)) {
+        return this;
+      }
+
+      if ("object" === _typeof(v)) {
         this.physical = v.physical || null;
         this.logical = v.logical || null;
+        return this;
       }
 
       return this;
