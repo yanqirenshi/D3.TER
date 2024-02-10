@@ -27,6 +27,7 @@ export default function Graph () {
             callbacks: {
                 entity: {
                     click: (node)=> {
+                        console.log(node);
                     },
                 },
                 identifier: {
@@ -35,6 +36,11 @@ export default function Graph () {
                     },
                 },
                 attribute: {
+                    click: (node)=> {
+                        console.log(node);
+                    },
+                },
+                relationship: {
                     click: (node)=> {
                         console.log(node);
                     },

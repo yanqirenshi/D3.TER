@@ -1,4 +1,10 @@
 export default class Relationships {
+    constructor(parent) {
+        this._parent = parent;
+    }
+    callbacks () {
+        return this._parent.callbacks;
+    }
     // public
     drawRelationshipsCore (edges) {
         edges
@@ -30,6 +36,8 @@ export default class Relationships {
             .attr('stroke-width', 1);
     }
     drawRelationships (place, relationships) {
+        const callbacks = this.callbacks();
+
         let data = relationships.list.filter((edge)=> {
             return edge.from._class==='PORT-FROM' && edge.to._class==='PORT-TO';
         });
@@ -39,6 +47,11 @@ export default class Relationships {
             .data(data, (d)=> d._id)
             .enter()
             .append('line')
+            .on("click", (event, d)=> {
+                let func = callbacks.relationship.click;
+
+                if (func) func(d);
+            })
             .attr('class', 'connector');
 
         this.drawRelationshipsCore(edges);

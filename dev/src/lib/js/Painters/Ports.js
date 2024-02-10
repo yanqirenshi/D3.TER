@@ -7,10 +7,15 @@ import PortCardinality from './PortCardinality.js';
 import PortOptionality from './PortOptionality.js';
 
 export default class Ports {
-    constructor () {
+    constructor (parent) {
+        this._parent = parent;
+
         this.cardinality = new PortCardinality();
         this.optionality = new PortOptionality();
         this.circle = new PortCircle();
+    }
+    callbacks () {
+        return this._parent.callbacks;
     }
     /* **************************************************************** *
      *  こんな感じで書いていた。
