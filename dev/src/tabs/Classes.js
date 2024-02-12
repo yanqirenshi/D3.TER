@@ -6,7 +6,6 @@ import {H} from 'tion';
 
 import RECTUM from './Classes/RECTUM.js';
 import PAINTER from './Classes/PAINTER.js';
-import BUILDER from './Classes/BUILDER.js';
 import MATERIAL from './Classes/MATERIAL.js';
 
 export default function Classes () {
@@ -29,7 +28,7 @@ export default function Classes () {
           <Box sx={{ml:2, mr:2}}>
             <H lev="5">Builder</H>
             <pre style={{lineHeight: '13px'}}>
-              {BUILDER.join('\n')}
+              なし？
             </pre>
           </Box>
 
