@@ -27,7 +27,7 @@ export default function Classes () {
           </Box>
 
           <Box sx={{ml:2, mr:2}}>
-            <H lev="5">Tailer(Stylest)</H>
+            <H lev="5">Builder</H>
             <pre style={{lineHeight: '13px'}}>
               {BUILDER.join('\n')}
             </pre>
