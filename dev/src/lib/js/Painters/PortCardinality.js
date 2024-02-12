@@ -156,7 +156,6 @@ export default class PortCardinality {
             .enter()
             .each((d) => {
                 d.line_cardinality = this.calOneLine(d, 11);
-                console.log(d.line_cardinality);
             })
             .append('line')
             .classed( "cardinality", true )

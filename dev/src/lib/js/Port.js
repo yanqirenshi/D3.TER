@@ -14,13 +14,31 @@ export default class Port extends Atman {
 
         this._core = relatihonship_data[type];
 
-        this.position = relatihonship_data.position || { x:0, y:0 };
+        this._position = relatihonship_data.position || { x:0, y:0 };
 
         this.addPort2Entity(entity);
 
         this._entity  = null;
 
         this.geometry = new Geometry();
+    }
+    core () {
+        return this._core;
+    }
+    degree () {
+        return this._core.position || 0;
+    }
+    position (v) {
+        if (arguments.length===1)
+            this._position = v;
+
+        return this._position;
+    }
+    owner () {
+        return this._owner;
+    }
+    entity () {
+        return this._entity;
     }
     /* **************************************************************** *
      *  Data manegement

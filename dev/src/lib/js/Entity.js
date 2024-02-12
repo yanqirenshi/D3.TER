@@ -442,7 +442,7 @@ export default class Entity extends Atman {
 
         let point = this.geometry.getCrossPoint(lines_entity, line_port);
 
-        port.position = point.point;
+        port.position(point.point);
 
         return port.point;
     }
