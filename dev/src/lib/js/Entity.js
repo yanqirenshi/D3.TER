@@ -229,6 +229,9 @@ export default class Entity extends Atman {
             padding: 11,
         };
     }
+    /** **************************************************************** *
+     *
+     * **************************************************************** */
     build (state) {
         this.identifiers = this.buildIdentifiers(state);
         this.attributes  = this.buildAttributes (state);
@@ -238,6 +241,63 @@ export default class Entity extends Atman {
     /* **************************************************************** *
      *   Size
      * **************************************************************** */
+    sizingContentsArea () {
+        let id_h = this.identifiers.size.h;
+        let attr_h = this.attributes.size.h;
+
+        if (id_h > attr_h)
+            this.attributes.size.h = id_h;
+        else
+            this.identifiers.size.h = attr_h;
+    }
+    sizingAttributes () {
+        let data = this.attributes;
+        let padding = this.padding;
+
+        data.size.w = this.size.w<=0 ? 0 :
+            ((this.size.w - (this.padding * 2)) / 2) -
+            (this.bar.size.contents / 2);
+
+        data.size.h = data.contents.list.length * (this._default.line.height + padding * 2);
+    }
+    sizingIdentifiers () {
+        let data = this.identifiers;
+        let padding = this.padding;
+
+        data.size.w = this.size.w<=0 ? 0 :
+            ((this.size.w - (padding * 2)) / 2) -
+            (this.bar.size.contents / 2);
+
+        data.size.h = data.contents.list.length
+            * (this._default.line.height + padding * 2);
+    }
+    sizingName () {
+        let data = this.name;
+
+        if (!data.contents)
+            data.contents = '????????';
+
+        data.size.h = this._default.line.height + data.padding * 2;
+
+        let type = this.type;
+
+        data.size.w = this.size.w<=0 ? 0 :
+            (this.size.w - (this.padding * 2) -
+             this.bar.size.header -
+             type.size.w);
+    }
+    sizingType () {
+        let data = this.type;
+
+        if (!data.contents)
+            data.contents = '??';
+
+        data.size.h = this._default.line.height + data.padding * 2;
+
+        data.size.w =
+            data.contents.length * this._default.line.font.size;
+        // + data.padding * 2;
+    }
     sizing () {
         this.sizingType();
         this.sizingName();
@@ -309,45 +369,12 @@ export default class Entity extends Atman {
 
         return this;
     }
-    /* **************************************************************** *
-     *  Entity
-     * **************************************************************** */
     positioningEntity (entity, entities) {
         this.positioningName();
         this.positioningType();
         this.positioningIdentifiers();
         this.positioningAttributes();
         this.positioningPorts();
-    }
-    /* **************************************************************** *
-     *  Contents Area
-     * **************************************************************** */
-    sizingContentsArea () {
-        let id_h = this.identifiers.size.h;
-        let attr_h = this.attributes.size.h;
-
-        if (id_h > attr_h)
-            this.attributes.size.h = id_h;
-        else
-            this.identifiers.size.h = attr_h;
-    }
-    /* **************************************************************** *
-     *  Name
-     * **************************************************************** */
-    sizingName () {
-        let data = this.name;
-
-        if (!data.contents)
-            data.contents = '????????';
-
-        data.size.h = this._default.line.height + data.padding * 2;
-
-        let type = this.type;
-
-        data.size.w = this.size.w<=0 ? 0 :
-            (this.size.w - (this.padding * 2) -
-             this.bar.size.header -
-             type.size.w);
     }
     positioningName () {
         const entity = this;
@@ -356,21 +383,6 @@ export default class Entity extends Atman {
 
         d.position.x = entity.padding;
         d.position.y = entity.padding;
-    }
-    /* **************************************************************** *
-     *  Type
-     * **************************************************************** */
-    sizingType () {
-        let data = this.type;
-
-        if (!data.contents)
-            data.contents = '??';
-
-        data.size.h = this._default.line.height + data.padding * 2;
-
-        data.size.w =
-            data.contents.length * this._default.line.font.size;
-        // + data.padding * 2;
     }
     positioningType () {
         const entity = this;
@@ -381,9 +393,6 @@ export default class Entity extends Atman {
         d.position.x = entity.padding + entity.name.size.w + bar;
         d.position.y = entity.padding;
     }
-    /* **************************************************************** *
-     *  ColumnItems
-     * **************************************************************** */
     positioningColumnItems (d) {
         let padding = d.padding;
         let start   = d.position.y + padding;
@@ -402,20 +411,6 @@ export default class Entity extends Atman {
             num++;
         }
     }
-    /* **************************************************************** *
-     *  Identifiers
-     * **************************************************************** */
-    sizingIdentifiers () {
-        let data = this.identifiers;
-        let padding = this.padding;
-
-        data.size.w = this.size.w<=0 ? 0 :
-            ((this.size.w - (padding * 2)) / 2) -
-            (this.bar.size.contents / 2);
-
-        data.size.h = data.contents.list.length
-            * (this._default.line.height + padding * 2);
-    }
     positioningIdentifiers () {
         const entity = this;
 
@@ -426,19 +421,6 @@ export default class Entity extends Atman {
         d.position.y = entity.padding + entity.name.size.h + bar;
 
         this.positioningColumnItems(d);
-    }
-    /* **************************************************************** *
-     *  Attributes
-     * **************************************************************** */
-    sizingAttributes () {
-        let data = this.attributes;
-        let padding = this.padding;
-
-        data.size.w = this.size.w<=0 ? 0 :
-            ((this.size.w - (this.padding * 2)) / 2) -
-            (this.bar.size.contents / 2);
-
-        data.size.h = data.contents.list.length * (this._default.line.height + padding * 2);
     }
     positioningAttributes () {
         const entity = this;
@@ -452,9 +434,6 @@ export default class Entity extends Atman {
 
         this.positioningColumnItems(d);
     }
-    /* **************************************************************** *
-     *  Port
-     * **************************************************************** */
     positioningPort (port) {
         const entity = this;
 
