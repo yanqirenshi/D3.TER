@@ -1,4 +1,4 @@
-const BUILDER = [               
+const BUILDER = [
     '     Atman                 ',
     '       |                   ',
     '+---------------------+    ',
@@ -21,40 +21,7 @@ const BUILDER = [
     '+---------------------+    ',
     '       ^                   ',
     '       |                   ',
-    '+-------------------------+',
-    '| EntityTailor            |',
-    '|=========================|',
-    '|<Size>                   |',
-    '|- sizingType             |',
-    '|  sizingName             |',
-    '|  sizingIdentifiers      |',
-    '|  sizingAttributes       |',
-    '|  sizingContentsArea     |',
-    '|+ sizing                 |',
-    '|+ reSizing               |',
-    '|                         |',
-    '|<Position>               |',
-    '|- positioningName        |',
-    '|  positioningType        |',
-    '|  positioningColumnItems |',
-    '|  positioningIdentifiers |',
-    '|  positioningAttributes  |',
-    '|  deg2rad                |',
-    '|  getPortLineLength      |',
-    '|  getPortLineFrom        |',
-    '|  makePortLine           |',
-    '|  isCorss                |',
-    '|  getCrossPointCore      |',
-    '|  getCrossPoint          |',
-    '|  getEntityLines         |',
-    '|  positioningPort        |',
-    '|  positioningPorts       |',
-    '|  positioningEntity      |',
-    '|+ positioning            |',
-    '+-------------------------+',
-    '       ^                   ',
-    '       |                   ',
     '    Entity                 ',
-];                     
-                       
+];
+
 export default BUILDER;
