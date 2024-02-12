@@ -50,6 +50,44 @@ export default class PortCardinality {
             to: to_point,
         };
     }
+    calOneLine (d, distance) {
+        const r = 11;
+
+        const line = d._relationship;
+
+        if (line.from.position.x===line.to.position.x) {
+            // 縦
+            if (line.from.position.y < line.to.position.y) { // (2)
+                return {
+                    from: { x:line.from.position.x + r, y:line.from.position.y + distance },
+                    to:   { x:line.from.position.x - r, y:line.from.position.y + distance },
+                };
+            } else if (line.from.position.y > line.to.position.y) { // (1)
+                return {
+                    from: { x:line.from.position.x + r, y:line.from.position.y - distance },
+                    to:   { x:line.from.position.x - r, y:line.from.position.y - distance },
+                };
+            }
+        } else if (line.from.position.y===line.to.position.y) {
+            // 横
+            if (line.from.position.x < line.to.position.x) { // (2)
+                return {
+                    from: { x:line.from.position.x + distance, y:line.from.position.y + r },
+                    to:   { x:line.from.position.x + distance, y:line.from.position.y - r },
+                };
+            } else if (line.from.position.x > line.to.position.x) { // (1)
+                return {
+                    from: { x:line.from.position.x - distance, y:line.from.position.y + r },
+                    to:   { x:line.from.position.x - distance, y:line.from.position.y - r },
+                };
+            }
+        }
+
+        return {
+            from: { x:0, y:0 },
+            to:   { x:0, y:0 },
+        };
+    };
     /* **************************************************************** *
      *  Draw Line (port to entity)
      * **************************************************************** */
@@ -97,13 +135,13 @@ export default class PortCardinality {
     }
     drawCardinalityOne (g) {
         const filter = (ports=[]) => {
-            return ports.filter(d => {
-                return d.cardinality===1;
+            return ports.filter(port => {
+                return port._core.cardinality===1;
             });
         };
 
         const optionalities = g.selectAll('line.cardinality')
-              .data((d) => { return filter(d._ports); },
+              .data((d) => filter(d.ports.items.list),
                     (d) => { return d._id; });
 
         optionalities
@@ -116,7 +154,10 @@ export default class PortCardinality {
 
         optionalities
             .enter()
-            .each((d) => d.line_cardinality = this.calOneLine(d, 11))
+            .each((d) => {
+                d.line_cardinality = this.calOneLine(d, 11);
+                console.log(d.line_cardinality);
+            })
             .append('line')
             .classed( "cardinality", true )
             .attr("x1", d => d.line_cardinality.from.x)

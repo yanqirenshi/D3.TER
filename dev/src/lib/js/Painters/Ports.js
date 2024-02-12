@@ -30,7 +30,7 @@ export default class Ports {
      * **************************************************************** */
     // public
     drawPorts (groups_entity) {
-        // this.cardinality.draw(groups_entity);
+        this.cardinality.draw(groups_entity);
 
         // this.optionality.draw(groups_entity);
 
