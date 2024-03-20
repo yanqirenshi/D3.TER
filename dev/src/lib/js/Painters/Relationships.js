@@ -2,6 +2,12 @@ export default class Relationships {
     constructor(parent) {
         this._parent = parent;
     }
+    rectum () {
+        return this._parent.rectum();
+    }
+    style () {
+        return this.rectum().style();
+    }
     callbacks () {
         return this._parent.callbacks;
     }

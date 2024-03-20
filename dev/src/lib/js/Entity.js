@@ -7,8 +7,10 @@ import Geometry from './Geometry.js';
 import Name from './utils/Name.js';
 
 export default class Entity extends Atman {
-    constructor(data) {
+    constructor(data, rectum) {
         super('ENTITY', data);
+
+        this._rectum = rectum;
 
         this.init();
 
@@ -25,6 +27,7 @@ export default class Entity extends Atman {
 
         this.geometry = new Geometry();
 
+        // iwasaki
         this._default = {
             line: {
                 height: 14,
@@ -33,6 +36,12 @@ export default class Entity extends Atman {
                 }
             },
         };
+    }
+    rectum () {
+        return this._rectum;
+    }
+    style () {
+        return this.rectum().style();
     }
     /* **************************************************************** *
      *   Builder
@@ -296,7 +305,6 @@ export default class Entity extends Atman {
 
         data.size.w =
             data.contents.length * this._default.line.font.size;
-        // + data.padding * 2;
     }
     sizing () {
         this.sizingType();
@@ -438,7 +446,7 @@ export default class Entity extends Atman {
         const entity = this;
 
         let line_port = this.geometry.getPortLine(port.degree(), entity);
-        let lines_entity = this.geometry.getFourSideLines(entity, 4, 33);
+        let lines_entity = this.geometry.getFourSideLines(entity, 4, this.style().entity.margin);
 
         let point = this.geometry.getCrossPoint(lines_entity, line_port);
 

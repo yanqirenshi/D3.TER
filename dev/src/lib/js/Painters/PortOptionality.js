@@ -1,6 +1,15 @@
 import * as d3 from 'd3';
 
 export default class PortOptionality {
+    constructor (parent) {
+        this._parent = parent;
+    }
+    rectum () {
+        return this._parent.rectum();
+    }
+    style () {
+        return this.rectum().style();
+    }
     selections (g, selector, filter) {
         return g.selectAll(selector)
               .data((d) => filter(d.ports.items.list),
@@ -18,12 +27,12 @@ export default class PortOptionality {
                 .attr("y1", d => d.optionalityPosition().from.y)
                 .attr("x2", d => d.optionalityPosition().to.x)
                 .attr("y2", d => d.optionalityPosition().to.y)
-                .attr("stroke-width",1)
-                .attr("stroke","#a3a3a2");
+                .attr("stroke-width", this.style().port.stroke.width)
+                .attr("stroke", this.style().port.stroke.color);
         };
 
-        // remove
-        // ???
+        // delete
+        optionalities.exit().remove();
 
         // update
         draw(optionalities);
@@ -50,13 +59,12 @@ export default class PortOptionality {
                 .attr("cy", d => d.optionalityPosition().y)
                 .attr("r", 5)
                 .attr("fill","#fefefe")
-                .attr("stroke-width", 1)
-                .attr("stroke","#a3a3a2");
-
+                .attr("stroke-width", this.style().port.stroke.width)
+                .attr("stroke", this.style().port.stroke.color);
         };
 
-        // remove
-        // ???
+        // delete
+        optionalities.exit().remove();
 
         // update
         draw(optionalities);

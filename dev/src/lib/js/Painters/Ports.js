@@ -10,9 +10,15 @@ export default class Ports {
     constructor (parent) {
         this._parent = parent;
 
-        this.cardinality = new PortCardinality();
-        this.optionality = new PortOptionality();
-        this.circle = new PortCircle();
+        this.cardinality = new PortCardinality(this);
+        this.optionality = new PortOptionality(this);
+        this.circle = new PortCircle(this);
+    }
+    rectum () {
+        return this._parent.rectum();
+    }
+    style () {
+        return this.rectum().style();
     }
     callbacks () {
         return this._parent.callbacks;

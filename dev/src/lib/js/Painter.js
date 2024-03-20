@@ -5,7 +5,9 @@ import Entity from './Painters/Entity.js';
 import merge from 'deepmerge';
 
 export default class Painter {
-    constructor(foreground, background, callbacks) {
+    constructor(rectum, foreground, background, callbacks) {
+        this._rectum = rectum;
+
         this.foreground = foreground;
         this.background = background;
         this.callbacks = this.ensureCallbacks(callbacks);
@@ -20,10 +22,16 @@ export default class Painter {
         };
 
         this._painters = {
-            ports: new Ports(this),
+            ports:         new Ports(this),
             relationships: new Relationships(this),
-            entity: new Entity(this),
+            entity:        new Entity(this),
         };
+    }
+    rectum () {
+        return this._rectum;
+    }
+    style () {
+        return this.rectum().style();
     }
     ensureCallbacks (callbacks) {
         const default_callbacks = {

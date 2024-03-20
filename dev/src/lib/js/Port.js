@@ -3,8 +3,10 @@ import Atman from './Atman.js';
 import Geometry from './Geometry.js';
 
 export default class Port extends Atman {
-    constructor(type, entity, relatihonship_data) {
+    constructor(type, entity, relatihonship_data, rectum) {
         super(type==='from' ? 'PORT-FROM' : 'PORT-TO', relatihonship_data);
+
+        this._rectum = rectum;
 
         this._id = relatihonship_data.id + '_' + entity._id; // Idenrifier-Instance
 
@@ -28,6 +30,12 @@ export default class Port extends Atman {
         this._line = null;
         this._cardinality = null;
         this._optionality = null;
+    }
+    rectum () {
+        return this._rectum;
+    }
+    style () {
+        return this.rectum().style();
     }
     core () {
         return this._core;
@@ -107,10 +115,10 @@ export default class Port extends Atman {
         return this._line;
     }
     cardinalityDistance () {
-        return this._cardinality_distance;
+        return this.style().port.cardinality.distance;
     }
     optionalityDistance () {
-        return this._optionality_distance;
+        return this.style().port.optionality.distance;
     }
     cardinalityPosition (v) {
         if (arguments.length===1)
@@ -148,8 +156,10 @@ export default class Port extends Atman {
 
         const geometry = this.geometry;
 
+        const margin = this.style().entity.margin;
+
         // entity の四辺
-        const four_side_lines = geometry.getFourSideLines(rect, 4, 33);
+        const four_side_lines = geometry.getFourSideLines(rect, 4, margin);
 
         // port と entityの中心との直線。
         const line_port = geometry.getPortLine(this.degree(), rect);
@@ -159,7 +169,7 @@ export default class Port extends Atman {
         const cross_point = geometry.getCrossPoint(four_side_lines, line_port);
 
         // entity と port との距離
-        const len = 33 + 4; // 33: ?, 4: ?
+        const len = margin + 4; // 4: ?
 
         // point の位置を返す
         const to_point = cross_point.point;

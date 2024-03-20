@@ -21,15 +21,6 @@ export default class Rectum extends Colon {
         this._entities      = POOL.make();
         this._relationships = POOL.make();
 
-        this._default = {
-            line: {
-                height: 14,
-                font: {
-                    size: 14
-                }
-            },
-        };
-
         return this;
     }
     ensureCallbacks (callbacks) {
@@ -74,11 +65,11 @@ export default class Rectum extends Colon {
             const entity_to   = this.getEntity(to.entity);
 
             // Port のクラスインスタンスを作成する。
-            const port_from = new Port('from', entity_from, r);
-            const port_to   = new Port('to',   entity_to,   r);
+            const port_from = new Port('from', entity_from, r, this);
+            const port_to   = new Port('to',   entity_to,   r, this);
 
             // Relationship のクラスインスタンスを作成する。
-            let element = new Relationship(r, port_from, port_to);
+            let element = new Relationship(r, port_from, port_to, this);
 
             // entity(from) に port をセットする。
             // entity_from.ports.items.ht[port_from._id] = port_from;
@@ -100,8 +91,11 @@ export default class Rectum extends Colon {
         }, { list: [], ht: {} });
     }
     data (data) {
-        this._identifiers = POOL.list2pool(data.identifiers, (d)=> new Identifier(d));
-        this._attributes  = POOL.list2pool(data.attributes,  (d)=> new Attribute(d));
+        this._identifiers =
+            POOL.list2pool(data.identifiers, (d)=> new Identifier(d));
+
+        this._attributes  =
+            POOL.list2pool(data.attributes,  (d)=> new Attribute(d));
 
         const elements = {
             identifiers: this._identifiers,
@@ -109,7 +103,7 @@ export default class Rectum extends Colon {
         };
 
         this._entities = POOL.list2pool(data.entities, (d)=> {
-            return new Entity(d)
+            return new Entity(d, this)
                 .build(elements)
                 .sizing()
                 .positioning();
@@ -130,7 +124,36 @@ export default class Rectum extends Colon {
         const fore = this.layer('foreground');
         const back = this.layer('background');
 
-        new Painter(fore, back, this.callbacks)
-            .draw(this.entities(), this._relationships);
+        const painter =
+              new Painter(this,
+                          fore,
+                          back,
+                          this.callbacks);
+
+        painter.draw(this.entities(), this._relationships);
+    }
+    style () {
+        return {
+            entity: {
+                margin: 33,
+            },
+            port: {
+                stroke: {
+                    width: 1,
+                    color: '#888888',
+                },
+                optionality: {
+                    distance: 22,
+                    zero: {
+                        fill: "#fefefe",
+                    }
+                },
+                cardinality: {
+                    distance: 11,
+                },
+            },
+            relationship: {
+            },
+        };
     }
 }
