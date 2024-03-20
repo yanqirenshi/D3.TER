@@ -4,6 +4,12 @@ export default class Entity {
     constructor(parent) {
         this._parent = parent;
     }
+    rectum () {
+        return this._parent.rectum();
+    }
+    style () {
+        return this.rectum().style();
+    }
     foreground () {
         return this._parent.foreground;
     }

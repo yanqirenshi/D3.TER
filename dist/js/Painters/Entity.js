@@ -27,6 +27,16 @@ var Entity = /*#__PURE__*/function () {
   }
 
   _createClass(Entity, [{
+    key: "rectum",
+    value: function rectum() {
+      return this._parent.rectum();
+    }
+  }, {
+    key: "style",
+    value: function style() {
+      return this.rectum().style();
+    }
+  }, {
     key: "foreground",
     value: function foreground() {
       return this._parent.foreground;

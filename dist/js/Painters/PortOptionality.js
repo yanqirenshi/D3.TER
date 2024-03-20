@@ -20,11 +20,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var PortOptionality = /*#__PURE__*/function () {
-  function PortOptionality() {
+  function PortOptionality(parent) {
     _classCallCheck(this, PortOptionality);
+
+    this._parent = parent;
   }
 
   _createClass(PortOptionality, [{
+    key: "rectum",
+    value: function rectum() {
+      return this._parent.rectum();
+    }
+  }, {
+    key: "style",
+    value: function style() {
+      return this.rectum().style();
+    }
+  }, {
     key: "selections",
     value: function selections(g, selector, filter) {
       return g.selectAll(selector).data(function (d) {
@@ -36,6 +48,8 @@ var PortOptionality = /*#__PURE__*/function () {
   }, {
     key: "drawOptionalityOne",
     value: function drawOptionalityOne(g) {
+      var _this = this;
+
       var filter = function filter() {
         var ports = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
         return ports.filter(function (d) {
@@ -55,11 +69,11 @@ var PortOptionality = /*#__PURE__*/function () {
           return d.optionalityPosition().to.x;
         }).attr("y2", function (d) {
           return d.optionalityPosition().to.y;
-        }).attr("stroke-width", 1).attr("stroke", "#a3a3a2");
-      }; // remove
-      // ???
-      // update
+        }).attr("stroke-width", _this.style().port.stroke.width).attr("stroke", _this.style().port.stroke.color);
+      }; // delete
 
+
+      optionalities.exit().remove(); // update
 
       draw(optionalities); // add
 
@@ -69,6 +83,8 @@ var PortOptionality = /*#__PURE__*/function () {
   }, {
     key: "drawOptionalityZero",
     value: function drawOptionalityZero(g) {
+      var _this2 = this;
+
       var filter = function filter() {
         var ports = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
         return ports.filter(function (d) {
@@ -84,11 +100,11 @@ var PortOptionality = /*#__PURE__*/function () {
           return d.optionalityPosition().x;
         }).attr("cy", function (d) {
           return d.optionalityPosition().y;
-        }).attr("r", 5).attr("fill", "#fefefe").attr("stroke-width", 1).attr("stroke", "#a3a3a2");
-      }; // remove
-      // ???
-      // update
+        }).attr("r", 5).attr("fill", "#fefefe").attr("stroke-width", _this2.style().port.stroke.width).attr("stroke", _this2.style().port.stroke.color);
+      }; // delete
 
+
+      optionalities.exit().remove(); // update
 
       draw(optionalities); // add
 

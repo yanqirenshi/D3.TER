@@ -34,12 +34,22 @@ var Ports = /*#__PURE__*/function () {
     _classCallCheck(this, Ports);
 
     this._parent = parent;
-    this.cardinality = new _PortCardinality["default"]();
-    this.optionality = new _PortOptionality["default"]();
-    this.circle = new _PortCircle["default"]();
+    this.cardinality = new _PortCardinality["default"](this);
+    this.optionality = new _PortOptionality["default"](this);
+    this.circle = new _PortCircle["default"](this);
   }
 
   _createClass(Ports, [{
+    key: "rectum",
+    value: function rectum() {
+      return this._parent.rectum();
+    }
+  }, {
+    key: "style",
+    value: function style() {
+      return this.rectum().style();
+    }
+  }, {
     key: "callbacks",
     value: function callbacks() {
       return this._parent.callbacks;

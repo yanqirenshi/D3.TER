@@ -19,6 +19,16 @@ var Relationships = /*#__PURE__*/function () {
   }
 
   _createClass(Relationships, [{
+    key: "rectum",
+    value: function rectum() {
+      return this._parent.rectum();
+    }
+  }, {
+    key: "style",
+    value: function style() {
+      return this.rectum().style();
+    }
+  }, {
     key: "callbacks",
     value: function callbacks() {
       return this._parent.callbacks;

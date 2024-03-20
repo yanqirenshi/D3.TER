@@ -22,9 +22,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var Painter = /*#__PURE__*/function () {
-  function Painter(foreground, background, callbacks) {
+  function Painter(rectum, foreground, background, callbacks) {
     _classCallCheck(this, Painter);
 
+    this._rectum = rectum;
     this.foreground = foreground;
     this.background = background;
     this.callbacks = this.ensureCallbacks(callbacks);
@@ -44,6 +45,16 @@ var Painter = /*#__PURE__*/function () {
   }
 
   _createClass(Painter, [{
+    key: "rectum",
+    value: function rectum() {
+      return this._rectum;
+    }
+  }, {
+    key: "style",
+    value: function style() {
+      return this.rectum().style();
+    }
+  }, {
     key: "ensureCallbacks",
     value: function ensureCallbacks(callbacks) {
       var default_callbacks = {

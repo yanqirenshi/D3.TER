@@ -20,170 +20,64 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var PortCardinality = /*#__PURE__*/function () {
-  function PortCardinality() {
+  function PortCardinality(parent) {
     _classCallCheck(this, PortCardinality);
+
+    this._parent = parent;
   }
 
   _createClass(PortCardinality, [{
-    key: "calLinePoints",
-    value: function calLinePoints(port) {
-      var table = port._column_instance._table;
-      var rect = {
-        position: {
-          x: table.x,
-          y: table.y
-        },
-        size: {
-          w: table.w,
-          h: table.h
-        }
-      };
-      var geometry = this.geometry;
-      var four_side_lines = geometry.getFourSideLines(rect);
-      var line_port = geometry.getPortLine(port, rect);
-      var cross_point = geometry.getCrossPoint(four_side_lines, line_port);
-      var len = 33 + 4;
-      var to_point = cross_point.point;
-      var from_point;
-
-      if (cross_point.target === 'top') {
-        from_point = {
-          x: to_point.x,
-          y: to_point.y + len
-        };
-      } else if (cross_point.target === 'right') {
-        from_point = {
-          x: to_point.x - len,
-          y: to_point.y
-        };
-      } else if (cross_point.target === 'bottom') {
-        from_point = {
-          x: to_point.x,
-          y: to_point.y - len
-        };
-      } else if (cross_point.target === 'left') {
-        from_point = {
-          x: to_point.x + len,
-          y: to_point.y
-        };
-      }
-
-      return {
-        from: from_point,
-        to: to_point
-      };
+    key: "rectum",
+    value: function rectum() {
+      return this._parent.rectum();
     }
   }, {
-    key: "calOneLine",
-    value: function calOneLine(d, distance) {
-      var r = 11;
-      var line = d._relationship;
-
-      if (line.from.position.x === line.to.position.x) {
-        // 縦
-        if (line.from.position.y < line.to.position.y) {
-          // (2)
-          return {
-            from: {
-              x: line.from.position.x + r,
-              y: line.from.position.y + distance
-            },
-            to: {
-              x: line.from.position.x - r,
-              y: line.from.position.y + distance
-            }
-          };
-        } else if (line.from.position.y > line.to.position.y) {
-          // (1)
-          return {
-            from: {
-              x: line.from.position.x + r,
-              y: line.from.position.y - distance
-            },
-            to: {
-              x: line.from.position.x - r,
-              y: line.from.position.y - distance
-            }
-          };
-        }
-      } else if (line.from.position.y === line.to.position.y) {
-        // 横
-        if (line.from.position.x < line.to.position.x) {
-          // (2)
-          return {
-            from: {
-              x: line.from.position.x + distance,
-              y: line.from.position.y + r
-            },
-            to: {
-              x: line.from.position.x + distance,
-              y: line.from.position.y - r
-            }
-          };
-        } else if (line.from.position.x > line.to.position.x) {
-          // (1)
-          return {
-            from: {
-              x: line.from.position.x - distance,
-              y: line.from.position.y + r
-            },
-            to: {
-              x: line.from.position.x - distance,
-              y: line.from.position.y - r
-            }
-          };
-        }
-      }
-
-      return {
-        from: {
-          x: 0,
-          y: 0
-        },
-        to: {
-          x: 0,
-          y: 0
-        }
-      };
+    key: "style",
+    value: function style() {
+      return this.rectum().style();
     }
-  }, {
-    key: "drawLine",
-    value:
     /* **************************************************************** *
      *  Draw Line (port to entity)
      * **************************************************************** */
-    function drawLine(g) {
+
+  }, {
+    key: "drawLine",
+    value: function drawLine(g) {
+      var _this = this;
+
       var lines = g.selectAll('line').data(function (d) {
         return d.ports.items.list;
       }, function (d) {
         return d.id();
-      }); // delete
+      });
+      console.log();
+      console.log();
+
+      var draw = function draw(selection) {
+        selection.attr("x1", function (d) {
+          return d.linePosition().from.x;
+        }).attr("y1", function (d) {
+          return d.linePosition().from.y;
+        }).attr("x2", function (d) {
+          return d.linePosition().to.x;
+        }).attr("y2", function (d) {
+          return d.linePosition().to.y;
+        }).attr("stroke-width", _this.style().port.stroke.width).attr("stroke", _this.style().port.stroke.color);
+      }; // delete
+
 
       lines.exit().remove(); // update
 
-      lines.attr("x1", function (d) {
-        return d.linePosition().from.x;
-      }).attr("y1", function (d) {
-        return d.linePosition().from.y;
-      }).attr("x2", function (d) {
-        return d.linePosition().to.x;
-      }).attr("y2", function (d) {
-        return d.linePosition().to.y;
-      }).attr("stroke-width", 1).attr("stroke", "#a3a3a2"); // add
+      draw(lines); // add
 
-      lines.enter().append("line").attr("x1", function (d) {
-        return d.linePosition().from.x;
-      }).attr("y1", function (d) {
-        return d.linePosition().from.y;
-      }).attr("x2", function (d) {
-        return d.linePosition().to.x;
-      }).attr("y2", function (d) {
-        return d.linePosition().to.y;
-      }).attr("stroke-width", 1).attr("stroke", "#a3a3a2");
+      var add_targets = lines.enter().append("line");
+      draw(add_targets);
     }
   }, {
     key: "drawCardinalityOne",
     value: function drawCardinalityOne(g) {
+      var _this2 = this;
+
       var filter = function filter() {
         var ports = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
         return ports.filter(function (port) {
@@ -191,7 +85,7 @@ var PortCardinality = /*#__PURE__*/function () {
         });
       };
 
-      var optionalities = g.selectAll('line.cardinality').data(function (d) {
+      var cardinalities = g.selectAll('line.cardinality').data(function (d) {
         return filter(d.ports.items.list);
       }, function (d) {
         return d.id();
@@ -206,18 +100,22 @@ var PortCardinality = /*#__PURE__*/function () {
           return d.cardinalityPosition().to.x;
         }).attr("y2", function (d) {
           return d.cardinalityPosition().to.y;
-        }).attr("stroke-width", 1).attr("stroke", "#a3a3a2");
-      }; // update
+        }).attr("stroke-width", _this2.style().port.stroke.width).attr("stroke", _this2.style().port.stroke.color);
+      }; // delete
 
 
-      draw(optionalities); // add
+      cardinalities.exit().remove(); // update
 
-      var add_targets = optionalities.enter().append('line').classed("cardinality", true);
+      draw(cardinalities); // add
+
+      var add_targets = cardinalities.enter().append('line').classed("cardinality", true);
       draw(add_targets);
     }
   }, {
     key: "drawCardinalityThree",
     value: function drawCardinalityThree(g) {
+      var _this3 = this;
+
       var filter = function filter() {
         var ports = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
         return ports.filter(function (port) {
@@ -225,7 +123,7 @@ var PortCardinality = /*#__PURE__*/function () {
         });
       };
 
-      var optionalities = g.selectAll('path.cardinality').data(function (d) {
+      var cardinalities = g.selectAll('path.cardinality').data(function (d) {
         return filter(d.ports.items.list);
       }, function (d) {
         return d.id();
@@ -239,13 +137,15 @@ var PortCardinality = /*#__PURE__*/function () {
       var draw = function draw(selection) {
         selection.attr('d', function (d) {
           return line(d._cardinality);
-        }).attr("fill", 'none').attr("stroke-width", 1).attr("stroke", "#a3a3a2");
-      }; // update
+        }).attr("fill", 'none').attr("stroke-width", _this3.style().port.stroke.width).attr("stroke", _this3.style().port.stroke.color);
+      }; // delete
 
 
-      draw(optionalities); // add
+      cardinalities.exit().remove(); // update
 
-      var add_targets = optionalities.enter().append('path').classed("cardinality", true);
+      draw(cardinalities); // add
+
+      var add_targets = cardinalities.enter().append('path').classed("cardinality", true);
       draw(add_targets);
     }
   }, {

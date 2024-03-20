@@ -73,14 +73,6 @@ var Rectum = /*#__PURE__*/function (_Colon) {
     _this.callbacks = _this.ensureCallbacks(params.callbacks);
     _this._entities = POOL.make();
     _this._relationships = POOL.make();
-    _this._default = {
-      line: {
-        height: 14,
-        font: {
-          size: 14
-        }
-      }
-    };
     return _possibleConstructorReturn(_this, _assertThisInitialized(_this));
   }
 
@@ -145,10 +137,10 @@ var Rectum = /*#__PURE__*/function (_Colon) {
         var entity_to = _this2.getEntity(to.entity); // Port のクラスインスタンスを作成する。
 
 
-        var port_from = new _Port["default"]('from', entity_from, r);
-        var port_to = new _Port["default"]('to', entity_to, r); // Relationship のクラスインスタンスを作成する。
+        var port_from = new _Port["default"]('from', entity_from, r, _this2);
+        var port_to = new _Port["default"]('to', entity_to, r, _this2); // Relationship のクラスインスタンスを作成する。
 
-        var element = new _Relationship["default"](r, port_from, port_to); // entity(from) に port をセットする。
+        var element = new _Relationship["default"](r, port_from, port_to, _this2); // entity(from) に port をセットする。
         // entity_from.ports.items.ht[port_from._id] = port_from;
         // entity_from.ports.items.list.push(port_from);
         // port_from._entity = entity_from;
@@ -169,6 +161,8 @@ var Rectum = /*#__PURE__*/function (_Colon) {
   }, {
     key: "data",
     value: function data(_data) {
+      var _this3 = this;
+
       this._identifiers = POOL.list2pool(_data.identifiers, function (d) {
         return new _Identifier["default"](d);
       });
@@ -180,7 +174,7 @@ var Rectum = /*#__PURE__*/function (_Colon) {
         attributes: this._attributes
       };
       this._entities = POOL.list2pool(_data.entities, function (d) {
-        return new _Entity["default"](d).build(elements).sizing().positioning();
+        return new _Entity["default"](d, _this3).build(elements).sizing().positioning();
       });
       this._relationships = this.buildRelationshipsWithPort(_data.relationships);
 
@@ -196,7 +190,33 @@ var Rectum = /*#__PURE__*/function (_Colon) {
     value: function draw() {
       var fore = this.layer('foreground');
       var back = this.layer('background');
-      new _Painter["default"](fore, back, this.callbacks).draw(this.entities(), this._relationships);
+      var painter = new _Painter["default"](this, fore, back, this.callbacks);
+      painter.draw(this.entities(), this._relationships);
+    }
+  }, {
+    key: "style",
+    value: function style() {
+      return {
+        entity: {
+          margin: 33
+        },
+        port: {
+          stroke: {
+            width: 1,
+            color: '#888888'
+          },
+          optionality: {
+            distance: 22,
+            zero: {
+              fill: "#fefefe"
+            }
+          },
+          cardinality: {
+            distance: 11
+          }
+        },
+        relationship: {}
+      };
     }
   }]);
 

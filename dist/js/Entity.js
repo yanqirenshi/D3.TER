@@ -56,12 +56,13 @@ var Entity = /*#__PURE__*/function (_Atman) {
 
   var _super = _createSuper(Entity);
 
-  function Entity(data) {
+  function Entity(data, rectum) {
     var _this;
 
     _classCallCheck(this, Entity);
 
     _this = _super.call(this, 'ENTITY', data);
+    _this._rectum = rectum;
 
     _this.init();
 
@@ -72,7 +73,8 @@ var Entity = /*#__PURE__*/function (_Atman) {
     _this.size = _objectSpread({}, data.size);
     _this.type.contents = _this.entityTypeContents();
     _this.background = _this.entityBackground();
-    _this.geometry = new _Geometry["default"]();
+    _this.geometry = new _Geometry["default"](); // iwasaki
+
     _this._default = {
       line: {
         height: 14,
@@ -83,12 +85,22 @@ var Entity = /*#__PURE__*/function (_Atman) {
     };
     return _this;
   }
-  /* **************************************************************** *
-   *   Builder
-   * **************************************************************** */
-
 
   _createClass(Entity, [{
+    key: "rectum",
+    value: function rectum() {
+      return this._rectum;
+    }
+  }, {
+    key: "style",
+    value: function style() {
+      return this.rectum().style();
+    }
+    /* **************************************************************** *
+     *   Builder
+     * **************************************************************** */
+
+  }, {
     key: "init",
     value: function init() {
       this.padding = 8;
@@ -483,7 +495,7 @@ var Entity = /*#__PURE__*/function (_Atman) {
       var data = this.type;
       if (!data.contents) data.contents = '??';
       data.size.h = this._default.line.height + data.padding * 2;
-      data.size.w = data.contents.length * this._default.line.font.size; // + data.padding * 2;
+      data.size.w = data.contents.length * this._default.line.font.size;
     }
   }, {
     key: "sizing",
@@ -609,7 +621,7 @@ var Entity = /*#__PURE__*/function (_Atman) {
     value: function positioningPort(port) {
       var entity = this;
       var line_port = this.geometry.getPortLine(port.degree(), entity);
-      var lines_entity = this.geometry.getFourSideLines(entity, 4, 33);
+      var lines_entity = this.geometry.getFourSideLines(entity, 4, this.style().entity.margin);
       var point = this.geometry.getCrossPoint(lines_entity, line_port);
       port.position(point.point);
       return port.point;

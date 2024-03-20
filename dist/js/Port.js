@@ -38,12 +38,13 @@ var Port = /*#__PURE__*/function (_Atman) {
 
   var _super = _createSuper(Port);
 
-  function Port(type, entity, relatihonship_data) {
+  function Port(type, entity, relatihonship_data, rectum) {
     var _this;
 
     _classCallCheck(this, Port);
 
     _this = _super.call(this, type === 'from' ? 'PORT-FROM' : 'PORT-TO', relatihonship_data);
+    _this._rectum = rectum;
     _this._id = relatihonship_data.id + '_' + entity._id; // Idenrifier-Instance
 
     _this._owner = entity;
@@ -67,6 +68,16 @@ var Port = /*#__PURE__*/function (_Atman) {
   }
 
   _createClass(Port, [{
+    key: "rectum",
+    value: function rectum() {
+      return this._rectum;
+    }
+  }, {
+    key: "style",
+    value: function style() {
+      return this.rectum().style();
+    }
+  }, {
     key: "core",
     value: function core() {
       return this._core;
@@ -154,12 +165,12 @@ var Port = /*#__PURE__*/function (_Atman) {
   }, {
     key: "cardinalityDistance",
     value: function cardinalityDistance() {
-      return this._cardinality_distance;
+      return this.style().port.cardinality.distance;
     }
   }, {
     key: "optionalityDistance",
     value: function optionalityDistance() {
-      return this._optionality_distance;
+      return this.style().port.optionality.distance;
     }
   }, {
     key: "cardinalityPosition",
@@ -197,16 +208,17 @@ var Port = /*#__PURE__*/function (_Atman) {
           h: entity_size.h
         }
       };
-      var geometry = this.geometry; // entity の四辺
+      var geometry = this.geometry;
+      var margin = this.style().entity.margin; // entity の四辺
 
-      var four_side_lines = geometry.getFourSideLines(rect, 4, 33); // port と entityの中心との直線。
+      var four_side_lines = geometry.getFourSideLines(rect, 4, margin); // port と entityの中心との直線。
 
       var line_port = geometry.getPortLine(this.degree(), rect); // port と entityの中心との直線 と entity の四辺の交点。
       // 交点 と どの辺 が返ってくる。
 
       var cross_point = geometry.getCrossPoint(four_side_lines, line_port); // entity と port との距離
 
-      var len = 33 + 4; // 33: ?, 4: ?
+      var len = margin + 4; // 4: ?
       // point の位置を返す
 
       var to_point = cross_point.point;
