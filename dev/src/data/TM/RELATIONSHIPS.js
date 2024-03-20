@@ -7,13 +7,13 @@ const RELATIONSHIPS = [
         from: {
             entity: 30000,
             cardinality: 1,
-            optionality: 2,
+            optionality: 1,
             position: 0,
         },
         to: {
             entity: 40000,
             cardinality: 3,
-            optionality: 4,
+            optionality: 0,
             position: 180,
         },
         details: [
@@ -30,13 +30,13 @@ const RELATIONSHIPS = [
         from: {
             entity: 30002,
             cardinality: 1,
-            optionality: 2,
+            optionality: 1,
             position: 180,
         },
         to: {
             entity: 40000,
             cardinality: 3,
-            optionality: 4,
+            optionality: 0,
             position: 0,
         },
         details: [
@@ -53,13 +53,13 @@ const RELATIONSHIPS = [
         from: {
             entity: 30001,
             cardinality: 1,
-            optionality: 2,
+            optionality: 0,
             position: 0,
         },
         to: {
             entity: 40001,
             cardinality: 3,
-            optionality: 4,
+            optionality: 1,
             position: 180,
         },
         details: [
@@ -76,13 +76,13 @@ const RELATIONSHIPS = [
         from: {
             entity: 30002,
             cardinality: 1,
-            optionality: 2,
+            optionality: 1,
             position: 180,
         },
         to: {
             entity: 40001,
             cardinality: 3,
-            optionality: 4,
+            optionality: 1,
             position: 0,
         },
         details: [
@@ -99,13 +99,13 @@ const RELATIONSHIPS = [
         from: {
             entity: 40000,
             cardinality: 1,
-            optionality: 2,
+            optionality: 0,
             position: 270,
         },
         to: {
             entity: 40002,
             cardinality: 3,
-            optionality: 4,
+            optionality: 0,
             position: 90,
         },
         details: [
@@ -126,13 +126,13 @@ const RELATIONSHIPS = [
         from: {
             entity: 30002,
             cardinality: 1,
-            optionality: 2,
+            optionality: 1,
             position: 270,
         },
         to: {
             entity: 40003,
             cardinality: 3,
-            optionality: 4,
+            optionality: 0,
             position: 90,
         },
         details: [
@@ -149,13 +149,13 @@ const RELATIONSHIPS = [
         from: {
             entity: 40003,
             cardinality: 1,
-            optionality: 2,
+            optionality: 0,
             position: 270,
         },
         to: {
             entity: 40002,
             cardinality: 3,
-            optionality: 4,
+            optionality: 0,
             position: 90,
         },
         details: [

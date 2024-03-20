@@ -437,8 +437,8 @@ export default class Entity extends Atman {
     positioningPort (port) {
         const entity = this;
 
-        let line_port = this.geometry.getPortLine(port, entity);
-        let lines_entity = this.geometry.getFourSideLines(entity);
+        let line_port = this.geometry.getPortLine(port.degree(), entity);
+        let lines_entity = this.geometry.getFourSideLines(entity, 4, 33);
 
         let point = this.geometry.getCrossPoint(lines_entity, line_port);
 

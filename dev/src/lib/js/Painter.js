@@ -58,7 +58,7 @@ export default class Painter {
         const groups = this.entity().draw(entities.list);
 
         // port の描画
-        this.ports().drawPorts(groups);
+        this.ports().draw(groups);
 
         // relationship の描画
         this.relationships().drawRelationships(this.background, relationsihps);

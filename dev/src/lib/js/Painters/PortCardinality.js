@@ -93,113 +93,98 @@ export default class PortCardinality {
      * **************************************************************** */
     drawLine (g) {
         const lines = g.selectAll('line')
-              .data(
-                  // (d) => { return d._ports ? d._ports : []; },
-                  (d) => d._id,
-              );
+              .data((d) => d.ports.items.list,
+                    (d) => d.id());
 
         // delete
         lines.exit().remove();
 
         // update
         lines
-            .each((d, i) => {
-                const line = this.calLinePoints(d);
-
-                d.position = line.to;
-                d.line = line;
-            })
-            .attr("x1", d => d.line.from.x)
-            .attr("y1", d => d.line.from.y)
-            .attr("x2", d => d.line.to.x)
-            .attr("y2", d => d.line.to.y)
-            .attr("stroke-width",3)
+            .attr("x1", d => d.linePosition().from.x)
+            .attr("y1", d => d.linePosition().from.y)
+            .attr("x2", d => d.linePosition().to.x)
+            .attr("y2", d => d.linePosition().to.y)
+            .attr("stroke-width", 1)
             .attr("stroke","#a3a3a2");
 
         // add
         lines
             .enter()
-            .each((d, i) => {
-                const line = this.calLinePoints(d);
-
-                d.position = line.to;
-                d.line = line;
-            })
             .append("line")
-            .attr("x1", d => d.line.from.x)
-            .attr("y1", d => d.line.from.y)
-            .attr("x2", d => d.line.to.x)
-            .attr("y2", d => d.line.to.y)
-            .attr("stroke-width",3)
+            .attr("x1", d => d.linePosition().from.x)
+            .attr("y1", d => d.linePosition().from.y)
+            .attr("x2", d => d.linePosition().to.x)
+            .attr("y2", d => d.linePosition().to.y)
+            .attr("stroke-width", 1)
             .attr("stroke","#a3a3a2");
     }
     drawCardinalityOne (g) {
         const filter = (ports=[]) => {
             return ports.filter(port => {
-                return port._core.cardinality===1;
+                return port.cardinality()===1;
             });
         };
-
         const optionalities = g.selectAll('line.cardinality')
               .data((d) => filter(d.ports.items.list),
-                    (d) => { return d._id; });
+                    (d) => d.id());
 
-        optionalities
-            .attr("x1", d => d.line_cardinality.from.x)
-            .attr("y1", d => d.line_cardinality.from.y)
-            .attr("x2", d => d.line_cardinality.to.x)
-            .attr("y2", d => d.line_cardinality.to.y)
-            .attr("stroke-width",3)
-            .attr("stroke","#a3a3a2");
+        const draw = (selection)=> {
+            selection.attr("x1", d => d.cardinalityPosition().from.x)
+                .attr("y1", d => d.cardinalityPosition().from.y)
+                .attr("x2", d => d.cardinalityPosition().to.x)
+                .attr("y2", d => d.cardinalityPosition().to.y)
+                .attr("stroke-width", 1)
+                .attr("stroke","#a3a3a2");
+        };
 
-        optionalities
-            .enter()
-            .each((d) => {
-                d.line_cardinality = this.calOneLine(d, 11);
-            })
-            .append('line')
-            .classed( "cardinality", true )
-            .attr("x1", d => d.line_cardinality.from.x)
-            .attr("y1", d => d.line_cardinality.from.y)
-            .attr("x2", d => d.line_cardinality.to.x)
-            .attr("y2", d => d.line_cardinality.to.y)
-            .attr("stroke-width",3)
-            .attr("stroke","#a3a3a2");
+        // update
+        draw(optionalities);
+
+        // add
+        const add_targets = optionalities
+              .enter()
+              .append('line')
+              .classed("cardinality", true);
+
+        draw(add_targets);
     }
     drawCardinalityThree (g) {
         const filter = (ports=[]) => {
-            return ports.filter(d => {
-                return d.cardinality===3;
+            return ports.filter(port => {
+                return port.cardinality()===3;
             });
         };
 
         const optionalities = g.selectAll('path.cardinality')
-              .data((d) => { return filter(d._ports); },
-                    (d) => { return d._id; });
+              .data((d) => filter(d.ports.items.list),
+                    (d) => d.id());
 
         const line = d3.line()
               .x(function(d) {return d[0];})
               .y(function(d) {return d[1];});
 
-        optionalities
-            .each((d) => d.line_cardinality_three = this.calThreeLine(d, 11))
-            .attr('d', d => line(d.line_cardinality_three))
-            .attr("stroke-width",3)
-            .attr("stroke","#a3a3a2");
+        const draw = (selection)=> {
+            selection
+                .attr('d', d => line(d._cardinality))
+                .attr("fill", 'none')
+                .attr("stroke-width", 1)
+                .attr("stroke","#a3a3a2");
+        };
 
-        optionalities
-            .enter()
-            .each((d) => d.line_cardinality_three = this.calThreeLine(d, 11))
-            .append('path')
-            .classed( "cardinality", true )
-            .attr('d', d => line(d.line_cardinality_three))
-            .attr("fill", 'none')
-            .attr("stroke-width",3)
-            .attr("stroke","#a3a3a2");
+        // update
+        draw(optionalities);
+
+        // add
+        const add_targets = optionalities
+              .enter()
+              .append('path')
+              .classed( "cardinality", true );
+
+        draw(add_targets);
     }
     draw (g) {
-        // E1のインスタンス1つに対応する、E2のインスタンスの最大数
-        // this.drawLine(g);
+        this.drawLine(g);
         this.drawCardinalityOne(g);
         this.drawCardinalityThree(g);
     }

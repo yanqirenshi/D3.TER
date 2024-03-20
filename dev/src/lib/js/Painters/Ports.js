@@ -18,22 +18,11 @@ export default class Ports {
         return this._parent.callbacks;
     }
     /* **************************************************************** *
-     *  こんな感じで書いていた。
-     * **************************************************************** */
-    // draw (g) {
-    //     this.drawLine(g);
-    //     this.drawCardinality(g);
-    //     this.drawOptionality(g);
-    // }
-    /* **************************************************************** *
      *  Old
      * **************************************************************** */
     // public
-    drawPorts (groups_entity) {
+    draw (groups_entity) {
         this.cardinality.draw(groups_entity);
-
-        // this.optionality.draw(groups_entity);
-
-        this.circle.draw(groups_entity);
+        this.optionality.draw(groups_entity);
     }
 }
