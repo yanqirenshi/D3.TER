@@ -166,6 +166,52 @@ const RELATIONSHIPS = [
         ],
         description: 'relationship - setting relationship',
     },
+    {
+        id: id++,
+        type: null,
+        from: {
+            entity: 30002,
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
+        to: {
+            entity: 30004,
+            cardinality: null,
+            optionality: null,
+            position: 180,
+        },
+        details: [
+            {
+                from: { id: 30002201, description: '' },
+                to:   { id: 30004101, description: '' },
+            }
+        ],
+        description: 'Entity - Resource',
+    },
+    {
+        id: id++,
+        type: null,
+        from: {
+            entity: 30002,
+            cardinality: null,
+            optionality: null,
+            position: 0,
+        },
+        to: {
+            entity: 30007,
+            cardinality: null,
+            optionality: null,
+            position: 180,
+        },
+        details: [
+            {
+                from: { id: 30002201, description: '' },
+                to:   { id: 30007101, description: '' },
+            }
+        ],
+        description: 'Entity - Resource',
+    },
 ];
 
 export default RELATIONSHIPS;

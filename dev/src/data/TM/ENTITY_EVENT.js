@@ -85,7 +85,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 40004,
-        type: 'EVENT',
+        type: 'EVENT-SUBSET',
         name: 'Relattionship (E-R)',
         description: '',
         position: { x: 1600, y: 1100, z:0 },
@@ -98,7 +98,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 40005,
-        type: 'EVENT',
+        type: 'EVENT-SUBSET',
         name: 'Relattionship (E-E)',
         description: '',
         position: { x: 2000, y: 1100, z:0 },
@@ -111,7 +111,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 40006,
-        type: 'EVENT',
+        type: 'EVENT-SUBSET',
         name: 'Relattionship (R-R)',
         description: '',
         position: { x: 2400, y: 1100, z:0 },
@@ -124,7 +124,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 40007,
-        type: 'EVENT',
+        type: 'EVENT-SUBSET',
         name: 'Relattionship (再帰)',
         description: '',
         position: { x: 2800, y: 1100, z:0 },
@@ -137,7 +137,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 40008,
-        type: 'EVENT',
+        type: 'EVENT-SUBSET',
         name: 'Relattionship (Subset)',
         description: '',
         position: { x: 1600, y: 1200, z:0 },
@@ -150,7 +150,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 40009,
-        type: 'EVENT',
+        type: 'EVENT-SUBSET',
         name: 'Relattionship (MO)',
         description: '',
         position: { x: 2000, y: 1200, z:0 },
@@ -163,7 +163,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 40010,
-        type: 'EVENT',
+        type: 'EVENT-SUBSET',
         name: 'Relattionship (HDR-DTL)',
         description: '',
         position: { x: 2400, y: 1200, z:0 },

@@ -225,7 +225,7 @@ export default class Port extends Atman {
                 from: { x: from.x + r, y: from.y + distance },
                 to:   { x: from.x - r, y: from.y + distance },
             };
-        case 'DOWN':
+        case 'UP':
             return {
                 from: { x: from.x + r, y: from.y - distance },
                 to:   { x: from.x - r, y: from.y - distance },
@@ -264,7 +264,7 @@ export default class Port extends Atman {
                 [ from.x,            from.y + distance ],
                 [ from.x + distance, from.y ],
             ];
-        case 'DOWN':
+        case 'UP':
             return [
                 [ from.x - distance, from.y ],
                 [ from.x,            from.y - distance ],
@@ -302,7 +302,7 @@ export default class Port extends Atman {
                 x:from.x,
                 y:from.y + distance,
             };
-        case 'DOWN':
+        case 'UP':
             return {
                 x:from.x,
                 y:from.y - distance,

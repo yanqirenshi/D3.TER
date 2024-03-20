@@ -59,7 +59,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30004,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Resource',
         description: '',
         position: { x: 0, y: 1100, z:0 },
@@ -72,7 +72,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30005,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Resource (Root)',
         description: '',
         position: { x: 100, y: 1200, z:0 },
@@ -85,7 +85,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30006,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Resource (Subset)',
         description: '',
         position: { x: 100, y: 1300, z:0 },
@@ -98,7 +98,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30007,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Event',
         description: '',
         position: { x: 500, y: 1100, z:0 },
@@ -112,7 +112,7 @@ const ENTITY_EVENT = [
 
     {
         id: 30008,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Event (Root)',
         description: '',
         position: { x: 600, y: 1200, z:0 },
@@ -125,7 +125,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30009,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Event (Subset)',
         description: '',
         position: { x: 900, y: 1200, z:0 },
@@ -138,7 +138,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30010,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Event (再帰)',
         description: '',
         position: { x: 600, y: 1300, z:0 },
@@ -151,7 +151,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30011,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Event (対照表)',
         description: '',
         position: { x: 900, y: 1300, z:0 },
@@ -164,7 +164,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30012,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Event (対応表)',
         description: '',
         position: { x: 1200, y: 1300, z:0 },
@@ -177,7 +177,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30013,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Event (HDR)',
         description: '',
         position: { x: 600, y: 1400, z:0 },
@@ -190,7 +190,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30014,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Event (HDR)',
         description: '',
         position: { x: 900, y: 1400, z:0 },
@@ -203,7 +203,7 @@ const ENTITY_EVENT = [
     },
     {
         id: 30015,
-        type: 'RESOURCE',
+        type: 'RESOURCE-SUBSET',
         name: 'Event (MO)',
         description: '',
         position: { x: 600, y: 1500, z:0 },
