@@ -43,16 +43,14 @@ var Geometry = /*#__PURE__*/function () {
 
   }, {
     key: "getFourSideLines",
-    value: function getFourSideLines(rect) {
+    value: function getFourSideLines(rect, port_r, margin_r) {
       var x = 0; //rect.position.x;
 
       var y = 0; //rect.position.y;
 
       var w = rect.size.w;
       var h = rect.size.h;
-      var port_r = 4; // let margin =  33 + port_r;
-
-      var margin = 11 + port_r;
+      var margin = margin_r + port_r;
       var top_left = {
         x: x - margin,
         y: y - margin
@@ -126,10 +124,10 @@ var Geometry = /*#__PURE__*/function () {
     }
   }, {
     key: "getPortLine",
-    value: function getPortLine(port, rect) {
+    value: function getPortLine(port_degree, rect) {
       // degree,
       var from = this.getPortLineFrom(rect);
-      var to = this.getPortLineTo(port.degree(), rect);
+      var to = this.getPortLineTo(port_degree, rect);
       return {
         from: {
           x: from.x,

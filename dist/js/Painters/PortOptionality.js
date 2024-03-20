@@ -25,70 +25,79 @@ var PortOptionality = /*#__PURE__*/function () {
   }
 
   _createClass(PortOptionality, [{
+    key: "selections",
+    value: function selections(g, selector, filter) {
+      return g.selectAll(selector).data(function (d) {
+        return filter(d.ports.items.list);
+      }, function (d) {
+        return d.id();
+      });
+    }
+  }, {
     key: "drawOptionalityOne",
     value: function drawOptionalityOne(g) {
-      var _this = this;
-
       var filter = function filter() {
         var ports = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
         return ports.filter(function (d) {
-          return d.optionality === 1;
+          return d.optionality() === 1;
         });
       };
 
-      var optionalities = g.selectAll('line.optionality').data(function (d) {
-        return filter(d._ports);
-      }, function (d) {
-        return d._id;
-      });
-      optionalities.enter().each(function (d) {
-        return d.line_optionality = _this.calOneLine(d, 22);
-      }).append('line').classed("optionality", true).attr("x1", function (d) {
-        return d.line_optionality.from.x;
-      }).attr("y1", function (d) {
-        return d.line_optionality.from.y;
-      }).attr("x2", function (d) {
-        return d.line_optionality.to.x;
-      }).attr("y2", function (d) {
-        return d.line_optionality.to.y;
-      }).attr("stroke-width", 3).attr("stroke", "#a3a3a2");
+      var selector = 'line.optionality';
+      var optionalities = this.selections(g, selector, filter);
+
+      var draw = function draw(selection) {
+        selection.attr("x1", function (d) {
+          return d.optionalityPosition().from.x;
+        }).attr("y1", function (d) {
+          return d.optionalityPosition().from.y;
+        }).attr("x2", function (d) {
+          return d.optionalityPosition().to.x;
+        }).attr("y2", function (d) {
+          return d.optionalityPosition().to.y;
+        }).attr("stroke-width", 1).attr("stroke", "#a3a3a2");
+      }; // remove
+      // ???
+      // update
+
+
+      draw(optionalities); // add
+
+      var add_taregts = optionalities.enter().append('line').classed("optionality", true);
+      draw(add_taregts);
     }
   }, {
     key: "drawOptionalityZero",
     value: function drawOptionalityZero(g) {
-      var _this2 = this;
-
       var filter = function filter() {
         var ports = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
         return ports.filter(function (d) {
-          return d.optionality === 0;
+          return d.optionality() === 0;
         });
       };
 
-      var optionalities = g.selectAll('circle.optionality').data(function (d) {
-        return filter(d._ports);
-      }, function (d) {
-        return d._id;
-      });
-      optionalities.each(function (d) {
-        return d.line_circle = _this2.calCircle(d);
-      }).attr("cx", function (d) {
-        return d.line_circle.x;
-      }).attr("cy", function (d) {
-        return d.line_circle.y;
-      }).attr("r", 5).attr("fill", "#fefefe").attr("stroke-width", 3).attr("stroke", "#a3a3a2");
-      optionalities.enter().each(function (d) {
-        return d.line_circle = _this2.calCircle(d);
-      }).append("circle").classed("optionality", true).attr("cx", function (d) {
-        return d.line_circle.x;
-      }).attr("cy", function (d) {
-        return d.line_circle.y;
-      }).attr("r", 5).attr("fill", "#fefefe").attr("stroke-width", 3).attr("stroke", "#a3a3a2");
+      var selector = 'circle.optionality';
+      var optionalities = this.selections(g, selector, filter);
+
+      var draw = function draw(selection) {
+        selection.attr("cx", function (d) {
+          return d.optionalityPosition().x;
+        }).attr("cy", function (d) {
+          return d.optionalityPosition().y;
+        }).attr("r", 5).attr("fill", "#fefefe").attr("stroke-width", 1).attr("stroke", "#a3a3a2");
+      }; // remove
+      // ???
+      // update
+
+
+      draw(optionalities); // add
+
+      var add_taregts = optionalities.enter().append("circle").classed("optionality", true);
+      draw(add_taregts);
     }
   }, {
     key: "draw",
     value: function draw(g) {
-      // E1のインスタンス1つに対応する、E2のインスタンスの最小数
       this.drawOptionalityOne(g);
       this.drawOptionalityZero(g);
     }

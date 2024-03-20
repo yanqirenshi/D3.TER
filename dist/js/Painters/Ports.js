@@ -30,34 +30,30 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var Ports = /*#__PURE__*/function () {
-  function Ports() {
+  function Ports(parent) {
     _classCallCheck(this, Ports);
 
+    this._parent = parent;
     this.cardinality = new _PortCardinality["default"]();
     this.optionality = new _PortOptionality["default"]();
     this.circle = new _PortCircle["default"]();
   }
-  /* **************************************************************** *
-   *  こんな感じで書いていた。
-   * **************************************************************** */
-  // draw (g) {
-  //     this.drawLine(g);
-  //     this.drawCardinality(g);
-  //     this.drawOptionality(g);
-  // }
-
-  /* **************************************************************** *
-   *  Old
-   * **************************************************************** */
-  // public
-
 
   _createClass(Ports, [{
-    key: "drawPorts",
-    value: function drawPorts(groups_entity) {
-      // this.cardinality.draw(groups_entity);
-      // this.optionality.draw(groups_entity);
-      this.circle.draw(groups_entity);
+    key: "callbacks",
+    value: function callbacks() {
+      return this._parent.callbacks;
+    }
+    /* **************************************************************** *
+     *  Old
+     * **************************************************************** */
+    // public
+
+  }, {
+    key: "draw",
+    value: function draw(groups_entity) {
+      this.cardinality.draw(groups_entity);
+      this.optionality.draw(groups_entity);
     }
   }]);
 

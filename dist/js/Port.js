@@ -49,7 +49,7 @@ var Port = /*#__PURE__*/function (_Atman) {
     _this._owner = entity;
     _this._type = type;
     _this._core = relatihonship_data[type];
-    _this.position = relatihonship_data.position || {
+    _this._position = relatihonship_data.position || {
       x: 0,
       y: 0
     };
@@ -58,210 +58,363 @@ var Port = /*#__PURE__*/function (_Atman) {
 
     _this._entity = null;
     _this.geometry = new _Geometry["default"]();
+    _this._cardinality_distance = 11;
+    _this._optionality_distance = 22;
+    _this._line = null;
+    _this._cardinality = null;
+    _this._optionality = null;
     return _this;
   }
 
   _createClass(Port, [{
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+  }, {
     key: "degree",
     value: function degree() {
       return this._core.position || 0;
+    }
+  }, {
+    key: "position",
+    value: function position(v) {
+      if (arguments.length === 1) {
+        this._position = v;
+        var line = this.linePosition(this.calLinePoints());
+        this.cardinalityPosition(this.positionCardinality(line));
+        this.optionalityPosition(this.positionOptionality(line));
+      }
+
+      return this._position;
+    }
+  }, {
+    key: "positionOptionality",
+    value: function positionOptionality(line_port_to_entity) {
+      var distance = this.optionalityDistance(); // d.optionality: 1, 0
+
+      switch (this.optionality()) {
+        case 0:
+          return this.calCircle(line_port_to_entity.from, line_port_to_entity.to, distance);
+
+        case 1:
+          return this.calOneLine(line_port_to_entity.from, line_port_to_entity.to, distance);
+
+        default:
+          return null;
+      }
+    }
+  }, {
+    key: "positionCardinality",
+    value: function positionCardinality(line_port_to_entity) {
+      var distance = this.cardinalityDistance(); // cardinality: 1, 3
+
+      switch (this.cardinality()) {
+        case 1:
+          return this.calOneLine(line_port_to_entity.from, line_port_to_entity.to, distance);
+
+        case 3:
+          return this.calThreeLine(line_port_to_entity.from, line_port_to_entity.to, distance);
+
+        default:
+          return null;
+      }
+    }
+  }, {
+    key: "owner",
+    value: function owner() {
+      return this._owner;
+    }
+  }, {
+    key: "entity",
+    value: function entity() {
+      return this._entity;
+    }
+  }, {
+    key: "relationship",
+    value: function relationship() {
+      return this._relationship;
+    }
+  }, {
+    key: "cardinality",
+    value: function cardinality() {
+      return this.core().cardinality;
+    }
+  }, {
+    key: "optionality",
+    value: function optionality() {
+      return this.core().optionality;
+    }
+  }, {
+    key: "linePosition",
+    value: function linePosition(v) {
+      if (arguments.length === 1) this._line = v;
+      return this._line;
+    }
+  }, {
+    key: "cardinalityDistance",
+    value: function cardinalityDistance() {
+      return this._cardinality_distance;
+    }
+  }, {
+    key: "optionalityDistance",
+    value: function optionalityDistance() {
+      return this._optionality_distance;
+    }
+  }, {
+    key: "cardinalityPosition",
+    value: function cardinalityPosition(v) {
+      if (arguments.length === 1) this._cardinality = v;
+      return this._cardinality;
+    }
+  }, {
+    key: "optionalityPosition",
+    value: function optionalityPosition(v) {
+      if (arguments.length === 1) this._optionality = v;
+      return this._optionality;
     }
     /* **************************************************************** *
      *  Data manegement
      * **************************************************************** */
 
+    /**
+     * entity と port
+     */
+
   }, {
     key: "calLinePoints",
-    value: function calLinePoints(port) {
-      var table = port._column_instance._table;
+    value: function calLinePoints() {
+      var entity = this.owner();
+      var entity_position = entity.position;
+      var entity_size = entity.size;
       var rect = {
         position: {
-          x: table.x,
-          y: table.y
+          x: entity_position.x,
+          y: entity_position.y
         },
         size: {
-          w: table.w,
-          h: table.h
+          w: entity_size.w,
+          h: entity_size.h
         }
       };
-      var geometry = this.geometry;
-      var four_side_lines = geometry.getFourSideLines(rect);
-      var line_port = geometry.getPortLine(port, rect);
-      var cross_point = geometry.getCrossPoint(four_side_lines, line_port);
-      var len = 33 + 4;
-      var to_point = cross_point.point;
-      var from_point;
+      var geometry = this.geometry; // entity の四辺
 
-      if (cross_point.target === 'top') {
-        from_point = {
-          x: to_point.x,
-          y: to_point.y + len
-        };
-      } else if (cross_point.target === 'right') {
-        from_point = {
-          x: to_point.x - len,
-          y: to_point.y
-        };
-      } else if (cross_point.target === 'bottom') {
-        from_point = {
-          x: to_point.x,
-          y: to_point.y - len
-        };
-      } else if (cross_point.target === 'left') {
-        from_point = {
-          x: to_point.x + len,
-          y: to_point.y
-        };
-      }
+      var four_side_lines = geometry.getFourSideLines(rect, 4, 33); // port と entityの中心との直線。
+
+      var line_port = geometry.getPortLine(this.degree(), rect); // port と entityの中心との直線 と entity の四辺の交点。
+      // 交点 と どの辺 が返ってくる。
+
+      var cross_point = geometry.getCrossPoint(four_side_lines, line_port); // entity と port との距離
+
+      var len = 33 + 4; // 33: ?, 4: ?
+      // point の位置を返す
+
+      var to_point = cross_point.point;
+
+      var from_point = function from_point() {
+        switch (cross_point.target) {
+          case 'top':
+            return {
+              x: to_point.x,
+              y: to_point.y + len
+            };
+
+          case 'right':
+            return {
+              x: to_point.x - len,
+              y: to_point.y
+            };
+
+          case 'bottom':
+            return {
+              x: to_point.x,
+              y: to_point.y - len
+            };
+
+          case 'left':
+            return {
+              x: to_point.x + len,
+              y: to_point.y
+            };
+
+          default:
+            throw new Error('!!!');
+        }
+      };
 
       return {
-        from: from_point,
+        from: from_point(),
         to: to_point
       };
     }
+    /** **************************************************************** *
+     * port と entity の間の向きを返します。
+     * **************************************************************** */
+
+  }, {
+    key: "portDirection",
+    value: function portDirection(from, to) {
+      // 縦
+      if (from.x === to.x) {
+        if (from.y < to.y) return 'DOWN';
+        if (from.y > to.y) return 'UP';
+      } // 横
+
+
+      if (from.y === to.y) {
+        if (from.x < to.x) return 'RIGHT';
+        if (from.x > to.x) return 'LEFT';
+      } // これはありえないはず。
+
+
+      throw new Error('Can Not Found Direction.');
+    }
+    /** **************************************************************** *
+     * 1 line (cardinaly: 1)
+     * Cardinary： n ケースの座標を計算する。
+     *
+     * Line の from, to で向きを決める。
+     *
+     * d: port
+     * distance: between port and entity
+     * **************************************************************** */
+
   }, {
     key: "calOneLine",
-    value: function calOneLine(d, distance) {
+    value: function calOneLine(from, to, distance) {
       var r = 11;
 
-      if (d.line.from.x === d.line.to.x) {
-        // 縦
-        if (d.line.from.y < d.line.to.y) {
-          // (2)
+      switch (this.portDirection(from, to)) {
+        case 'DOWN':
           return {
             from: {
-              x: d.line.from.x + r,
-              y: d.line.from.y + distance
+              x: from.x + r,
+              y: from.y + distance
             },
             to: {
-              x: d.line.from.x - r,
-              y: d.line.from.y + distance
+              x: from.x - r,
+              y: from.y + distance
             }
           };
-        } else if (d.line.from.y > d.line.to.y) {
-          // (1)
-          return {
-            from: {
-              x: d.line.from.x + r,
-              y: d.line.from.y - distance
-            },
-            to: {
-              x: d.line.from.x - r,
-              y: d.line.from.y - distance
-            }
-          };
-        }
-      } else if (d.line.from.y === d.line.to.y) {
-        // 横
-        if (d.line.from.x < d.line.to.x) {
-          // (2)
-          return {
-            from: {
-              x: d.line.from.x + distance,
-              y: d.line.from.y + r
-            },
-            to: {
-              x: d.line.from.x + distance,
-              y: d.line.from.y - r
-            }
-          };
-        } else if (d.line.from.x > d.line.to.x) {
-          // (1)
-          return {
-            from: {
-              x: d.line.from.x - distance,
-              y: d.line.from.y + r
-            },
-            to: {
-              x: d.line.from.x - distance,
-              y: d.line.from.y - r
-            }
-          };
-        }
-      }
 
-      return {
-        from: {
-          x: 0,
-          y: 0
-        },
-        to: {
-          x: 0,
-          y: 0
-        }
-      };
+        case 'DOWN':
+          return {
+            from: {
+              x: from.x + r,
+              y: from.y - distance
+            },
+            to: {
+              x: from.x - r,
+              y: from.y - distance
+            }
+          };
+
+        case 'RIGHT':
+          return {
+            from: {
+              x: from.x + distance,
+              y: from.y + r
+            },
+            to: {
+              x: from.x + distance,
+              y: from.y - r
+            }
+          };
+
+        case 'LEFT':
+          return {
+            from: {
+              x: from.x - distance,
+              y: from.y + r
+            },
+            to: {
+              x: from.x - distance,
+              y: from.y - r
+            }
+          };
+
+        default:
+          return {
+            from: {
+              x: 0,
+              y: 0
+            },
+            to: {
+              x: 0,
+              y: 0
+            }
+          };
+      }
     }
   }, {
     key: "calThreeLine",
-    value: function calThreeLine(d, distance) {
-      if (d.line.from.x === d.line.to.x) {
-        // 縦
-        if (d.line.from.y < d.line.to.y) {
-          return [[d.line.from.x - distance, d.line.from.y], [d.line.from.x, d.line.from.y + distance], [d.line.from.x + distance, d.line.from.y]];
-        } else if (d.line.from.y > d.line.to.y) {
-          return [[d.line.from.x - distance, d.line.from.y], [d.line.from.x, d.line.from.y - distance], [d.line.from.x + distance, d.line.from.y]];
-        }
-      } else if (d.line.from.y === d.line.to.y) {
-        // 横
-        if (d.line.from.x < d.line.to.x) {
-          return [[d.line.from.x, d.line.from.y - distance], [d.line.from.x + distance, d.line.from.y], [d.line.from.x, d.line.from.y + distance]];
-        } else if (d.line.from.x > d.line.to.x) {
-          return [[d.line.from.x, d.line.from.y - distance], [d.line.from.x - distance, d.line.from.y], [d.line.from.x, d.line.from.y + distance]];
-        }
-      }
+    value:
+    /**
+     * 3 line (cardinaly: n)
+     * Cardinary： n ケースの座標を計算する。
+     *
+     * Line の from, to で向きを決める。
+     *
+     * d: port
+     * distance: between port and entity
+     * **************************************************************** */
+    function calThreeLine(from, to, distance) {
+      switch (this.portDirection(from, to)) {
+        case 'DOWN':
+          return [[from.x - distance, from.y], [from.x, from.y + distance], [from.x + distance, from.y]];
 
-      return {
-        from: {
-          x: 0,
-          y: 0
-        },
-        to: {
-          x: 0,
-          y: 0
-        }
-      };
+        case 'DOWN':
+          return [[from.x - distance, from.y], [from.x, from.y - distance], [from.x + distance, from.y]];
+
+        case 'RIGHT':
+          return [[from.x, from.y - distance], [from.x + distance, from.y], [from.x, from.y + distance]];
+
+        case 'LEFT':
+          return [[from.x, from.y - distance], [from.x - distance, from.y], [from.x, from.y + distance]];
+
+        default:
+          return [[0, 0], [0, 0], [0, 0]];
+      }
     }
   }, {
     key: "calCircle",
-    value: function calCircle(d) {
-      var distance = 22;
+    value:
+    /** **************************************************************** *
+     * null のための 丸
+     * **************************************************************** */
+    function calCircle(from, to, distance) {
+      // const distance = 28;
+      switch (this.portDirection(from, to)) {
+        case 'DOWN':
+          return {
+            x: from.x,
+            y: from.y + distance
+          };
 
-      if (d.line.from.x === d.line.to.x) {
-        // 縦
-        if (d.line.from.y < d.line.to.y) {
-          // (2)
+        case 'DOWN':
           return {
-            x: d.line.from.x,
-            y: d.line.from.y + distance
+            x: from.x,
+            y: from.y - distance
           };
-        } else if (d.line.from.y > d.line.to.y) {
-          // (1)
+
+        case 'RIGHT':
           return {
-            x: d.line.from.x,
-            y: d.line.from.y - distance
+            x: from.x + distance,
+            y: from.y
           };
-        }
-      } else if (d.line.from.y === d.line.to.y) {
-        // 横
-        if (d.line.from.x < d.line.to.x) {
-          // (2)
+
+        case 'LEFT':
           return {
-            x: d.line.from.x + distance,
-            y: d.line.from.y
+            x: from.x - distance,
+            y: from.y
           };
-        } else if (d.line.from.x > d.line.to.x) {
-          // (1)
+
+        default:
           return {
-            x: d.line.from.x - distance,
-            y: d.line.from.y
+            x: 0,
+            y: 0
           };
-        }
       }
-
-      return {
-        x: 0,
-        y: 0
-      };
     }
   }, {
     key: "addPort2Entity",

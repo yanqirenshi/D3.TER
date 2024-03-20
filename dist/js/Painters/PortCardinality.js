@@ -73,128 +73,185 @@ var PortCardinality = /*#__PURE__*/function () {
         to: to_point
       };
     }
+  }, {
+    key: "calOneLine",
+    value: function calOneLine(d, distance) {
+      var r = 11;
+      var line = d._relationship;
+
+      if (line.from.position.x === line.to.position.x) {
+        // 縦
+        if (line.from.position.y < line.to.position.y) {
+          // (2)
+          return {
+            from: {
+              x: line.from.position.x + r,
+              y: line.from.position.y + distance
+            },
+            to: {
+              x: line.from.position.x - r,
+              y: line.from.position.y + distance
+            }
+          };
+        } else if (line.from.position.y > line.to.position.y) {
+          // (1)
+          return {
+            from: {
+              x: line.from.position.x + r,
+              y: line.from.position.y - distance
+            },
+            to: {
+              x: line.from.position.x - r,
+              y: line.from.position.y - distance
+            }
+          };
+        }
+      } else if (line.from.position.y === line.to.position.y) {
+        // 横
+        if (line.from.position.x < line.to.position.x) {
+          // (2)
+          return {
+            from: {
+              x: line.from.position.x + distance,
+              y: line.from.position.y + r
+            },
+            to: {
+              x: line.from.position.x + distance,
+              y: line.from.position.y - r
+            }
+          };
+        } else if (line.from.position.x > line.to.position.x) {
+          // (1)
+          return {
+            from: {
+              x: line.from.position.x - distance,
+              y: line.from.position.y + r
+            },
+            to: {
+              x: line.from.position.x - distance,
+              y: line.from.position.y - r
+            }
+          };
+        }
+      }
+
+      return {
+        from: {
+          x: 0,
+          y: 0
+        },
+        to: {
+          x: 0,
+          y: 0
+        }
+      };
+    }
+  }, {
+    key: "drawLine",
+    value:
     /* **************************************************************** *
      *  Draw Line (port to entity)
      * **************************************************************** */
-
-  }, {
-    key: "drawLine",
-    value: function drawLine(g) {
-      var _this = this;
-
-      var lines = g.selectAll('line').data( // (d) => { return d._ports ? d._ports : []; },
-      function (d) {
-        return d._id;
+    function drawLine(g) {
+      var lines = g.selectAll('line').data(function (d) {
+        return d.ports.items.list;
+      }, function (d) {
+        return d.id();
       }); // delete
 
       lines.exit().remove(); // update
 
-      lines.each(function (d, i) {
-        var line = _this.calLinePoints(d);
-
-        d.position = line.to;
-        d.line = line;
-      }).attr("x1", function (d) {
-        return d.line.from.x;
+      lines.attr("x1", function (d) {
+        return d.linePosition().from.x;
       }).attr("y1", function (d) {
-        return d.line.from.y;
+        return d.linePosition().from.y;
       }).attr("x2", function (d) {
-        return d.line.to.x;
+        return d.linePosition().to.x;
       }).attr("y2", function (d) {
-        return d.line.to.y;
-      }).attr("stroke-width", 3).attr("stroke", "#a3a3a2"); // add
+        return d.linePosition().to.y;
+      }).attr("stroke-width", 1).attr("stroke", "#a3a3a2"); // add
 
-      lines.enter().each(function (d, i) {
-        var line = _this.calLinePoints(d);
-
-        d.position = line.to;
-        d.line = line;
-      }).append("line").attr("x1", function (d) {
-        return d.line.from.x;
+      lines.enter().append("line").attr("x1", function (d) {
+        return d.linePosition().from.x;
       }).attr("y1", function (d) {
-        return d.line.from.y;
+        return d.linePosition().from.y;
       }).attr("x2", function (d) {
-        return d.line.to.x;
+        return d.linePosition().to.x;
       }).attr("y2", function (d) {
-        return d.line.to.y;
-      }).attr("stroke-width", 3).attr("stroke", "#a3a3a2");
+        return d.linePosition().to.y;
+      }).attr("stroke-width", 1).attr("stroke", "#a3a3a2");
     }
   }, {
     key: "drawCardinalityOne",
     value: function drawCardinalityOne(g) {
-      var _this2 = this;
-
       var filter = function filter() {
         var ports = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-        return ports.filter(function (d) {
-          return d.cardinality === 1;
+        return ports.filter(function (port) {
+          return port.cardinality() === 1;
         });
       };
 
       var optionalities = g.selectAll('line.cardinality').data(function (d) {
-        return filter(d._ports);
+        return filter(d.ports.items.list);
       }, function (d) {
-        return d._id;
+        return d.id();
       });
-      optionalities.attr("x1", function (d) {
-        return d.line_cardinality.from.x;
-      }).attr("y1", function (d) {
-        return d.line_cardinality.from.y;
-      }).attr("x2", function (d) {
-        return d.line_cardinality.to.x;
-      }).attr("y2", function (d) {
-        return d.line_cardinality.to.y;
-      }).attr("stroke-width", 3).attr("stroke", "#a3a3a2");
-      optionalities.enter().each(function (d) {
-        return d.line_cardinality = _this2.calOneLine(d, 11);
-      }).append('line').classed("cardinality", true).attr("x1", function (d) {
-        return d.line_cardinality.from.x;
-      }).attr("y1", function (d) {
-        return d.line_cardinality.from.y;
-      }).attr("x2", function (d) {
-        return d.line_cardinality.to.x;
-      }).attr("y2", function (d) {
-        return d.line_cardinality.to.y;
-      }).attr("stroke-width", 3).attr("stroke", "#a3a3a2");
+
+      var draw = function draw(selection) {
+        selection.attr("x1", function (d) {
+          return d.cardinalityPosition().from.x;
+        }).attr("y1", function (d) {
+          return d.cardinalityPosition().from.y;
+        }).attr("x2", function (d) {
+          return d.cardinalityPosition().to.x;
+        }).attr("y2", function (d) {
+          return d.cardinalityPosition().to.y;
+        }).attr("stroke-width", 1).attr("stroke", "#a3a3a2");
+      }; // update
+
+
+      draw(optionalities); // add
+
+      var add_targets = optionalities.enter().append('line').classed("cardinality", true);
+      draw(add_targets);
     }
   }, {
     key: "drawCardinalityThree",
     value: function drawCardinalityThree(g) {
-      var _this3 = this;
-
       var filter = function filter() {
         var ports = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-        return ports.filter(function (d) {
-          return d.cardinality === 3;
+        return ports.filter(function (port) {
+          return port.cardinality() === 3;
         });
       };
 
       var optionalities = g.selectAll('path.cardinality').data(function (d) {
-        return filter(d._ports);
+        return filter(d.ports.items.list);
       }, function (d) {
-        return d._id;
+        return d.id();
       });
       var line = d3.line().x(function (d) {
         return d[0];
       }).y(function (d) {
         return d[1];
       });
-      optionalities.each(function (d) {
-        return d.line_cardinality_three = _this3.calThreeLine(d, 11);
-      }).attr('d', function (d) {
-        return line(d.line_cardinality_three);
-      }).attr("stroke-width", 3).attr("stroke", "#a3a3a2");
-      optionalities.enter().each(function (d) {
-        return d.line_cardinality_three = _this3.calThreeLine(d, 11);
-      }).append('path').classed("cardinality", true).attr('d', function (d) {
-        return line(d.line_cardinality_three);
-      }).attr("fill", 'none').attr("stroke-width", 3).attr("stroke", "#a3a3a2");
+
+      var draw = function draw(selection) {
+        selection.attr('d', function (d) {
+          return line(d._cardinality);
+        }).attr("fill", 'none').attr("stroke-width", 1).attr("stroke", "#a3a3a2");
+      }; // update
+
+
+      draw(optionalities); // add
+
+      var add_targets = optionalities.enter().append('path').classed("cardinality", true);
+      draw(add_targets);
     }
   }, {
     key: "draw",
     value: function draw(g) {
-      // E1のインスタンス1つに対応する、E2のインスタンスの最大数
-      // this.drawLine(g);
+      this.drawLine(g);
       this.drawCardinalityOne(g);
       this.drawCardinalityThree(g);
     }

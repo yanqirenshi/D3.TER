@@ -7,28 +7,22 @@ import PortCardinality from './PortCardinality.js';
 import PortOptionality from './PortOptionality.js';
 
 export default class Ports {
-    constructor () {
+    constructor (parent) {
+        this._parent = parent;
+
         this.cardinality = new PortCardinality();
         this.optionality = new PortOptionality();
         this.circle = new PortCircle();
     }
-    /* **************************************************************** *
-     *  こんな感じで書いていた。
-     * **************************************************************** */
-    // draw (g) {
-    //     this.drawLine(g);
-    //     this.drawCardinality(g);
-    //     this.drawOptionality(g);
-    // }
+    callbacks () {
+        return this._parent.callbacks;
+    }
     /* **************************************************************** *
      *  Old
      * **************************************************************** */
     // public
-    drawPorts (groups_entity) {
-        // this.cardinality.draw(groups_entity);
-
-        // this.optionality.draw(groups_entity);
-
-        this.circle.draw(groups_entity);
+    draw (groups_entity) {
+        this.cardinality.draw(groups_entity);
+        this.optionality.draw(groups_entity);
     }
 }

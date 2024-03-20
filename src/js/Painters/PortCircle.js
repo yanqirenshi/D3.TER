@@ -6,10 +6,10 @@ export default class PortCircle {
         ports
             .attr('class', 'entity-port')
             .attr('cx', (d)=> {
-                return d.position.x;
+                return d.position().x;
             })
             .attr('cy', (d)=> {
-                return d.position.y;
+                return d.position().y;
             })
             .attr('r', 4)
             .attr('fill', '#fff')

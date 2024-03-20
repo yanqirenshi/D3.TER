@@ -15,16 +15,14 @@ export default class Geometry {
     ///// ////////////////////////////////////////////////////////////////
     /////   Rect
     ///// ////////////////////////////////////////////////////////////////
-    getFourSideLines (rect) {
+    getFourSideLines (rect, port_r, margin_r) {
         let x = 0; //rect.position.x;
         let y = 0; //rect.position.y;
 
         let w = rect.size.w;
         let h = rect.size.h;
 
-        let port_r = 4;
-        // let margin =  33 + port_r;
-        let margin =  11 + port_r;
+        let margin =  margin_r + port_r;
 
         let top_left     = { x: x -     margin, y: y -     margin};
         let top_right    = { x: x + w + margin, y: y -     margin};
@@ -78,9 +76,9 @@ export default class Geometry {
             y: Math.floor(x * sin + y * cos),
         };
     }
-    getPortLine (port, rect) { // degree,
+    getPortLine (port_degree, rect) { // degree,
         let from = this.getPortLineFrom(rect);
-        let to   = this.getPortLineTo(port.degree(), rect);
+        let to   = this.getPortLineTo(port_degree, rect);
 
         return {
             from: {

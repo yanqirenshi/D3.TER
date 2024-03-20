@@ -29,9 +29,9 @@ var PortCircle = /*#__PURE__*/function () {
     value: // protected
     function drawPortsCore(ports) {
       ports.attr('class', 'entity-port').attr('cx', function (d) {
-        return d.position.x;
+        return d.position().x;
       }).attr('cy', function (d) {
-        return d.position.y;
+        return d.position().y;
       }).attr('r', 4).attr('fill', '#fff').attr('stroke', '#000').attr('stroke-width', 0.5).attr('degree', function (d) {
         return d._owner._core.position || 0;
       }).attr('port-id', function (d) {

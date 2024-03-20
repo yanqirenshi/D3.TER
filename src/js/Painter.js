@@ -2,11 +2,13 @@ import Ports from './Painters/Ports.js';
 import Relationships from './Painters/Relationships.js';
 import Entity from './Painters/Entity.js';
 
+import merge from 'deepmerge';
+
 export default class Painter {
     constructor(foreground, background, callbacks) {
         this.foreground = foreground;
         this.background = background;
-        this.callbacks = callbacks;
+        this.callbacks = this.ensureCallbacks(callbacks);
 
         this._default = {
             line: {
@@ -18,10 +20,28 @@ export default class Painter {
         };
 
         this._painters = {
-            ports: new Ports(),
-            relationships: new Relationships(),
+            ports: new Ports(this),
+            relationships: new Relationships(this),
             entity: new Entity(this),
         };
+    }
+    ensureCallbacks (callbacks) {
+        const default_callbacks = {
+            entity: {
+                click: (node)=> null,
+            },
+            identifier: {
+                click: (node)=> null,
+            },
+            attribute: {
+                click: (node)=> null,
+            },
+            relationship: {
+                click: (node)=> null,
+            },
+        };
+
+        return merge(default_callbacks, callbacks);
     }
     ports () { return this._painters.ports; }
     relationships () { return this._painters.relationships; }
@@ -38,7 +58,7 @@ export default class Painter {
         const groups = this.entity().draw(entities.list);
 
         // port の描画
-        this.ports().drawPorts(groups);
+        this.ports().draw(groups);
 
         // relationship の描画
         this.relationships().drawRelationships(this.background, relationsihps);

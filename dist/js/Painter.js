@@ -11,6 +11,8 @@ var _Relationships = _interopRequireDefault(require("./Painters/Relationships.js
 
 var _Entity = _interopRequireDefault(require("./Painters/Entity.js"));
 
+var _deepmerge = _interopRequireDefault(require("deepmerge"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25,7 +27,7 @@ var Painter = /*#__PURE__*/function () {
 
     this.foreground = foreground;
     this.background = background;
-    this.callbacks = callbacks;
+    this.callbacks = this.ensureCallbacks(callbacks);
     this._default = {
       line: {
         height: 14,
@@ -35,13 +37,40 @@ var Painter = /*#__PURE__*/function () {
       }
     };
     this._painters = {
-      ports: new _Ports["default"](),
-      relationships: new _Relationships["default"](),
+      ports: new _Ports["default"](this),
+      relationships: new _Relationships["default"](this),
       entity: new _Entity["default"](this)
     };
   }
 
   _createClass(Painter, [{
+    key: "ensureCallbacks",
+    value: function ensureCallbacks(callbacks) {
+      var default_callbacks = {
+        entity: {
+          click: function click(node) {
+            return null;
+          }
+        },
+        identifier: {
+          click: function click(node) {
+            return null;
+          }
+        },
+        attribute: {
+          click: function click(node) {
+            return null;
+          }
+        },
+        relationship: {
+          click: function click(node) {
+            return null;
+          }
+        }
+      };
+      return (0, _deepmerge["default"])(default_callbacks, callbacks);
+    }
+  }, {
     key: "ports",
     value: function ports() {
       return this._painters.ports;
@@ -70,7 +99,7 @@ var Painter = /*#__PURE__*/function () {
       // entity の描画
       var groups = this.entity().draw(entities.list); // port の描画
 
-      this.ports().drawPorts(groups); // relationship の描画
+      this.ports().draw(groups); // relationship の描画
 
       this.relationships().drawRelationships(this.background, relationsihps);
     }
