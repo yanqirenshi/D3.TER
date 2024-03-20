@@ -309,7 +309,7 @@ var Port = /*#__PURE__*/function (_Atman) {
             }
           };
 
-        case 'DOWN':
+        case 'UP':
           return {
             from: {
               x: from.x + r,
@@ -375,7 +375,7 @@ var Port = /*#__PURE__*/function (_Atman) {
         case 'DOWN':
           return [[from.x - distance, from.y], [from.x, from.y + distance], [from.x + distance, from.y]];
 
-        case 'DOWN':
+        case 'UP':
           return [[from.x - distance, from.y], [from.x, from.y - distance], [from.x + distance, from.y]];
 
         case 'RIGHT':
@@ -403,7 +403,7 @@ var Port = /*#__PURE__*/function (_Atman) {
             y: from.y + distance
           };
 
-        case 'DOWN':
+        case 'UP':
           return {
             x: from.x,
             y: from.y - distance
