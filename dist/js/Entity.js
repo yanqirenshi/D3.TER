@@ -301,11 +301,17 @@ var Entity = /*#__PURE__*/function (_Atman) {
         case 'COMPARATIVE':
           return '対象';
 
+        case 'CORRESPONDENCE':
+          return '対応';
+
         case 'EVENT':
           return 'Evt';
 
         case 'EVENT-SUBSET':
           return 'Evt';
+
+        case 'RECURSION':
+          return '再帰';
 
         default:
           throw new Error(type + " は知らないよ。");
@@ -458,6 +464,27 @@ var Entity = /*#__PURE__*/function (_Atman) {
      * **************************************************************** */
 
   }, {
+    key: "strLen",
+    value: function strLen(str) {
+      var count = 0;
+
+      for (var i = 0, len = str.length; i < len; i++) {
+        var c = str.charCodeAt(i);
+
+        if (!str[i].match(/\r?\n/g)) {
+          // 改行コード判定
+          if (c >= 0x0 && c <= 0x7f) {
+            // 全角半角判定
+            count += 1;
+          } else {
+            count += 2;
+          }
+        }
+      }
+
+      return count;
+    }
+  }, {
     key: "sizingContentsArea",
     value: function sizingContentsArea() {
       var id_h = this.identifiers.size.h;
@@ -495,7 +522,7 @@ var Entity = /*#__PURE__*/function (_Atman) {
       var data = this.type;
       if (!data.contents) data.contents = '??';
       data.size.h = this._default.line.height + data.padding * 2;
-      data.size.w = data.contents.length * this._default.line.font.size;
+      data.size.w = this.strLen(data.contents) * this._default.line.font.size;
     }
   }, {
     key: "sizing",

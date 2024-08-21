@@ -157,8 +157,10 @@ export default class Entity extends Atman {
         case 'RESOURCE':        return 'Rsc';
         case 'RESOURCE-SUBSET': return 'Rsc';
         case 'COMPARATIVE':     return '対象';
+        case 'CORRESPONDENCE':  return '対応';
         case 'EVENT':           return 'Evt';
         case 'EVENT-SUBSET':    return 'Evt';
+        case 'RECURSION':       return '再帰';
         default: throw new Error(type + " は知らないよ。");
         }
     }
@@ -250,6 +252,23 @@ export default class Entity extends Atman {
     /* **************************************************************** *
      *   Size
      * **************************************************************** */
+    strLen (str) {
+        let count = 0;
+
+        for (let i = 0, len = str.length; i < len; i++) {
+            let c = str.charCodeAt(i);
+
+            if (!str[i].match(/\r?\n/g)) { // 改行コード判定
+                if (c >= 0x0 && c <= 0x7f) { // 全角半角判定
+                    count += 1;
+                } else {
+                    count += 2;
+                }
+            }
+        }
+
+        return count;
+    }
     sizingContentsArea () {
         let id_h = this.identifiers.size.h;
         let attr_h = this.attributes.size.h;
@@ -304,7 +323,7 @@ export default class Entity extends Atman {
         data.size.h = this._default.line.height + data.padding * 2;
 
         data.size.w =
-            data.contents.length * this._default.line.font.size;
+            this.strLen(data.contents) * this._default.line.font.size;
     }
     sizing () {
         this.sizingType();
