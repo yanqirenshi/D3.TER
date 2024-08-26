@@ -421,6 +421,13 @@ var Entity = /*#__PURE__*/function (_Atman) {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
           var attribute = _step2.value;
           var master = masters[attribute.attribute];
+
+          if (!master) {
+            console.error(this);
+            console.error(attribute);
+            throw new Error('Attribute not found: ' + attribute.attribute);
+          }
+
           var element = new _AttributeInstance["default"](master, attribute);
           element._entity = this;
           out.list.push(element);

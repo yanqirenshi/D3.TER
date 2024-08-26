@@ -224,6 +224,12 @@ export default class Entity extends Atman {
         for (let attribute of targets) {
             const master = masters[attribute.attribute];
 
+            if (!master) {
+                console.error(this);
+                console.error(attribute);
+                throw new Error('Attribute not found: ' + attribute.attribute);
+            }
+
             const element = new AttributeInstance(master, attribute);
 
             element._entity = this;
