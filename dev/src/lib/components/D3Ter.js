@@ -4,6 +4,7 @@ import Asshole from '@yanqirenshi/assh0le';
 
 export default function D3Ter (props) {
     const rectum = props.rectum;
+    const id = props.id || "d3-ter-graph";
 
-    return <Asshole id="d3-network-graph" rectum={rectum}/>;
+    return <Asshole id={id} rectum={rectum}/>;
 }

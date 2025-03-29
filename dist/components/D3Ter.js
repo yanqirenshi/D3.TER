@@ -19,8 +19,9 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 function D3Ter(props) {
   var rectum = props.rectum;
+  var id = props.id || "d3-ter-graph";
   return /*#__PURE__*/_react["default"].createElement(_assh0le["default"], {
-    id: "d3-network-graph",
+    id: id,
     rectum: rectum
   });
 }
